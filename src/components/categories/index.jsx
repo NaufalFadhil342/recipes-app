@@ -1,0 +1,66 @@
+import { useMemo } from "react";
+import { getCategoryData } from "../../data/categoryFilter";
+import { useCategory } from "../../hooks/useCategory";
+import ImgCategory from "./imgCategory";
+
+const Categories = ({ images }) => {
+  const { selectCategory, handleCategoryActive } = useCategory();
+  const categoryData = useMemo(() => getCategoryData(images), [images]);
+
+  const imgsPosition = {
+    Rendang: "absolute top-0 left-10",
+    Rawon: "absolute top-7 left-1/2 -translate-x-7 z-10",
+    "Nasi Liwet": "absolute top-0 right-10 z-5",
+  };
+
+  return (
+    <section className="w-full h-auto px-20 mb-28 overflow-x-hidden">
+      <ul className="w-full h-auto flex gap-10 overflow-x-scroll scrollbar-none">
+        {categoryData.map((item) => {
+          return (
+            <li
+              key={item.id}
+              className={`flex-[0_0_20%] h-auto p-6 rounded-xl border ${
+                selectCategory === item.category
+                  ? "border-primary bg-white"
+                  : "border-stone-600/20 bg-transparent"
+              } flex flex-col items-center justify-between gap-4`}
+              onClick={() => handleCategoryActive(item.category)}
+            >
+              <div className="w-full h-auto">
+                {item.images.length > 1 ? (
+                  <ul className="w-full h-auto relative items-center justify-between">
+                    {item.images.map((img) => {
+                      const positionClass = imgsPosition[img.name] || "";
+
+                      return (
+                        <ImgCategory
+                          img={img}
+                          key={img.id}
+                          className={`size-15 rounded-full border-[3px] border-stone-400 overflow-hidden ${positionClass} flex items-center justify-between`}
+                        />
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <ul className="flex justify-center">
+                    {item.images.map((img) => (
+                      <ImgCategory
+                        key={img.id}
+                        img={img}
+                        className="size-20 rounded-full border-[3px] border-stone-400 overflow-hidden"
+                      />
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <p className="text-lg font-medium">{item.name}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+};
+
+export default Categories;

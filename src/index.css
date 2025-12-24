@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@plugin 'tailwind-scrollbar';
+
+@theme {
+  --font-open: Open Sans, sans-serif;
+  --color-primary: #c1d64d;
+  --color-dark: #b4c93c;
+}
+
+body {
+  @apply bg-lime-50 text-stone-800 font-open;
+}
+
+@layer utilities {
+  .editor-paragraph {
+    margin: 0 0 8px 0;
+  }
+  .editor-quote {
+    border-left: 4px solid #ccc;
+    padding-left: 16px;
+    margin: 8px 0;
+    font-style: italic;
+    color: #666;
+  }
+  .editor-heading-h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 16px 0 8px 0;
+  }
+  .editor-heading-h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 14px 0 6px 0;
+  }
+  .editor-heading-h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 12px 0 4px 0;
+  }
+  .editor-list-ol {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+  .editor-list-ul {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+  .editor-listitem {
+    margin: 4px 0;
+  }
+  .editor-nested-listitem {
+    list-style-type: none;
+  }
+  .editor-text-bold {
+    font-weight: bold;
+  }
+  .editor-text-italic {
+    font-style: italic;
+  }
+  .editor-text-underline {
+    text-decoration: underline;
+  }
+  .editor-text-strikethrough {
+    text-decoration: line-through;
+  }
+  .editor-text-code {
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .editor-code {
+    background-color: #f5f5f5;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: monospace;
+    margin: 8px 0;
+    overflow-x: auto;
+  }
+  .editor-link {
+    color: #0066cc;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
