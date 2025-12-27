@@ -23,7 +23,7 @@ const Gallery = ({ galleries }) => {
   const [hoverIndex, setHoverIndex] = useState(null);
 
   return (
-    <section className="w-full h-auto my-28 px-20 flex flex-col">
+    <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col">
       <div className="w-full h-auto flex flex-col gap-2">
         <span className="italic text-primary font-medium">Gallery</span>
         <h2 className="font-semibold text-4xl uppercase leading-none">
@@ -43,7 +43,7 @@ const Gallery = ({ galleries }) => {
             setHoverIndex={setHoverIndex}
           />
         </div>
-        <div className="w-full h-auto flex justify-end gap-2">
+        <div className="w-full h-auto flex justify-start gap-2">
           <PrevButton
             className="size-10 rounded-full bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
             onClick={onPrevBtnClick}

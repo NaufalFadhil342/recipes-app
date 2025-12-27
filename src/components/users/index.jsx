@@ -6,6 +6,7 @@ const Users = ({ handleSignOut, user }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const username = user?.user_metadata?.display_name;
   const email = user?.email.split("@")[0];
+  const imgProfile = user?.user_metadata?.avatar_url;
   const dropdownRef = useRef();
 
   const usersProfile = [
@@ -39,10 +40,23 @@ const Users = ({ handleSignOut, user }) => {
 
   return (
     <section className="w-auto h-auto relative" ref={dropdownRef}>
-      <div
-        className="size-10 rounded-full bg-linear-to-br from-primary to-yellow-500 hover:cursor-pointer"
+      <button
+        type="button"
+        className="size-10 rounded-full overflow-hidden"
         onClick={() => setShowUserMenu((prev) => !prev)}
-      />
+        aria-label="user profile"
+      >
+        {imgProfile ? (
+          <img
+            className="w-full h-full object-cover object-center"
+            loading="lazy"
+            src={imgProfile}
+            alt={username}
+          />
+        ) : (
+          <div className="bg-linear-to-br from-primary to-yellow-500 " />
+        )}
+      </button>
       <AnimatePresence>
         {showUserMenu && (
           <motion.div
