@@ -1,6 +1,7 @@
 import Create from "./create";
 import { Icon } from "@iconify/react";
 import { useCreateArticle } from "../../hooks/useCreateArticle";
+import RecipeBtn from "./create/recipeBtn";
 
 const Article = () => {
   const {
@@ -33,7 +34,6 @@ const Article = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Testing: Log semua data sebelum proses
     console.group("📋 Article Data Check");
     console.log("Title:", createArticle.title);
     console.log("Slug:", createArticle.slug);
@@ -44,7 +44,6 @@ const Article = () => {
     console.log("Video file:", createArticle.video_url);
     console.groupEnd();
 
-    // Testing: Preview data yang akan dikirim
     const mockArticleData = {
       title: createArticle.title,
       slug: createArticle.slug,
@@ -74,31 +73,18 @@ const Article = () => {
   };
 
   return (
-    <section className="w-full h-auto my-28 px-20">
+    <section className="w-full h-auto my-28 px-12 md:px-20">
       <form className="w-full h-auto mt-10" onSubmit={handleSubmit}>
         <div className="w-full h-auto flex items-center justify-between gap-3">
           <h2 className="text-4xl font-semibold flex items-center gap-2">
-            <Icon icon="ph:note" className="size-8 text-stone-600" />
+            <Icon
+              icon="ph:note"
+              className="size-8 text-stone-600 hidden xs:block"
+            />
             <>Create Article</>
           </h2>
-          <div className="w-auto h-auto flex items-center gap-4">
-            <button
-              type="button"
-              className="w-auto h-auto flex items-center gap-2 hover:cursor-pointer"
-            >
-              <Icon
-                icon="iconamoon:eye-light"
-                className="size-5 text-stone-600"
-              />
-              <>Preview</>
-            </button>
-            <button
-              type="submit"
-              className="w-auto h-12 flex items-center gap-2 px-4 rounded-md bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
-            >
-              <Icon icon="lucide:save" className="size-5 text-stone-600" />
-              <>Publish</>
-            </button>
+          <div className="w-auto h-auto hidden sm:flex items-center gap-4">
+            <RecipeBtn />
           </div>
         </div>
         <div className="w-full h-auto mt-10">
@@ -127,6 +113,9 @@ const Article = () => {
             handleRemoveVideo={handleRemoveVideo}
             handleVideoChange={handleVideoChange}
           />
+        </div>
+        <div className="w-auto h-auto flex sm:hidden items-center gap-4 mt-8">
+          <RecipeBtn />
         </div>
       </form>
     </section>

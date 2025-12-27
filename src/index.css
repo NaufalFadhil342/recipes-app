@@ -5,6 +5,7 @@
   --font-open: Open Sans, sans-serif;
   --color-primary: #c1d64d;
   --color-dark: #b4c93c;
+  --breakpoint-xs: 480px;
 }
 
 body {

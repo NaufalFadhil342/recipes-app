@@ -23,7 +23,7 @@ const contactInfo = [
 const Footer = () => {
   return (
     <footer className="w-full h-auto bg-white shadow-[0_-3px_7px_rgba(41,37,36,0.15)] flex flex-col">
-      <div className="w-auto h-auto grid grid-cols-[1fr_2fr] gap-10 my-20 px-20 content-start">
+      <div className="w-auto h-auto grid md:grid-cols-[1fr_2fr] gap-10 my-20 px-12 md:px-20 content-start">
         <div className="w-full h-auto">
           <h1 className="text-4xl font-bold leading-none">
             Recipe<span className="text-primary">App.</span>
@@ -59,8 +59,8 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className="w-full h-auto flex items-start gap-10">
-          <div className="w-full h-auto">
+        <div className="w-full h-auto flex flex-wrap sm:flex-nowrap items-start gap-10">
+          <div className="w-auto sm:w-full h-auto">
             <span className="text-lg font-medium text-inherit">Menu</span>
             <ul className="w-full h-auto flex flex-col gap-2 mt-4">
               {addsLinks.map((link, index) => (
@@ -72,7 +72,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          <div className="w-full h-auto">
+          <div className="w-auto sm:w-full h-auto">
             <span className="text-lg font-medium text-inherit">Security</span>
             <ul className="w-full h-auto flex flex-col gap-2 mt-4">
               {securityServices.map((service, index) => (
@@ -88,7 +88,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          <div className="w-full h-auto">
+          <div className="w-auto sm:w-full h-auto">
             <span className="text-lg font-medium text-inherit">Contact</span>
             <ul className="w-full h-auto flex flex-col gap-2 mt-4">
               {contactInfo.map((contact, index) => (
@@ -107,7 +107,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="w-auto h-auto mb-10">
+      <div className="w-auto h-auto mb-10 px-12 md:px-20">
         <div className="w-full h-auto flex justify-center">
           <p className="text-stone-600 capitalize">
             © 2025 RecipeApp. All rights reserved

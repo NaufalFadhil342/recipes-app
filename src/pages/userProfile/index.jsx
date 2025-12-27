@@ -34,7 +34,7 @@ const UserProfile = () => {
   console.log("User Profile Rendered", user);
 
   return (
-    <section className="w-full h-auto my-28 px-20 flex flex-col gap-10">
+    <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-10">
       <h1 className="text-4xl uppercase font-bold">User Profile</h1>
       <div className="w-full h-auto p-6 rounded-3xl bg-white shadow-[0_3px_6px_rgba(41,37,36,0.1)] flex justify-between">
         <div className="w-auto h-auto flex items-center gap-4">
@@ -51,7 +51,7 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="w-full h-auto bg-white rounded-3xl shadow-[0_3px_6px_rgba(41,37,36,0.1)] p-6 gap-10 relative">
-        <div className="w-full h-auto flex items-center justify-between">
+        <div className="w-full h-auto flex items-start justify-between">
           <h2 className="text-3xl font-semibold">Personal Information</h2>
           <Edit editPath="edit/personal" />
         </div>
@@ -66,7 +66,7 @@ const UserProfile = () => {
               <p className="text-inherit font-medium">{lastname}</p>
             </div>
           </div>
-          <div className="w-full h-auto flex gap-6 my-6">
+          <div className="w-full h-auto flex flex-col sm:flex-row gap-6 my-6">
             <div className="w-full h-auto">
               <label className="text-stone-600 text-sm">Email</label>
               <p className="text-inherit font-medium">{user?.email}</p>
@@ -81,9 +81,8 @@ const UserProfile = () => {
             <p className="text-inherit font-medium">{profession}</p>
           </div>
         </div>
-
-        <Outlet />
       </div>
+      <Outlet />
     </section>
   );
 };

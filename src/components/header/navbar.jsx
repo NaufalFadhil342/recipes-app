@@ -1,14 +1,16 @@
-import { useRef, useEffect } from "react";
-import { NavLink } from "react-router";
+import { useRef, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useSaveItem } from "../../hooks/useSaveItem";
 import Bookmark from "../../UI/bookmark";
+import Search from "../../UI/search";
+import MenuLinks from "./menuLinks";
+import { AnimatePresence, motion } from "motion/react";
 
 const navbar = [
-  { name: "Home", path: "/" },
-  { name: "Recipes", path: "/recipes" },
-  { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
+  { name: "Home", path: "/", icon: "material-symbols:home-outline-rounded" },
+  { name: "Recipes", path: "/recipes", icon: "pajamas:recipe" },
+  { name: "About", path: "/about", icon: "mdi:company" },
+  { name: "Contact", path: "/contact", icon: "hugeicons:contact-02" },
 ];
 
 const Navbar = () => {
@@ -21,6 +23,7 @@ const Navbar = () => {
     currentUser,
   } = useSaveItem();
   const bookmarkRef = useRef();
+  const [showSidebarMenu, setShowSidebarMenu] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -36,48 +39,41 @@ const Navbar = () => {
   const itemsCount = Object.values(savedItems).filter(Boolean).length;
 
   return (
-    <section className="w-full h-24 bg-primary flex items-center justify-between gap-6 px-20">
-      <nav className="w-full h-auto">
-        <ul className="w-auto h-auto flex items-center gap-6">
-          {navbar.map((nav, index) => (
-            <li key={index}>
-              <NavLink
-                to={nav.path}
-                className={({ isActive }) =>
-                  `${
-                    isActive ? "text-white" : "hover:text-white"
-                  } group font-medium transition-colors duration-150 ease-in-out`
-                }
-              >
-                {({ isActive }) => (
-                  <span className="block">
-                    <>{nav.name}</>
-                    <div
-                      className={`w-0 h-0.5 group-hover:w-1/2 bg-white ${
-                        isActive ? "w-1/2" : "w-0 group-hover:w-1/2"
-                      } transition-all duration-150 ease-in-out`}
-                    />
-                  </span>
-                )}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+    <section className="w-full h-24 bg-primary flex items-center justify-between gap-6 px-12 md:px-20">
+      <nav className="w-auto md:w-full h-auto relative">
+        <MenuLinks display="hidden md:flex flex-row" navbar={navbar} />
+        <button
+          type="button"
+          className="w-auto h-auto block md:hidden"
+          onClick={() => setShowSidebarMenu(true)}
+          aria-label="sidebar menu"
+        >
+          <Icon icon="ic:round-menu" className="size-7 text-white" />
+        </button>
+        <AnimatePresence>
+          {showSidebarMenu && (
+            <motion.div
+              className="w-1/2 sm:w-1/3 h-auto fixed z-20 top-0 bottom-0 left-0 bg-white shadow-[5px_0_10px_rgba(41,37,36,0.1)]"
+              initial={{ opacity: 0, x: -250 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -250 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            >
+              <MenuLinks
+                display="flex flex-col md:hidden"
+                navbar={navbar}
+                setShowSidebarMenu={setShowSidebarMenu}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
       <div className="w-full h-auto flex items-center gap-6 justify-end">
         <div className="w-full h-auto bg-stone-100 rounded-full flex items-center">
-          <input
-            type="text"
-            className="border-none w-full h-12 pl-4 outline-none text-stone-800"
-            placeholder="Find a recipe"
-          />
-          <Icon
-            icon="bitcoin-icons:search-filled"
-            className="size-8 mr-2 hover:cursor-pointer"
-          />
+          <Search placeholder="Find a recipe" />
         </div>
         <div className="relative" ref={bookmarkRef}>
-          <section
+          <div
             className="relative hover:cursor-pointer"
             onClick={() => setBookmarkIsOpen((prev) => !prev)}
           >
@@ -87,7 +83,7 @@ const Navbar = () => {
                 {itemsCount}
               </span>
             </div>
-          </section>
+          </div>
           <Bookmark
             bookmarkIsOpen={bookmarkIsOpen}
             savedRecipes={savedRecipes}
