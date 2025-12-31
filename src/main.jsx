@@ -2,12 +2,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
-import App from "./App.jsx";
-import AppRoutes from "./routes/AppRoutes.jsx";
+import App from "./App";
+import AppRoutes from "./routes/AppRoutes";
 import UserProfile from "./pages/userProfile";
-import PersonalInformation from "./pages/userProfile/personalInformation.jsx";
-import UserDisplay from "./pages/userProfile/userDisplay.jsx";
+import PersonalInformation from "./pages/userProfile/personalInformation";
+import UserDisplay from "./pages/userProfile/userDisplay";
 import Article from "./components/article";
+import Error from "./UI/error";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Article />,
+      },
+      {
+        path: "/*",
+        element: <Error />,
       },
     ],
   },
