@@ -19,7 +19,7 @@ const Hero = ({ heroes }) => {
   );
 
   return (
-    <section className="w-full h-auto px-20 my-28">
+    <section className="w-full h-auto px-10 md:px-20 my-28">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="w-full h-[85vh] flex">
           {heroes.map((hero) => {

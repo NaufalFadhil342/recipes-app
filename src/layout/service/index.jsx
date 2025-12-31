@@ -7,7 +7,7 @@ const Service = () => {
     useAuth();
 
   return (
-    <section className="w-full h-auto my-28 px-20 relative">
+    <section className="w-full h-auto my-28 px-12 md:px-20 relative">
       <div className="w-full h-auto flex flex-col justify-center items-center text-center gap-2">
         <span className="italic text-primary font-medium">Services</span>
         <h2 className="text-4xl uppercase font-semibold -translate-y-0.5">
@@ -15,12 +15,12 @@ const Service = () => {
         </h2>
         <div className="w-30 h-0.75 bg-primary" />
       </div>
-      <ul className="w-full h-auto grid grid-cols-3 gap-10 mt-20">
+      <ul className="w-full h-auto grid md:grid-cols-3 gap-10 mt-20">
         {servicesItem.map((item, index) => {
           return (
             <li
               key={item.id}
-              className="w-full h-auto overflow-hidden flex flex-col lg:even:flex-col-reverse"
+              className="w-full h-auto overflow-hidden flex flex-col md:even:flex-col-reverse"
             >
               <div className="w-full h-72 rounded-3xl overflow-hidden">
                 <img

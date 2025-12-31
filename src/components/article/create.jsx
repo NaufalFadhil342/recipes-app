@@ -59,7 +59,7 @@ const Create = ({
   };
 
   return (
-    <div className="w-full h-auto grid grid-cols-[2fr_1fr] gap-10">
+    <div className="w-full h-auto grid lg:grid-cols-[2fr_1fr] gap-10">
       <div className="w-full h-auto flex flex-col gap-10">
         <div className="w-full h-auto p-6 px-8 pb-8 rounded-xl bg-white flex flex-col gap-6">
           <label className="text-xl font-semibold">Title</label>
@@ -104,8 +104,8 @@ const Create = ({
           />
         </div>
       </div>
-      <div className="w-full h-fit sticky top-8 self-start">
-        <div className="w-full h-auto bg-white p-6 px-8 rounded-xl max-h-[calc(100vh-3rem)] overflow-y-auto">
+      <div className="w-full h-fit lg:sticky top-8 self-start">
+        <div className="w-full h-auto bg-white p-6 px-8 rounded-xl lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto">
           <h2 className="text-xl font-semibold">Article Details</h2>
           <div className="mt-6 flex flex-col w-full h-auto gap-6">
             <div className="w-full h-auto">
@@ -132,7 +132,7 @@ const Create = ({
             </div>
             <div className="w-full h-auto">
               <label className="font-medium">Tags</label>
-              <div className="w-full flex items-end justify-between gap-3 mt-2">
+              <div className="w-full flex items-end justify-between gap-4 mt-2">
                 <input
                   type="text"
                   placeholder="pasta, barbeque, rendang"

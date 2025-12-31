@@ -7,8 +7,8 @@ const Info = () => {
   const { isAuthenticated, handleAuthOpen, handleSignOut, user } = useAuth();
 
   return (
-    <section className="w-full h-auto px-20 py-5 flex items-center justify-between gap-6 relative">
-      <ul className="w-auto h-auto flex gap-4">
+    <section className="w-full h-auto px-12 md:px-20 py-5 flex items-center justify-end md:justify-between gap-6 relative">
+      <ul className="w-auto h-auto hidden md:flex md:gap-4">
         <li>
           <Link className="text-stone-600 hover:text-primary font-medium">
             client@example.com

@@ -4,12 +4,12 @@ import AboutContent from "./aboutContent";
 
 const About = () => {
   return (
-    <section className="w-full h-auto my-28 px-20 flex gap-6">
-      <div className="w-full h-auto py-20">
+    <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col lg:flex-row gap-8">
+      <div className="w-full h-auto lg:py-20">
         <AboutContent />
       </div>
       <div className="w-full h-auto relative overflow-hidden rounded-3xl">
-        <div className="w-full h-full overflow-hidden">
+        <div className="w-full h-[70vh] lg:h-full overflow-hidden">
           <img
             className="w-full h-full object-cover object-center"
             src={aboutUsImg}
