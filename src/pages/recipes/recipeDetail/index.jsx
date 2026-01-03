@@ -4,7 +4,7 @@ import { dummyArticle } from "../../../data/dummyArticle";
 import { useRecipeArticle } from "../../../hooks/useRecipeArticle";
 import { useRecipes } from "../../../hooks/useRecipes";
 import DefaultArticle from "./defaultArticle";
-import ShareIt from "./sideContent/shareIT";
+import ShareIt from "./sideContent/shareIt";
 import TopViews from "./sideContent/topViews";
 import Categories from "./sideContent/category";
 import Tags from "./sideContent/tags";
