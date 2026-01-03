@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import chefImg from "../../assets/chef.jpg";
-import Recipes from "../../components/recipes";
+import Recipe from "../../components/recipe";
 import { useCategory } from "../../hooks/useCategory";
 import { useSaveItem } from "../../hooks/useSaveItem";
 import { useItemsPerViewport } from "../../hooks/useItemsPerViewport";
@@ -25,7 +25,7 @@ const Cooking = ({ recipes }) => {
       <ul className="w-full h-auto grid md:grid-cols-2 lg:grid-cols-3 gap-10">
         {sliceRecipes.map((recipe) => {
           return (
-            <Recipes
+            <Recipe
               key={recipe.id}
               recipe={recipe}
               avatar={chefImg}

@@ -9,6 +9,8 @@ import PersonalInformation from "./pages/userProfile/personalInformation";
 import UserDisplay from "./pages/userProfile/userDisplay";
 import Article from "./components/article";
 import Error from "./UI/error";
+import Recipes from "./pages/recipes";
+import RecipeDetail from "./pages/recipes/recipeDetail";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,16 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Article />,
+      },
+      {
+        path: "/recipes",
+        element: <Recipes />,
+        children: [
+          {
+            path: "/recipes/:slug",
+            element: <RecipeDetail />,
+          },
+        ],
       },
       {
         path: "/*",
