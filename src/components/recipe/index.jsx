@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "react-router";
 
-const Recipes = ({ recipe, avatar, savedItems, handleSaveItem }) => {
+const Recipe = ({ recipe, avatar, savedItems, handleSaveItem }) => {
   return (
     <li
       className="w-full h-72 rounded-3xl overflow-hidden bg-cover bg-center bg-no-repeat"
@@ -56,4 +56,4 @@ const Recipes = ({ recipe, avatar, savedItems, handleSaveItem }) => {
   );
 };
 
-export default Recipes;
+export default Recipe;
