@@ -21,10 +21,6 @@ const RecipeDetail = () => {
   const { recipe, date, error, loading } = useRecipeArticle();
   const { data } = useRecipes();
 
-  useEffect(() => {
-    console.log("recipes data:", data.recipes);
-  }, [data.recipes]);
-
   if (loading)
     return (
       <div className="w-full h-auto flex items-center justify-center my-20">
@@ -39,13 +35,13 @@ const RecipeDetail = () => {
 
   if (!recipe)
     return (
-      <div className="text-center text-4xl font-bold text-inherit my-28 px-20">
+      <div className="text-center text-4xl font-bold text-inherit my-28 px-12 md:px-20">
         Selected Recipe is not Found!
       </div>
     );
 
   return (
-    <section className="w-full h-auto py-28 px-20">
+    <section className="w-full h-auto py-28 px-12 md:px-20">
       <div className="w-full h-full flex flex-col items-center gap-6">
         <h1 className="text-4xl font-bold text-inherit leading-none">
           {recipe.title}
@@ -53,7 +49,7 @@ const RecipeDetail = () => {
         <span className="w-auto h-auto px-3 rounded-full border-2 border-primary text-primary font-semibold block capitalize">
           {recipe.category}
         </span>
-        <div className="w-full h-[75vh] rounded-3xl overflow-hidden">
+        <div className="w-full h-[80vh] rounded-3xl overflow-hidden">
           <img
             className="w-full h-full object-cover object-center"
             src={recipe.img_cover}
@@ -62,7 +58,7 @@ const RecipeDetail = () => {
           />
         </div>
       </div>
-      <div className="w-full h-auto grid grid-cols-[2fr_0.8fr] mt-10 gap-8">
+      <div className="w-full h-auto grid lg:grid-cols-[2fr_0.8fr] mt-10 gap-10">
         <div className="w-full h-auto">
           <div className="w-full h-auto flex items-start justify-between gap-4">
             <div className="w-auto h-auto flex items-center gap-4">
@@ -97,9 +93,6 @@ const RecipeDetail = () => {
               </ul>
             ) : null}
           </div>
-          <div className="w-full h-auto mt-8">
-            <Comments />
-          </div>
         </div>
         <div className="w-full h-auto flex flex-col gap-8">
           <ShareIt shareArticle={shareArticle} />
@@ -107,6 +100,9 @@ const RecipeDetail = () => {
           <Categories recipes={data.recipes} />
           <Tags recipe={recipe} />
         </div>
+      </div>
+      <div className="w-full h-auto mt-8 grid lg:grid-cols-[2fr_0.75fr] gap-10">
+        <Comments />
       </div>
     </section>
   );
