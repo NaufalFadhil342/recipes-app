@@ -29,7 +29,7 @@ const UserAuthProvider = (props) => {
           setUser(session.user);
         }
       } catch (error) {
-        console.error("Error checking auth status:", error);
+        setError(error.message);
       }
     };
 

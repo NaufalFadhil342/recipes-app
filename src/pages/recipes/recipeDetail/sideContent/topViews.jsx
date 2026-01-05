@@ -21,16 +21,16 @@ const TopViews = ({ recipes }) => {
           return (
             <li
               key={view.id}
-              className="w-full h-auto flex items-center justify-start gap-3"
+              className="w-full h-auto flex items-stretch justify-start gap-3"
             >
-              <div className="w-30 h-auto rounded-xl overflow-hidden">
+              <div className="w-30 h-auto rounded-lg overflow-hidden">
                 <img
                   className="w-full h-full object-cover object-center"
                   src={view.img_cover}
                   alt={view.alt_text}
                 />
               </div>
-              <div className="w-auto h-auto">
+              <div className="w-auto h-auto flex flex-col justify-center">
                 <div className="text-sm text-stone-500 leading-none">
                   {date}
                 </div>
