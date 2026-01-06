@@ -11,6 +11,7 @@ import Article from "./components/article";
 import Error from "./UI/error";
 import Recipes from "./pages/recipes";
 import RecipeDetail from "./pages/recipes/recipeDetail";
+import Saved from "./pages/saved";
 
 const router = createBrowserRouter([
   {
@@ -36,10 +37,6 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/create",
-        element: <Article />,
-      },
-      {
         path: "/recipes",
         element: <Recipes />,
         children: [
@@ -47,7 +44,15 @@ const router = createBrowserRouter([
             path: "/recipes/:slug",
             element: <RecipeDetail />,
           },
+          {
+            path: "/recipes/create",
+            element: <Article />,
+          },
         ],
+      },
+      {
+        path: "/saved",
+        element: <Saved />,
       },
       {
         path: "/*",

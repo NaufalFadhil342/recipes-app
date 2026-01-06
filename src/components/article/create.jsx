@@ -62,10 +62,9 @@ const Create = ({
     <div className="w-full h-auto grid lg:grid-cols-[2fr_1fr] gap-10">
       <div className="w-full h-auto flex flex-col gap-10">
         <div className="w-full h-auto p-6 px-8 pb-8 rounded-xl bg-white flex flex-col gap-6">
-          <label className="text-xl font-semibold">Title</label>
           <input
             type="text"
-            className="w-full h-auto text-xl font-bold pb-3 outline-none leading-none placeholder:text-gray-400/70 border-b-2 border-stone-600/15"
+            className="w-full h-auto text-4xl font-bold pb-2 outline-none leading-none placeholder:text-stone-400/70 text-stone-600 border-b-2 border-stone-600/15"
             placeholder="Recipe title"
             name="title"
             value={createArticle.title}

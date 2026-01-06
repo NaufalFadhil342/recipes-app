@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import chefImg from "../../assets/chef.jpg";
 import Recipe from "../../components/recipe";
 import { useCategory } from "../../hooks/useCategory";
 import { useSaveItem } from "../../hooks/useSaveItem";
@@ -28,7 +27,6 @@ const Cooking = ({ recipes }) => {
             <Recipe
               key={recipe.id}
               recipe={recipe}
-              avatar={chefImg}
               savedItems={savedItems}
               handleSaveItem={handleSaveItem}
             />

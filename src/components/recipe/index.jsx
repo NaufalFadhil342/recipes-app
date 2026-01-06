@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "react-router";
 
-const Recipe = ({ recipe, avatar, savedItems, handleSaveItem }) => {
+const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
   return (
     <li
       className="w-full h-72 rounded-3xl overflow-hidden bg-cover bg-center bg-no-repeat"
@@ -31,7 +31,7 @@ const Recipe = ({ recipe, avatar, savedItems, handleSaveItem }) => {
                   className="w-full h-full object-cover object-[-1rem_0]"
                   width={1000}
                   height={600}
-                  src={avatar}
+                  src={recipe?.users?.avatar_url}
                   alt="chef"
                   loading="lazy"
                 />

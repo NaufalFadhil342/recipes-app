@@ -23,15 +23,16 @@ const UserProfile = () => {
     avatar && !imageError ? (
       <img
         className="w-full h-full object-cover object-center"
+        width={768}
+        height={768}
         src={avatar}
         alt={username || email}
         onError={() => setImageError(true)}
+        loading="lazy"
       />
     ) : (
       <DefaultAvatar />
     );
-
-  console.log("User Profile Rendered", user);
 
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-10">
