@@ -3,12 +3,18 @@ import { Link } from "react-router";
 
 const HeroItem = (props) => {
   return (
-    <div
-      className="flex-[0_0_100%] min-w-0 h-full bg-cover bg-center bg-no-repeat relative rounded-3xl overflow-hidden ml-8"
-      style={{ backgroundImage: `url(${props.img_cover})` }}
-      aria-label={props.alt_text}
-    >
-      <div className="w-full h-full flex flex-col items-center justify-between bg-stone-800/30">
+    <div className="flex-[0_0_100%] min-w-0 h-full relative rounded-3xl overflow-hidden ml-8">
+      <div className="w-full h-full overflow-hidden">
+        <img
+          className="w-full h-full object-cover object-center"
+          width={1000}
+          height={1000}
+          src={props.img_cover}
+          alt={props.alt_text}
+          loading="lazy"
+        />
+      </div>
+      <div className="w-full h-full flex flex-col items-center justify-between bg-stone-800/30 absolute left-0 top-0">
         <div className="w-auto h-auto absolute -top-6">
           <div className="p-6 rounded-3xl bg-lime-50 relative">
             <h1 className="text-2xl md:text-4xl font-bold p-4 bg-primary rounded-2xl">

@@ -4,7 +4,7 @@ import { useSaveItem } from "../../hooks/useSaveItem";
 import Bookmark from "../../UI/bookmark";
 import GlobalSearch from "./globalSearch";
 import MenuLinks from "./menuLinks";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 
 const navbar = [
   { name: "Home", path: "/", icon: "material-symbols:home-outline-rounded" },
@@ -24,30 +24,30 @@ const Navbar = () => {
   } = useSaveItem();
   const [showSidebarMenu, setShowSidebarMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-
   const bookmarkRef = useRef();
   const searchRef = useRef();
+  const sidebarRef = useRef();
 
   useEffect(() => {
-    const handleBookmarkClickOutside = (e) => {
+    const handleClickOutside = (e) => {
       if (bookmarkRef.current && !bookmarkRef.current.contains(e.target)) {
         setBookmarkIsOpen(false);
       }
-    };
 
-    const handleSearchClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowSearch(false);
       }
+
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setShowSidebarMenu(false);
+      }
     };
 
-    document.addEventListener("mousedown", handleBookmarkClickOutside);
-    document.addEventListener("mousedown", handleSearchClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleBookmarkClickOutside);
-      document.removeEventListener("mousedown", handleSearchClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  });
+  }, []);
 
   const itemsCount = Object.values(savedItems).filter(Boolean).length;
 
@@ -64,23 +64,25 @@ const Navbar = () => {
           >
             <Icon icon="ic:round-menu" className="size-7 text-white" />
           </button>
-          <AnimatePresence>
-            {showSidebarMenu && (
-              <motion.div
-                className="w-1/2 sm:w-1/3 h-auto fixed z-20 top-0 bottom-0 left-0 bg-white shadow-[5px_0_10px_rgba(41,37,36,0.1)]"
-                initial={{ opacity: 0, x: -250 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -250 }}
-                transition={{ duration: 0.25, ease: "easeInOut" }}
-              >
-                <MenuLinks
-                  display="flex flex-col md:hidden"
-                  navbar={navbar}
-                  setShowSidebarMenu={setShowSidebarMenu}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div ref={sidebarRef}>
+            <AnimatePresence>
+              {showSidebarMenu && (
+                <motion.div
+                  className="w-1/2 sm:w-1/3 h-auto fixed z-20 top-0 bottom-0 left-0 bg-white shadow-[5px_0_10px_rgba(41,37,36,0.1)]"
+                  initial={{ opacity: 0, x: -250 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -250 }}
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                >
+                  <MenuLinks
+                    display="flex flex-col md:hidden"
+                    navbar={navbar}
+                    setShowSidebarMenu={setShowSidebarMenu}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </nav>
         <div className="w-full h-auto flex items-center gap-4 sm:gap-6 justify-end">
           <div className="hidden xs:block w-full">
@@ -90,15 +92,23 @@ const Navbar = () => {
             <button
               type="button"
               className="flex xs:hidden bg-white w-auto h-8 rounded-full px-1 items-center justify-center"
-              onClick={() => setShowSearch(true)}
+              onClick={() => setShowSearch(!showSearch)}
             >
               <Icon icon="bitcoin-icons:search-filled" className="size-6" />
             </button>
-            {showSearch && (
-              <div className="min-w-full h-auto absolute z-10 top-full left-0 translate-y-6">
-                <GlobalSearch />
-              </div>
-            )}
+            <AnimatePresence>
+              {showSearch && (
+                <motion.div
+                  className="min-w-full h-auto absolute z-10 top-full left-0 translate-y-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: easeInOut }}
+                >
+                  <GlobalSearch />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           <div ref={bookmarkRef}>
             <div
@@ -107,7 +117,7 @@ const Navbar = () => {
             >
               <Icon
                 icon="majesticons:bookmark"
-                className="size-7 text-stone-"
+                className="size-7 text-stone-600"
               />
               <div className="absolute -top-2 -right-1.5 z-2 bg-stone-100 rounded-full size-5 flex items-center justify-center">
                 <span className="text-sm text-stone-600 font-medium">

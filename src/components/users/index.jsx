@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
 
 const Users = ({ handleSignOut, user }) => {
