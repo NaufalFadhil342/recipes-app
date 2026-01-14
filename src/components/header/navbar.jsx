@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useRef, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import { useSaveItem } from "../../hooks/useSaveItem";
 import Bookmark from "../../UI/bookmark";
 import GlobalSearch from "./globalSearch";
 import MenuLinks from "./menuLinks";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
+import { useRecipes } from "../../hooks/useRecipes";
 
 const navbar = [
   { name: "Home", path: "/", icon: "material-symbols:home-outline-rounded" },
@@ -17,13 +18,15 @@ const Navbar = () => {
   const {
     bookmarkIsOpen,
     setBookmarkIsOpen,
-    savedItems,
     handleSaveItem,
-    savedRecipes,
-    currentUser,
-  } = useSaveItem();
+    user,
+    savedRecipesPreview,
+    savedCount,
+    loading,
+  } = useRecipes();
   const [showSidebarMenu, setShowSidebarMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+
   const bookmarkRef = useRef();
   const searchRef = useRef();
   const sidebarRef = useRef();
@@ -47,9 +50,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  const itemsCount = Object.values(savedItems).filter(Boolean).length;
+  }, [setBookmarkIsOpen]);
 
   return (
     <section className="w-full h-24 flex items-center bg-primary px-12 md:px-20">
@@ -88,7 +89,7 @@ const Navbar = () => {
           <div className="hidden xs:block w-full">
             <GlobalSearch />
           </div>
-          <div ref={searchRef}>
+          <div className="block xs:hidden" ref={searchRef}>
             <button
               type="button"
               className="flex xs:hidden bg-white w-auto h-8 rounded-full px-1 items-center justify-center"
@@ -121,15 +122,17 @@ const Navbar = () => {
               />
               <div className="absolute -top-2 -right-1.5 z-2 bg-stone-100 rounded-full size-5 flex items-center justify-center">
                 <span className="text-sm text-stone-600 font-medium">
-                  {itemsCount}
+                  {savedCount > 10 ? "10+" : savedCount}
                 </span>
               </div>
             </div>
             <Bookmark
               bookmarkIsOpen={bookmarkIsOpen}
-              savedRecipes={savedRecipes}
+              setBookmarkIsOpen={setBookmarkIsOpen}
               handleSaveItem={handleSaveItem}
-              currentUser={currentUser}
+              currentUser={user}
+              savedRecipes={savedRecipesPreview}
+              loading={loading}
             />
           </div>
         </div>

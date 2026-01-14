@@ -4,7 +4,6 @@ import Navbar from "../components/header/navbar";
 import Info from "../components/header/info";
 import { UserAuthProvider } from "../context/userAuthCtx";
 import { CategoryProvider } from "../context/categoryCtx";
-import { SavedItemProvider } from "../context/savedItemCtx";
 import { RecipesProvider } from "../context/recipesCtx";
 import Footer from "../components/footer";
 import { Icon } from "@iconify/react";
@@ -43,23 +42,19 @@ const AppRoutes = () => {
   );
 
   return (
-    <>
-      <UserAuthProvider>
-        <CategoryProvider>
-          <RecipesProvider>
-            <SavedItemProvider>
-              <Info />
-              <Navbar />
-              <main>
-                <Outlet />
-                <>{scrollBtnToTop}</>
-              </main>
-              <Footer />
-            </SavedItemProvider>
-          </RecipesProvider>
-        </CategoryProvider>
-      </UserAuthProvider>
-    </>
+    <UserAuthProvider>
+      <CategoryProvider>
+        <RecipesProvider>
+          <Info />
+          <Navbar />
+          <main>
+            <Outlet />
+            <>{scrollBtnToTop}</>
+          </main>
+          <Footer />
+        </RecipesProvider>
+      </CategoryProvider>
+    </UserAuthProvider>
   );
 };
 

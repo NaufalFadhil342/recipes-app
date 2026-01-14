@@ -1,9 +1,8 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import App from "./App";
-import AppRoutes from "./routes/AppRoutes";
 import UserProfile from "./pages/userProfile";
 import PersonalInformation from "./pages/userProfile/personalInformation";
 import UserDisplay from "./pages/userProfile/userDisplay";
@@ -12,15 +11,34 @@ import Error from "./UI/error";
 import Recipes from "./pages/recipes";
 import RecipeDetail from "./pages/recipes/recipeDetail";
 import Saved from "./pages/saved";
+import {
+  globalLoader,
+  recipeDetailLoader,
+  savedRecipesLoader,
+} from "./routes/loaders";
+import Loading from "./UI/loading";
+
+const AppRoutes = lazy(() => import("./routes/AppRoutes"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppRoutes />,
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-full h-auto my-28 flex items-center justify-center">
+            <Loading />
+          </div>
+        }
+      >
+        <AppRoutes />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
         element: <App />,
+        loader: globalLoader,
       },
       {
         path: "/profile",
@@ -39,20 +57,21 @@ const router = createBrowserRouter([
       {
         path: "/recipes",
         element: <Recipes />,
-        children: [
-          {
-            path: "/recipes/:slug",
-            element: <RecipeDetail />,
-          },
-          {
-            path: "/recipes/create",
-            element: <Article />,
-          },
-        ],
+        loader: globalLoader,
+      },
+      {
+        path: "/recipes/:slug",
+        element: <RecipeDetail />,
+        loader: recipeDetailLoader,
+      },
+      {
+        path: "/recipes/create",
+        element: <Article />,
       },
       {
         path: "/saved",
         element: <Saved />,
+        loader: savedRecipesLoader,
       },
       {
         path: "/*",

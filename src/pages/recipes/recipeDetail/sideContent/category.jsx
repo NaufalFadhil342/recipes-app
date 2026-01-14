@@ -1,5 +1,3 @@
-import React from "react";
-
 const Categories = ({ recipes }) => {
   const categoryCounts = recipes.reduce((acc, recipe) => {
     const category = recipe.category;

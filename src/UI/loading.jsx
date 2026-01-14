@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 const Loading = () => {
   return (
-    <div className="w-40 h-0.75 bg-stone-200 relative">
+    <div className="w-40 h-0.75 bg-stone-200 relative overflow-hidden">
       <motion.div
         className="w-14 h-full bg-primary absolute left-0"
         initial={{ left: 0 }}

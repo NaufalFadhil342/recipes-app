@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import Recipe from "../../components/recipe";
 import { useCategory } from "../../hooks/useCategory";
-import { useSaveItem } from "../../hooks/useSaveItem";
 import { useItemsPerViewport } from "../../hooks/useItemsPerViewport";
+import { useRecipes } from "../../hooks/useRecipes";
 
 const Cooking = ({ recipes }) => {
   const { selectCategory } = useCategory();
-  const { savedItems, handleSaveItem } = useSaveItem();
+  const { isRecipeSaved, handleSaveItem } = useRecipes();
   const itemsToShow = useItemsPerViewport();
 
   const filterRecipes = useMemo(() => {
@@ -23,11 +23,13 @@ const Cooking = ({ recipes }) => {
     <section className="w-full h-auto my-28 px-12 md:px-20">
       <ul className="w-full h-auto grid md:grid-cols-2 lg:grid-cols-3 gap-10">
         {sliceRecipes.map((recipe) => {
+          const isSaved = isRecipeSaved(recipe.id);
+
           return (
             <Recipe
               key={recipe.id}
               recipe={recipe}
-              savedItems={savedItems}
+              savedItems={isSaved}
               handleSaveItem={handleSaveItem}
             />
           );

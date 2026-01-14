@@ -95,7 +95,6 @@ export const useEdit = () => {
 
     try {
       const avatarUrl = await uploadImage();
-      console.log("Upload result:", avatarUrl);
 
       const { data, error: updateError } = await supabase.auth.updateUser({
         data: {

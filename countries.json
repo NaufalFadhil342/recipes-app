@@ -1,0 +1,94 @@
+{
+  "countries": [
+    {
+      "name": "United States",
+      "code": "US",
+      "region": "Americas"
+    },
+    {
+      "name": "Brazil",
+      "code": "BR",
+      "region": "Americas"
+    },
+    {
+      "name": "Argentina",
+      "code": "AR",
+      "region": "Americas"
+    },
+    {
+      "name": "France",
+      "code": "FR",
+      "region": "Europe"
+    },
+    {
+      "name": "Italy",
+      "code": "IT",
+      "region": "Europe"
+    },
+    {
+      "name": "Espana",
+      "code": "ES",
+      "region": "Europe"
+    },
+    {
+      "name": "Turkiye",
+      "code": "TR",
+      "region": "Europe"
+    },
+    {
+      "name": "British",
+      "code": "GB",
+      "region": "Europe"
+    },
+    {
+      "name": "Uni Emirates Arabes",
+      "code": "UAE",
+      "region": "Asia"
+    },
+    {
+      "name": "Saudi Arabia",
+      "code": "SA",
+      "region": "Asia"
+    },
+    {
+      "name": "Qatar",
+      "code": "QA",
+      "region": "Asia"
+    },
+    {
+      "name": "Indonesia",
+      "code": "ID",
+      "region": "Asia"
+    },
+    {
+      "name": "Thailand",
+      "code": "TH",
+      "region": "Asia"
+    },
+    {
+      "name": "Singapore",
+      "code": "SG",
+      "region": "Asia"
+    },
+    {
+      "name": "Japan",
+      "code": "JP",
+      "region": "Asia"
+    },
+    {
+      "name": "Hongkong",
+      "code": "HK",
+      "region": "Asia"
+    },
+    {
+      "name": "South Korea",
+      "code": "KR",
+      "region": "Asia"
+    },
+    {
+      "name": "Australia",
+      "code": "AU",
+      "region": "Asia"
+    }
+  ]
+}

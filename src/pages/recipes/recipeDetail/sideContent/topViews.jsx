@@ -1,5 +1,8 @@
-const TopViews = ({ recipes }) => {
+import { Link } from "react-router";
+
+const TopViews = ({ recipes, currentRecipeId }) => {
   const sortByViews = [...recipes]
+    .filter((recipe) => recipe.id !== currentRecipeId)
     .sort((a, b) => b.views - a.views)
     .slice(0, 3);
 
@@ -10,8 +13,8 @@ const TopViews = ({ recipes }) => {
         <div className="w-full h-0.5 bg-stone-600/15" />
       </div>
       <ul className="w-full h-auto flex flex-col gap-6 mt-8">
-        {sortByViews.map((view) => {
-          const timeStampz = new Date(view.updated_at);
+        {sortByViews.map((recipe) => {
+          const timeStampz = new Date(recipe.updated_at);
           const date = timeStampz.toLocaleDateString("en-US", {
             day: "numeric",
             month: "short",
@@ -20,23 +23,29 @@ const TopViews = ({ recipes }) => {
 
           return (
             <li
-              key={view.id}
+              key={recipe.id}
               className="w-full h-auto flex items-stretch justify-start gap-3"
             >
-              <div className="w-30 h-auto rounded-lg overflow-hidden">
+              <div className="w-30 h-22 rounded-lg overflow-hidden">
                 <img
                   className="w-full h-full object-cover object-center"
-                  src={view.img_cover}
-                  alt={view.alt_text}
+                  src={recipe.img_cover}
+                  alt={recipe.alt_text}
+                  loading="lazy"
+                  width={800}
                 />
               </div>
               <div className="w-auto h-auto flex flex-col justify-center">
                 <div className="text-sm text-stone-500 leading-none">
                   {date}
                 </div>
-                <p className="text-lg font-semibold text-inherit leading-none mt-2">
-                  {view.title}
-                </p>
+                <Link
+                  to={`/recipes/${recipe.slug}`}
+                  className="text-lg font-semibold text-inherit leading-none mt-2"
+                  onClick={() => scrollTo({ top: true, behavior: "smooth" })}
+                >
+                  {recipe.title}
+                </Link>
               </div>
             </li>
           );

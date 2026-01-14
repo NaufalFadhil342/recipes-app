@@ -3,7 +3,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import ClassNames from "embla-carousel-class-names";
 import { usePrevNextBtn, PrevButton, NextButton } from "./prevNextButton";
 import { Icon } from "@iconify/react";
-import GalleryItem from "./galleryItem";
 import Galleries from "./galleries";
 
 const Gallery = ({ galleries }) => {

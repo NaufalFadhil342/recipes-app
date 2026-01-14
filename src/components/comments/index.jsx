@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { dummyComments } from "../../data/dummComment";
 import Comment from "./comment";
 import CommentsForm from "./commentsForm";

@@ -14,12 +14,10 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
           </span>
           <Icon
             icon={
-              savedItems[recipe.id]
-                ? "majesticons:bookmark"
-                : "majesticons:bookmark-line"
+              savedItems ? "majesticons:bookmark" : "majesticons:bookmark-line"
             }
             className="text-white size-7 hover:cursor-pointer"
-            onClick={() => handleSaveItem(recipe.id)}
+            onClick={() => handleSaveItem(recipe.id, recipe.title)}
           />
         </div>
         <div className="w-full h-auto">
@@ -43,7 +41,11 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
                 <span className="text-sm text-stone-200 italic">Chef</span>
               </div>
             </span>
-            <Link className="group size-11 bg-primary flex items-center justify-center rounded-full relative hover:bg-dark transtion-colors duration-150 ease-in-out">
+            <Link
+              to={`/recipes/${recipe.slug}`}
+              className="group size-11 bg-primary flex items-center justify-center rounded-full relative hover:bg-dark transtion-colors duration-150 ease-in-out"
+              aria-label="Go to recipe"
+            >
               <Icon
                 icon="ri:arrow-right-fill"
                 className="size-6 rotate-90 group-hover:rotate-0 transition-all duration-150 ease-in-out"
