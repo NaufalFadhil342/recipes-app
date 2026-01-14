@@ -1,90 +1,177 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "../api/supabase";
+import toast from "react-hot-toast";
+import { useAuth } from "../hooks/useAuth";
+import { useRevalidator } from "react-router";
 
 const RecipesCtx = createContext();
 
 const RecipesProvider = (props) => {
-  const [data, setData] = useState({
-    images: [],
-    recipes: [],
-    savedRecipes: [],
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [bookmarkIsOpen, setBookmarkIsOpen] = useState(false);
+  const [savedRecipesCache, setSavedRecipesCache] = useState(new Set());
+  const [savedRecipesPreview, setSavedRecipesPreview] = useState([]);
+  const [savedCount, setSavedCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const { user, isAuthenticated } = useAuth();
+  const revalidator = useRevalidator();
+
+  const hasReloadPreview = useRef(false);
 
   useEffect(() => {
-    async function fetchAllData() {
-      setIsLoading(true);
-      try {
-        const [storageFiles, recipesRes, savedRecipesRes] = await Promise.all([
-          supabase.storage.from("assets").list("", { limit: 100 }),
-          supabase
-            .from("recipes")
-            .select(
-              `
-                *,
-                users (
-                  author,
-                  avatar_url
-                )`
-            )
-            .order("created_at", { ascending: false }),
-          supabase.from("saved_recipes").select(
-            `*,
-              recipes (
-               *,
-               users (
-                author,
-                avatar_url
-               )
-              )   
-              `
-          ),
-        ]);
+    if (user && isAuthenticated) {
+      loadSavedRecipesCache();
+    } else {
+      setSavedRecipesCache(new Set());
+      setSavedRecipesPreview([]);
+      setSavedCount(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, isAuthenticated]);
 
-        const imageUrls = storageFiles?.data.map((file) => {
-          const { data: urlData } = supabase.storage
-            .from("assets")
-            .getPublicUrl(file.name);
-
-          return {
-            name: file.name,
-            url: urlData.publicUrl,
-          };
-        });
-
-        setData({
-          images: imageUrls,
-          recipes: recipesRes.data || [],
-          savedRecipes: savedRecipesRes.data || [],
-        });
-
-        if (storageFiles.error) {
-          console.error("Images error:", storageFiles.error);
-          setError(storageFiles.error);
-        }
-        if (recipesRes.error) {
-          console.error("Cooks error:", recipesRes.error);
-          setError(recipesRes.error);
-        }
-        if (savedRecipesRes.error) {
-          console.log("Saved items error:", savedRecipesRes.error);
-          setError(savedRecipesRes.error);
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
+  useEffect(() => {
+    if (bookmarkIsOpen && user && !hasReloadPreview.current) {
+      loadSavedRecipesPreview();
+      hasReloadPreview.current = true;
     }
 
-    fetchAllData();
-  }, []);
+    if (!bookmarkIsOpen) {
+      hasReloadPreview.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookmarkIsOpen, user?.id]);
+
+  useEffect(() => {
+    if (
+      revalidator.state === "idle" &&
+      user &&
+      revalidator.state === "loading"
+    ) {
+      loadSavedRecipesCache();
+
+      if (bookmarkIsOpen) {
+        loadSavedRecipesPreview();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revalidator.state, user?.id]);
+
+  const loadSavedRecipesCache = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      const { data, error, count } = await supabase
+        .from("saved_recipes")
+        .select("recipe_id", { count: "exact", head: false })
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      const ids = new Set(data?.map((item) => item.recipe_id) || []);
+      setSavedRecipesCache(ids);
+      setSavedCount(count || 0);
+    } catch (error) {
+      console.error("Error loading saved recipes cache:", error);
+    }
+  }, [user?.id]);
+
+  const loadSavedRecipesPreview = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("saved_recipes")
+        .select(`*, recipes (*, users (author))`)
+        .eq("user_id", user.id)
+        .order("saved_at", { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+
+      setSavedRecipesPreview(data || []);
+    } catch (error) {
+      console.error("Error loading saved recipes preview:", error);
+      setSavedRecipesPreview([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  const handleSaveItem = async (recipeId, recipeTitle = "Recipe") => {
+    if (!user || !isAuthenticated) {
+      toast.error("Please sign in to save recipes");
+      return;
+    }
+
+    const isSaved = savedRecipesCache.has(recipeId);
+
+    try {
+      if (isSaved) {
+        setSavedRecipesCache((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(recipeId);
+          return newSet;
+        });
+        setSavedCount((prev) => Math.max(0, prev - 1));
+
+        const { error } = await supabase
+          .from("saved_recipes")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("recipe_id", recipeId);
+
+        if (error) throw error;
+        toast.success(`${recipeTitle} unsaved`);
+      } else {
+        setSavedRecipesCache((prev) => new Set([recipeId, ...prev]));
+        setSavedCount((prev) => prev + 1);
+        const { error } = await supabase.from("saved_recipes").insert({
+          user_id: user.id,
+          recipe_id: recipeId,
+        });
+
+        if (error) throw error;
+        toast.success(`${recipeTitle} saved`);
+      }
+      revalidator.revalidate();
+      if (bookmarkIsOpen) {
+        loadSavedRecipesPreview();
+      }
+    } catch (error) {
+      console.error("Error saving item:", error);
+      toast.error(`Failed to ${isSaved ? "unsave" : "save"} ${recipeTitle}`);
+
+      if (isSaved) {
+        setSavedRecipesCache((prev) => new Set([recipeId, ...prev]));
+        setSavedCount((prev) => prev + 1);
+      } else {
+        setSavedRecipesCache((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(recipeId);
+          return newSet;
+        });
+        setSavedCount((prev) => Math.max(0, prev - 1));
+      }
+    }
+  };
+
+  const isRecipeSaved = (recipeId) => {
+    return savedRecipesCache.has(recipeId);
+  };
+
+  const value = {
+    handleSaveItem,
+    isRecipeSaved,
+    bookmarkIsOpen,
+    setBookmarkIsOpen,
+    savedRecipesPreview,
+    savedCount,
+    loading,
+    user,
+    refreshSavedRecipes: loadSavedRecipesCache,
+  };
 
   return (
-    <RecipesCtx.Provider value={{ data, isLoading, error }}>
-      {props.children}
-    </RecipesCtx.Provider>
+    <RecipesCtx.Provider value={value}>{props.children}</RecipesCtx.Provider>
   );
 };
 

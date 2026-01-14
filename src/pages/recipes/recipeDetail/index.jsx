@@ -1,14 +1,11 @@
-import { useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { dummyArticle } from "../../../data/dummyArticle";
 import { useRecipeArticle } from "../../../hooks/useRecipeArticle";
-import { useRecipes } from "../../../hooks/useRecipes";
 import DefaultArticle from "./defaultArticle";
 import ShareIt from "./sideContent/shareIt";
 import TopViews from "./sideContent/topViews";
 import Categories from "./sideContent/category";
 import Tags from "./sideContent/tags";
-import Loading from "../../../UI/loading";
 import Comments from "../../../components/comments";
 
 const shareArticle = [
@@ -18,20 +15,7 @@ const shareArticle = [
 ];
 
 const RecipeDetail = () => {
-  const { recipe, date, error, loading } = useRecipeArticle();
-  const { data } = useRecipes();
-
-  if (loading)
-    return (
-      <div className="w-full h-auto flex items-center justify-center my-20">
-        <Loading />
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="text-red-500 text-4xl font-bold">Error: {error}</div>
-    );
+  const { recipe, date, allRecipes } = useRecipeArticle();
 
   if (!recipe)
     return (
@@ -96,8 +80,8 @@ const RecipeDetail = () => {
         </div>
         <div className="w-full h-auto flex flex-col gap-8">
           <ShareIt shareArticle={shareArticle} />
-          <TopViews recipes={data.recipes} />
-          <Categories recipes={data.recipes} />
+          <TopViews recipes={allRecipes} currentRecipeId={recipe.id} />
+          <Categories recipes={allRecipes} />
           <Tags recipe={recipe} />
         </div>
       </div>

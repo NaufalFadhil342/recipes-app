@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { supabase } from "../api/supabase";
+import toast from "react-hot-toast";
 
 const defaultUserAuth = {
   email: "",
@@ -34,7 +35,23 @@ const UserAuthProvider = (props) => {
     };
 
     checkUser();
-  }, [setUser, setIsAuthenticated]);
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+          setIsAuthenticated(true);
+          setUser(session?.user || null);
+        } else if (event === "SIGNED_OUT") {
+          setIsAuthenticated(false);
+          setUser(null);
+        } else if (event === "TOKEN_REFRESHED") {
+          setUser(session?.user || null);
+        }
+      }
+    );
+
+    return () => authListener?.subscription?.unsubscribe();
+  }, []);
 
   const handleAuthChange = (e) => {
     const { name, value } = e.target;
@@ -73,8 +90,9 @@ const UserAuthProvider = (props) => {
         if (data.user.identities?.length === 0) {
           setError("This email is already registered. Please sign in.");
         } else {
-          setError("Check your email for the confirmation link!");
+          toast.success("Check your email for the confirmation link!");
           setIsAuthOpen(false);
+          setUserAuth(defaultUserAuth);
         }
       }
     } catch (error) {
@@ -99,10 +117,9 @@ const UserAuthProvider = (props) => {
       if (error) throw error;
 
       if (data.user) {
-        setIsAuthenticated(true);
-        setUser(data.user);
         setIsAuthOpen(false);
         setUserAuth(defaultUserAuth);
+        toast.success("Successfully signed in!");
       }
     } catch (error) {
       console.error("Sign in error:", error);
@@ -124,18 +141,21 @@ const UserAuthProvider = (props) => {
     setAuthMode(mode);
     setIsAuthOpen(true);
     setError("");
+    setUserAuth(defaultUserAuth);
   };
 
   const handleSignOut = async () => {
+    setLoading(true);
+
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Sign out error:", error);
         return;
       }
-      setIsAuthenticated(false);
-      setUserAuth(defaultUserAuth);
-      setUser(null);
+
+      setIsAuthOpen(false);
+      toast.success("Successfully signed out");
     } catch (error) {
       console.error("Unexpected error during sign out:", error);
     }
@@ -144,6 +164,7 @@ const UserAuthProvider = (props) => {
   const toggleAuthMode = () => {
     setAuthMode((prev) => (prev === "signin" ? "signup" : "signin"));
     setError("");
+    setUserAuth(defaultUserAuth);
   };
 
   const value = {

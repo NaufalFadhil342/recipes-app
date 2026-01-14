@@ -13,7 +13,6 @@ const Article = () => {
     fileInputRef,
     videoInputRef,
     isCategoryOpen,
-    isDragging,
     inputTag,
     setInputTag,
     setIsCategoryOpen,

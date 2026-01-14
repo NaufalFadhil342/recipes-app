@@ -72,7 +72,7 @@ export const getCategoryData = (images) => {
     {
       id: "cat5",
       name: "Middle East",
-      category: "eastern",
+      category: "mid east",
       images: [
         {
           id: "img1",

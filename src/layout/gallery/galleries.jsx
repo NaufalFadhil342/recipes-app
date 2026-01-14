@@ -1,4 +1,3 @@
-import React from "react";
 import GalleryItem from "./galleryItem";
 
 const Galleries = ({ galleries, hoverIndex, setHoverIndex }) => {

@@ -1,11 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { getCategoryData } from "../../data/categoryFilter";
-import { useCategory } from "../../hooks/useCategory";
 import ImgCategory from "./imgCategory";
 
 const Categories = ({ images }) => {
-  const { selectCategory, handleCategoryActive } = useCategory();
   const categoryData = useMemo(() => getCategoryData(images), [images]);
+  const [selectCategory, setSelectCategory] = useState("");
+
+  const handleCategoryActive = (category) => {
+    setSelectCategory(category);
+  };
 
   const imgsPosition = {
     Rendang: "top-6 z-5",
