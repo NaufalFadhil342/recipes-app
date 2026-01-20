@@ -8,6 +8,7 @@ const AuthForm = () => {
     userAuth,
     handleAuthSubmit,
     handleAuthChange,
+    handleSignInWithOAuth,
     authMode,
     loading,
   } = useAuth();
@@ -77,7 +78,7 @@ const AuthForm = () => {
         <p className="text-stone-600 text-sm">Or</p>
         <div className="w-full h-px bg-stone-600/20" />
       </div>
-      <OAuthForm />
+      <OAuthForm handleSignInWithOAuth={handleSignInWithOAuth} />
     </div>
   );
 };

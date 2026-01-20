@@ -7,17 +7,13 @@ const Saved = () => {
   const { savedRecipes } = useLoaderData();
 
   return (
-    <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-10">
-      <div className="w-full h-auto flex flex-col items-center gap-4">
-        <h1 className="text-4xl font-bold text-inherit text-center leading-none">
-          All Saved
-        </h1>
-        <div className="w-20 h-0.5 bg-primary" />
-      </div>
+    <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-14">
       <div className="w-full h-auto">
         <div className="flex items-center gap-2">
-          <h3 className="text-xl font-semibold text-inherit">Your saves</h3>
-          <span className="text-block text-xl text-stone-600">
+          <h2 className="text-3xl font-semibold text-inherit capitalize">
+            your saves
+          </h2>
+          <span className="text-3xl font-medium text-stone-600/50">
             ({savedRecipes.length})
           </span>
         </div>

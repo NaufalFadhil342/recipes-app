@@ -26,7 +26,7 @@ export const useCreateArticle = () => {
     }));
   };
 
-  const handleAddTag = (e) => {
+  const handleAddTag = () => {
     if (!inputTag.trim()) return;
 
     const newTags = inputTag
@@ -58,7 +58,7 @@ export const useCreateArticle = () => {
 
   const getSelectedCategoryName = (categorySelection) => {
     const selected = categorySelection.find(
-      (cat) => cat.value === createArticle.category
+      (cat) => cat.value === createArticle.category,
     );
     return selected ? selected.name : "Select category";
   };

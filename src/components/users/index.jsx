@@ -6,7 +6,7 @@ const Users = ({ handleSignOut, user }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const username = user?.user_metadata?.display_name;
   const email = user?.email.split("@")[0];
-  const imgProfile = user?.user_metadata?.avatar_url;
+  const avatar = user?.user_metadata?.picture;
   const dropdownRef = useRef();
 
   const usersProfile = [
@@ -46,12 +46,13 @@ const Users = ({ handleSignOut, user }) => {
         onClick={() => setShowUserMenu((prev) => !prev)}
         aria-label="user profile"
       >
-        {imgProfile ? (
+        {avatar ? (
           <img
             className="w-full h-full object-cover object-center"
             loading="lazy"
-            src={imgProfile}
+            src={avatar}
             alt={username}
+            referrerPolicy="no-referrer"
           />
         ) : (
           <div className="bg-linear-to-br from-primary to-yellow-500" />

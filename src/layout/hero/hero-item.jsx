@@ -28,6 +28,7 @@ const HeroItem = (props) => {
           to={`/recipes/${props.slug}`}
           className="w-auto h-auto rounded-3xl bg-lime-50 p-6 absolute -bottom-6"
           aria-label="recipe detail"
+          onClick={() => scrollTo({ top: true })}
         >
           <span className="w-auto h-auto bg-stone-300 p-4 font-semibold md:text-xl rounded-2xl flex items-center gap-2 hover:bg-[#c2bebb] duration-150 transition-colors ease-in-out">
             <>View Recipe</>

@@ -1,20 +1,9 @@
 import { Icon } from "@iconify/react";
-import { supabase } from "../../api/supabase";
 
-const OAuthForm = () => {
+const OAuthForm = ({ handleSignInWithOAuth }) => {
   const oAuthHandling = (e) => {
     e.preventDefault();
-
-    const { data, error } = supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-
-    if (error) {
-      console.error(error.message);
-      return;
-    }
-
-    console.log("successful sign in", data);
+    handleSignInWithOAuth(e);
   };
 
   return (
