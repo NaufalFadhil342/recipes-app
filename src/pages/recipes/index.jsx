@@ -5,10 +5,17 @@ import Recipe from "../../components/recipe";
 import Filters from "../../components/filters";
 import { useLoaderData } from "react-router";
 import { useFilters } from "../../hooks/useFilters";
+import { useSearch } from "../../hooks/useSearch";
+import Loading from "../../UI/loading";
 
 const Recipes = () => {
   const { handleSaveItem, isRecipeSaved } = useRecipes();
   const { recipes } = useLoaderData();
+  const { isSearching } = useSearch({
+    path: "/recipes",
+    preserveOtherParams: true,
+    redirectOnSearch: true,
+  });
   const {
     filteredRecipes,
     showFilters,
@@ -20,40 +27,47 @@ const Recipes = () => {
     handleClear,
     appliedFilters,
     getEmptyStateMessage,
+    searchQuery,
   } = useFilters(recipes);
 
+  const hasActiveSearch = searchQuery.trim();
   const hasActiveFilters =
+    searchQuery.trim() ||
     appliedFilters.sortBy !== "popular" ||
     (appliedFilters.category && appliedFilters.category.length > 0) ||
     (appliedFilters.countries && appliedFilters.countries.length > 0);
 
+  const showHero = !hasActiveFilters && !hasActiveSearch;
+
   return (
     <section className="w-full h-auto">
-      <div className="w-full h-[80vh] relative">
-        <div className="w-full h-full overflow-hidden">
-          <img
-            className="w-full h-full object-cover object-center"
-            src={recipesCover}
-            width={1000}
-            height={1000}
-            alt="Recipes Pages"
-            loading="lazy"
-          />
+      {showHero && (
+        <div className="w-full h-[80vh] relative">
+          <div className="w-full h-full overflow-hidden">
+            <img
+              className="w-full h-full object-cover object-center"
+              src={recipesCover}
+              width={1000}
+              height={1000}
+              alt="Recipes Pages"
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-6 bg-stone-900/65 px-12 md:px-20">
+            <h1 className="text-4xl font-bold text-white leading-none uppercase text-center">
+              Recipes
+            </h1>
+            <p className="text-stone-200 text-medium text-center">
+              The recipes all you need can be found right here.
+            </p>
+          </div>
         </div>
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-6 bg-stone-900/65 px-12 md:px-20">
-          <h1 className="text-4xl font-bold text-white leading-none uppercase text-center">
-            Recipes
-          </h1>
-          <p className="text-stone-200 text-medium text-center">
-            The recipes all you need can be found right here.
-          </p>
-        </div>
-      </div>
+      )}
       <div className="w-full h-auto my-28 px-12 md:px-20 relative">
         <div className="w-full h-auto flex items-start justify-between gap-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-3xl font-bold text-inherit flex items-center gap-2">
-              What to Cook?
+            <h2 className="text-3xl font-bold text-inherit flex items-center gap-2 capitalize">
+              {searchQuery ? searchQuery : "What to Cook?"}
             </h2>
             <div className="w-14 h-0.5 bg-primary" />
           </div>
@@ -87,7 +101,11 @@ const Recipes = () => {
           )}
         </div>
         <div className="w-full h-auto mt-10">
-          {filteredRecipes.length > 0 ? (
+          {isSearching ? (
+            <div className="w-full h-auto flex items-center justify-center">
+              <Loading />
+            </div>
+          ) : filteredRecipes.length > 0 ? (
             <ul className="w-full h-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
               {filteredRecipes.map((recipe) => {
                 const isSaved = isRecipeSaved(recipe.id);
