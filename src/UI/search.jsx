@@ -1,4 +1,3 @@
-import React from "react";
 import { Icon } from "@iconify/react";
 
 const Search = (props) => {
@@ -8,11 +7,16 @@ const Search = (props) => {
         type="text"
         className="border-none w-full h-12 pl-4 outline-none text-stone-800"
         placeholder={props.placeholder}
+        value={props.value}
+        onChange={props.onChange}
+        onKeyDown={props.onKeyDown}
       />
-      <Icon
-        icon="bitcoin-icons:search-filled"
-        className="size-8 mr-2 hover:cursor-pointer"
-      />
+      <button type="submit" title="search recipes" onClick={props.onSubmit}>
+        <Icon
+          icon="bitcoin-icons:search-filled"
+          className="size-8 mr-2 hover:cursor-pointer"
+        />
+      </button>
     </>
   );
 };

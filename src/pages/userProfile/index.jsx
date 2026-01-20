@@ -15,6 +15,10 @@ const UserProfile = () => {
   const phone = user?.user_metadata?.phone || "-";
   const avatar = user?.user_metadata?.avatar_url;
 
+  const DefaultAvatar = () => (
+    <div className="w-full h-full bg-linear-to-br from-primary to-yellow-400 flex items-center justify-center" />
+  );
+
   const avatarElement =
     avatar && !imageError ? (
       <img
@@ -29,10 +33,6 @@ const UserProfile = () => {
     ) : (
       <DefaultAvatar />
     );
-
-  const DefaultAvatar = () => (
-    <div className="w-full h-full bg-linear-to-br from-primary to-yellow-400 flex items-center justify-center" />
-  );
 
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-10">

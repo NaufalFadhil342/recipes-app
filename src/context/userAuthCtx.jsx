@@ -16,21 +16,31 @@ const UserAuthProvider = (props) => {
   const [userAuth, setUserAuth] = useState(defaultUserAuth);
   const [error, setError] = useState("");
   const [authMode, setAuthMode] = useState("signin");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const checkUser = async () => {
+      setLoading(true);
+
       try {
         const {
           data: { session },
         } = await supabase.auth.getSession();
+
         if (session) {
           setIsAuthenticated(true);
           setUser(session.user);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
         }
       } catch (error) {
         setError(error.message);
+        setIsAuthenticated(false);
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,9 +48,17 @@ const UserAuthProvider = (props) => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        if (event === "SIGNED_IN") {
           setIsAuthenticated(true);
           setUser(session?.user || null);
+        } else if (event === "INITIAL_SESSION") {
+          if (session && session.user) {
+            setIsAuthenticated(true);
+            setUser(session.user);
+          } else {
+            setIsAuthenticated(false);
+            setUser(null);
+          }
         } else if (event === "SIGNED_OUT") {
           setIsAuthenticated(false);
           setUser(null);
@@ -129,6 +147,34 @@ const UserAuthProvider = (props) => {
     }
   };
 
+  const handleSignInWithOAuth = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+
+      if (error) {
+        console.error("OAuth sign-in error:", error);
+        throw error;
+      }
+
+      if (data.provider) {
+        setIsAuthOpen(false);
+        setUserAuth(defaultUserAuth);
+        toast.success("Successfully signed in!");
+      }
+    } catch (error) {
+      console.error("Unexpected sign-in error:", error);
+      setError(error.message || "Failed to sign in with OAuth");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAuthSubmit = (e) => {
     if (authMode === "signup") {
       handleSignUp(e);
@@ -175,6 +221,7 @@ const UserAuthProvider = (props) => {
     handleAuthOpen,
     handleAuthSubmit,
     handleSignOut,
+    handleSignInWithOAuth,
     error,
     userAuth,
     handleAuthChange,
