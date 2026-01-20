@@ -1,14 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getCategoryData } from "../../data/categoryFilter";
 import ImgCategory from "./imgCategory";
+import { useCategory } from "../../hooks/useCategory";
 
 const Categories = ({ images }) => {
   const categoryData = useMemo(() => getCategoryData(images), [images]);
-  const [selectCategory, setSelectCategory] = useState("");
-
-  const handleCategoryActive = (category) => {
-    setSelectCategory(category);
-  };
+  const { selectCategory, handleCategoryActive } = useCategory();
 
   const imgsPosition = {
     Rendang: "top-6 z-5",
@@ -18,12 +15,12 @@ const Categories = ({ images }) => {
 
   return (
     <section className="w-full h-auto px-12 md:px-20 mb-28 overflow-x-hidden">
-      <ul className="w-full h-auto flex gap-10 overflow-x-scroll scrollbar-none">
+      <ul className="w-full h-auto flex justify-between gap-8 overflow-x-scroll scrollbar-none">
         {categoryData.map((item) => {
           return (
             <li
               key={item.id}
-              className={`flex-[0_0_65%] sm:flex-[0_0_35%] lg:flex-[0_0_20%] h-auto p-6 rounded-xl border ${
+              className={`flex-[0_0_68%] xs:flex-[0_0_46.5%] sm:flex-[0_0_40%] md:flex-[0_0_32%] lg:flex-[0_0_22%] w-full h-auto p-6 rounded-xl border ${
                 selectCategory === item.category
                   ? "border-primary bg-white"
                   : "border-stone-600/20 bg-transparent"

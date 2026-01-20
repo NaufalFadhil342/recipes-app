@@ -25,7 +25,6 @@ const RecipesProvider = (props) => {
       setSavedRecipesPreview([]);
       setSavedCount(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, isAuthenticated]);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const RecipesProvider = (props) => {
     if (!bookmarkIsOpen) {
       hasReloadPreview.current = false;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookmarkIsOpen, user?.id]);
 
   useEffect(() => {
@@ -52,7 +50,6 @@ const RecipesProvider = (props) => {
         loadSavedRecipesPreview();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revalidator.state, user?.id]);
 
   const loadSavedRecipesCache = useCallback(async () => {

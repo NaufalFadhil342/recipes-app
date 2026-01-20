@@ -26,12 +26,13 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
             <span className="w-auto h-auto flex items-center gap-4">
               <div className="size-14 rounded-full border-[3px] border-white overflow-hidden">
                 <img
-                  className="w-full h-full object-cover object-[-1rem_0]"
+                  className="w-full h-full object-cover object-center"
                   width={1000}
                   height={600}
                   src={recipe?.users?.avatar_url}
                   alt="chef"
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div>
@@ -43,6 +44,7 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
             </span>
             <Link
               to={`/recipes/${recipe.slug}`}
+              onClick={() => scrollTo({ top: true })}
               className="group size-11 bg-primary flex items-center justify-center rounded-full relative hover:bg-dark transtion-colors duration-150 ease-in-out"
               aria-label="Go to recipe"
             >

@@ -1,7 +1,7 @@
 export const getCategoryData = (images) => {
   const getImage = (filename) => {
     const image = images.find((img) =>
-      img.name.toLowerCase().includes(filename.toLowerCase())
+      img.name.toLowerCase().includes(filename.toLowerCase()),
     );
 
     return image?.url || "";
@@ -30,24 +30,15 @@ export const getCategoryData = (images) => {
     },
     {
       id: "cat1",
-      name: "Asean",
-      category: "asean",
-      images: [
-        { id: "img1", src: getImage("tomyam"), alt: "Tomyam", name: "Tomyam" },
-      ],
-      alt: "Asean Food",
-    },
-    {
-      id: "cat2",
       name: "Asian",
       category: "asian",
       images: [
-        { id: "img1", src: getImage("ramen"), alt: "Ramen", name: "ramen" },
+        { id: "img1", src: getImage("tomyam"), alt: "Tomyam", name: "Tomyam" },
       ],
       alt: "Asian Food",
     },
     {
-      id: "cat3",
+      id: "cat2",
       name: "European",
       category: "european",
       images: [
@@ -56,7 +47,7 @@ export const getCategoryData = (images) => {
       alt: "European Food",
     },
     {
-      id: "cat4",
+      id: "cat3",
       name: "American",
       category: "american",
       images: [
@@ -68,20 +59,6 @@ export const getCategoryData = (images) => {
         },
       ],
       alt: "American Food",
-    },
-    {
-      id: "cat5",
-      name: "Middle East",
-      category: "mid east",
-      images: [
-        {
-          id: "img1",
-          src: getImage("shawarma"),
-          alt: "Shawarma",
-          name: "Shawarma",
-        },
-      ],
-      alt: "Middle East Food",
     },
   ];
 };
