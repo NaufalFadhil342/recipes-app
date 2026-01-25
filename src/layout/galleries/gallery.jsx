@@ -1,6 +1,6 @@
 import GalleryItem from "./galleryItem";
 
-const Galleries = ({ galleries, hoverIndex, setHoverIndex }) => {
+const Gallery = ({ galleries, hoverIndex, setHoverIndex }) => {
   return (
     <ul className="w-full h-auto flex">
       {galleries.map((item, index) => {
@@ -28,4 +28,4 @@ const Galleries = ({ galleries, hoverIndex, setHoverIndex }) => {
   );
 };
 
-export default Galleries;
+export default Gallery;

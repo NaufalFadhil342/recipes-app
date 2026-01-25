@@ -3,7 +3,7 @@ import Cooking from "./layout/cooking";
 import Hero from "./layout/hero";
 import About from "./layout/about";
 import Service from "./layout/service";
-import Gallery from "./layout/gallery";
+import Galleries from "./layout/galleries";
 import { Toaster } from "react-hot-toast";
 import { useLoaderData } from "react-router";
 
@@ -18,7 +18,7 @@ function App() {
       <Cooking recipes={recipes} />
       <About />
       <Service />
-      <Gallery galleries={images} />
+      <Galleries galleries={images} />
     </div>
   );
 }

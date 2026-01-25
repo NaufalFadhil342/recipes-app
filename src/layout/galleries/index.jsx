@@ -3,9 +3,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import ClassNames from "embla-carousel-class-names";
 import { usePrevNextBtn, PrevButton, NextButton } from "./prevNextButton";
 import { Icon } from "@iconify/react";
-import Galleries from "./galleries";
+import Gallery from "./gallery";
 
-const Gallery = ({ galleries }) => {
+const Galleries = ({ galleries }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -16,7 +16,7 @@ const Gallery = ({ galleries }) => {
         snapped: "is-snapped",
         inView: "is-in-view",
       }),
-    ]
+    ],
   );
   const { onNextBtnClick, onPrevBtnClick } = usePrevNextBtn(emblaApi);
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -36,7 +36,7 @@ const Gallery = ({ galleries }) => {
       </div>
       <div className="w-full h-auto flex flex-col items-start gap-10 mt-20">
         <div className="w-full h-auto overflow-x-hidden" ref={emblaRef}>
-          <Galleries
+          <Gallery
             galleries={galleries}
             hoverIndex={hoverIndex}
             setHoverIndex={setHoverIndex}
@@ -67,4 +67,4 @@ const Gallery = ({ galleries }) => {
   );
 };
 
-export default Gallery;
+export default Galleries;

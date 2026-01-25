@@ -6,11 +6,12 @@ import App from "./App";
 import UserProfile from "./pages/userProfile";
 import PersonalInformation from "./pages/userProfile/personalInformation";
 import UserDisplay from "./pages/userProfile/userDisplay";
-import Article from "./components/article";
-import Error from "./UI/error";
 import Recipes from "./pages/recipes";
 import RecipeDetail from "./pages/recipes/recipeDetail";
 import Saved from "./pages/saved";
+import Stories from "./pages/ourStory";
+import Article from "./components/article";
+import Error from "./UI/error";
 import {
   globalLoader,
   recipeDetailLoader,
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
         loader: savedRecipesLoader,
       },
       {
+        path: "/about",
+        element: <Stories />,
+      },
+      {
         path: "/*",
         element: <Error />,
       },
@@ -84,5 +89,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
