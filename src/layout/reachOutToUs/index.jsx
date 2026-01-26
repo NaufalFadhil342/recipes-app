@@ -1,6 +1,6 @@
 import CallToAction from "../../components/callToAction";
 
-const ReachOut = () => {
+const ReachOutToUs = () => {
   return (
     <section className="w-full h-auto flex flex-col items-center gap-10">
       <h2 className="text-[2.5em] font-bold text-inherit leading-none text-center">
@@ -17,4 +17,4 @@ const ReachOut = () => {
   );
 };
 
-export default ReachOut;
+export default ReachOutToUs;

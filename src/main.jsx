@@ -10,6 +10,7 @@ import Recipes from "./pages/recipes";
 import RecipeDetail from "./pages/recipes/recipeDetail";
 import Saved from "./pages/saved";
 import Stories from "./pages/ourStory";
+import ContactUs from "./pages/contact";
 import Article from "./components/article";
 import Error from "./UI/error";
 import {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <Stories />,
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
       },
       {
         path: "/*",

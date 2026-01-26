@@ -1,8 +1,8 @@
 import Story from "./story";
 import Experiences from "./experiences";
 import Purpose from "./purpose";
-import ReachOut from "./reachOut";
 import Testimony from "../../components/testimony";
+import ReachOutToUs from "../../layout/reachOutToUs";
 
 const Stories = () => {
   return (
@@ -17,7 +17,7 @@ const Stories = () => {
         <Purpose />
       </div>
       <div className="w-full h-auto mt-20">
-        <ReachOut />
+        <ReachOutToUs />
       </div>
       <div className="w-full h-auto mt-20">
         <Testimony />
