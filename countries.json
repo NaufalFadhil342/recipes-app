@@ -3,92 +3,110 @@
     {
       "name": "United States",
       "code": "US",
-      "region": "Americas"
+      "region": "Americas",
+      "dial_code": "+1"
     },
     {
       "name": "Brazil",
       "code": "BR",
-      "region": "Americas"
+      "region": "Americas",
+      "dial_code": "+55"
     },
     {
       "name": "Argentina",
       "code": "AR",
-      "region": "Americas"
+      "region": "Americas",
+      "dial_code": "+54"
     },
     {
       "name": "France",
       "code": "FR",
-      "region": "Europe"
+      "region": "Europe",
+      "dial_code": "+33"
     },
     {
       "name": "Italy",
       "code": "IT",
-      "region": "Europe"
+      "region": "Europe",
+      "dial_code": "+39"
     },
     {
-      "name": "Espana",
+      "name": "Spain",
       "code": "ES",
-      "region": "Europe"
+      "region": "Europe",
+      "dial_code": "+34"
     },
     {
-      "name": "Turkiye",
+      "name": "Turkey",
       "code": "TR",
-      "region": "Europe"
+      "region": "Europe",
+      "dial_code": "+90"
     },
     {
-      "name": "British",
+      "name": "United Kingdom",
       "code": "GB",
-      "region": "Europe"
+      "region": "Europe",
+      "dial_code": "+44"
     },
     {
-      "name": "Uni Emirates Arabes",
-      "code": "UAE",
-      "region": "Asia"
+      "name": "Uni Arab Emirates",
+      "code": "AE",
+      "region": "Asia",
+      "dial_code": "+971"
     },
     {
       "name": "Saudi Arabia",
       "code": "SA",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+966"
     },
     {
       "name": "Qatar",
       "code": "QA",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+974"
     },
     {
       "name": "Indonesia",
       "code": "ID",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+62"
     },
     {
       "name": "Thailand",
       "code": "TH",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+66"
     },
     {
       "name": "Singapore",
       "code": "SG",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+65"
     },
     {
       "name": "Japan",
       "code": "JP",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+81"
     },
     {
       "name": "Hongkong",
       "code": "HK",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+854"
     },
     {
       "name": "South Korea",
       "code": "KR",
-      "region": "Asia"
+      "region": "Asia",
+      "dial_code": "+82"
     },
     {
       "name": "Australia",
       "code": "AU",
-      "region": "Asia"
+      "region": "Australia",
+      "dial_code": "+61"
     }
   ]
 }

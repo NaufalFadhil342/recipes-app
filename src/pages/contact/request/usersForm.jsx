@@ -1,21 +1,190 @@
-import React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usersReqValidation } from "../../../validation/usersReqValidation";
+
+const usersDefaultState = {
+  username: "",
+  email: "",
+  phoneNumber: "",
+  message: "",
+  usersPermission: false,
+};
+
+const usersValidationRules = {
+  username: { required: true, type: "text" },
+  email: { required: true, type: "email" },
+  phoneNumber: { required: true, type: "tel", minLength: 8 },
+  usersPermission: { required: true, type: "checkbox" },
+};
 
 const UsersForm = () => {
+  const [usersState, setUsersState] = useState(usersDefaultState);
+  const [errors, setErrors] = useState({});
+  const [countries, setCountries] = useState([]);
+  const [selectDialCode, setSelectDialCode] = useState("+62");
+  const [showDialCode, setShowDialCode] = useState(false);
+
+  const phoneFieldRef = useRef();
+
+  const handlePhoneOutsideClick = (e) => {
+    if (phoneFieldRef.current && !phoneFieldRef.current.contains(e.target)) {
+      setShowDialCode(false);
+    }
+  };
+
+  useEffect(() => {
+    const countriesDialCodes = () => {
+      fetch("countries.json")
+        .then((res) => res.json())
+        .then((data) => {
+          setCountries(data.countries);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    };
+
+    countriesDialCodes();
+
+    document.addEventListener("mousedown", handlePhoneOutsideClick);
+    return () =>
+      document.removeEventListener("mousedown", handlePhoneOutsideClick);
+  }, []);
+
+  const handleUsersChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    const newValue = type === "checkbox" ? checked : value;
+
+    setUsersState((prev) => ({
+      ...prev,
+      [name]: newValue,
+    }));
+
+    const fieldErrors = usersReqValidation(
+      { ...usersState, [name]: newValue },
+      usersValidationRules,
+    );
+
+    setErrors((prevError) => ({
+      ...prevError,
+      [name]: fieldErrors[name] || null,
+    }));
+  };
+
+  const handleUsersSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = usersReqValidation(
+      usersState,
+      usersValidationRules,
+    );
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      const usersData = {
+        username: usersState.username,
+        email: usersState.email,
+        phoneNumber: `${selectDialCode}${usersState.phoneNumber}`,
+        message: usersState.message,
+        usersPermission: usersState.usersPermission,
+      };
+
+      console.log("users request", usersData);
+
+      setUsersState(usersDefaultState);
+      setErrors({});
+      setSelectDialCode("+62");
+    } else {
+      console.error("Form has errors:", validationErrors);
+    }
+  };
+
+  const sortCountries = useMemo(() => {
+    return [...countries].sort((a, b) =>
+      a.dial_code.localeCompare(b.dial_code),
+    );
+  }, [countries]);
+
+  const dialCodes = (
+    <ul className="w-full h-auto max-h-50 overflow-y-auto scrollbar-thin absolute top-full left-0 mt-2 z-10 p-2 bg-white rounded-xl shadow-[0_1.5px_3px_rgba(41,37,36,0.25)]">
+      {sortCountries.map((country, index) => {
+        return (
+          <li
+            key={index}
+            className="w-auto h-auto flex items-center gap-4 my-1 py-1 hover:cursor-pointer"
+            onClick={() => {
+              setSelectDialCode(country.dial_code);
+              setShowDialCode(false);
+            }}
+          >
+            <div className="text-inherit font-medium">{country.dial_code}</div>
+            <p className="text-stone-600">{country.name}</p>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
+  const phoneNumberField = (
+    <>
+      <label className="text-lg text-inherit font-medium" htmlFor="phoneNumber">
+        Phone
+      </label>
+      <div
+        className="w-auto h-auto flex border border-gray-300 rounded-md relative"
+        ref={phoneFieldRef}
+      >
+        <div className="w-auto h-auto">
+          <div
+            className="w-10 h-full flex items-center justify-center hover:cursor-pointer"
+            onClick={() => setShowDialCode(!showDialCode)}
+          >
+            {selectDialCode}
+          </div>
+          {showDialCode && dialCodes}
+        </div>
+        <input
+          type="tel"
+          placeholder="Enter phone number"
+          className="w-full h-auto py-2 pl-1.5 outline-none text-stone-600"
+          id="phoneNumber"
+          name="phoneNumber"
+          value={usersState.phoneNumber}
+          onChange={handleUsersChange}
+        />
+      </div>
+      {errors.phoneNumber && (
+        <p className="text-red-500 text-[15px] mt-1">{errors.phoneNumber}</p>
+      )}
+    </>
+  );
+
   return (
     <div className="w-full h-auto bg-white rounded-3xl p-6 shadow-[1.5px_1.5px_3px_rgba(41,37,36,0.08)]">
       <h3 className="text-[2em] font-bold text-inherit leading-none">
         Do You Need Help?
       </h3>
-      <form className="w-full h-auto flex flex-col gap-6 mt-8">
+      <form
+        className="w-full h-auto flex flex-col gap-6 mt-8"
+        onSubmit={handleUsersSubmit}
+      >
         <div className="w-full h-auto">
-          <label className="text-lg text-inherit font-medium" htmlFor="name">
+          <label
+            className="text-lg text-inherit font-medium"
+            htmlFor="username"
+          >
             Your Name
           </label>
           <input
             type="text"
             placeholder="Enter your name"
             className="w-full h-auto py-2 pl-1.5 border border-gray-300 mt-3 outline-primary text-stone-600 rounded-md"
+            id="username"
+            name="username"
+            value={usersState.username}
+            onChange={handleUsersChange}
           />
+          {errors.username && (
+            <p className="text-red-500 text-[15px] mt-1">{errors.username}</p>
+          )}
         </div>
         <div className="w-full h-auto">
           <label className="text-lg text-inherit font-medium" htmlFor="email">
@@ -25,17 +194,14 @@ const UsersForm = () => {
             type="email"
             placeholder="Enter your email"
             className="w-full h-auto py-2 pl-1.5 border border-gray-300 mt-3 outline-primary text-stone-600 rounded-md"
+            id="email"
+            name="email"
+            value={usersState.email}
+            onChange={handleUsersChange}
           />
-        </div>
-        <div className="w-full h-auto">
-          <label className="text-lg text-inherit font-medium" htmlFor="phone">
-            Phone
-          </label>
-          <input
-            type="tel"
-            placeholder="Enter phone number"
-            className="w-full h-auto py-2 pl-1.5 border border-gray-300 mt-3 outline-primary text-stone-600 rounded-md"
-          />
+          {errors.email && (
+            <p className="text-red-500 text-[15px] mt-1">{errors.email}</p>
+          )}
         </div>
         <div className="w-full h-auto">
           <label className="text-lg text-inherit font-medium" htmlFor="message">
@@ -45,22 +211,43 @@ const UsersForm = () => {
             rows={5}
             placeholder="Enter your message"
             className="w-full h-auto py-2 pl-1.5 border border-gray-300 mt-3 outline-primary text-stone-600 rounded-md"
+            id="message"
+            name="message"
+            value={usersState.message}
+            onChange={handleUsersChange}
           />
         </div>
+        <div className="w-full h-auto">{phoneNumberField}</div>
         <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4">
-          <div className="flex items-center gap-1.75">
-            <input
-              type="checkbox"
-              className="size-3.5 accent-primary hover:cursor-pointer"
-            />
-            <label className="text-sm text-stone-600">
-              I agree with
-              <a className="text-primary font-medium ml-0.75">
-                Terms of Use
-              </a>{" "}
-              and
-              <a className="text-primary font-medium ml-0.75">Privacy Policy</a>
-            </label>
+          <div className="w-auto h-auto">
+            <div className="flex items-center gap-1.75">
+              <input
+                type="checkbox"
+                className="size-3.5 accent-primary hover:cursor-pointer"
+                id="usersPermission"
+                name="usersPermission"
+                checked={usersState.usersPermission}
+                onChange={handleUsersChange}
+              />
+              <label
+                className="text-sm text-stone-600"
+                htmlFor="usersPermission"
+              >
+                I agree with
+                <a className="text-primary font-medium ml-0.75">
+                  Terms of Use
+                </a>{" "}
+                and
+                <a className="text-primary font-medium ml-0.75">
+                  Privacy Policy
+                </a>
+              </label>
+            </div>
+            {errors.usersPermission && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.usersPermission}
+              </p>
+            )}
           </div>
           <button
             type="submit"

@@ -1,4 +1,3 @@
-import React from "react";
 import reqBG from "../../assets/request.webp";
 import { Link } from "react-router";
 import ReachOutToUs from "../../layout/reachOutToUs";
