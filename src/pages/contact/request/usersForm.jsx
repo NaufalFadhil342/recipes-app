@@ -1,101 +1,20 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { usersReqValidation } from "../../../validation/usersReqValidation";
-
-const usersDefaultState = {
-  username: "",
-  email: "",
-  phoneNumber: "",
-  message: "",
-  usersPermission: false,
-};
-
-const usersValidationRules = {
-  username: { required: true, type: "text" },
-  email: { required: true, type: "email" },
-  phoneNumber: { required: true, type: "tel", minLength: 8 },
-  usersPermission: { required: true, type: "checkbox" },
-};
+import { useMemo, useRef } from "react";
+import { useReqForm } from "../../../hooks/useReqForm";
 
 const UsersForm = () => {
-  const [usersState, setUsersState] = useState(usersDefaultState);
-  const [errors, setErrors] = useState({});
-  const [countries, setCountries] = useState([]);
-  const [selectDialCode, setSelectDialCode] = useState("+62");
-  const [showDialCode, setShowDialCode] = useState(false);
-
-  const phoneFieldRef = useRef();
-
-  const handlePhoneOutsideClick = (e) => {
-    if (phoneFieldRef.current && !phoneFieldRef.current.contains(e.target)) {
-      setShowDialCode(false);
-    }
-  };
-
-  useEffect(() => {
-    const countriesDialCodes = () => {
-      fetch("countries.json")
-        .then((res) => res.json())
-        .then((data) => {
-          setCountries(data.countries);
-        })
-        .catch((error) => console.error("Error fetching data:", error));
-    };
-
-    countriesDialCodes();
-
-    document.addEventListener("mousedown", handlePhoneOutsideClick);
-    return () =>
-      document.removeEventListener("mousedown", handlePhoneOutsideClick);
-  }, []);
-
-  const handleUsersChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    const newValue = type === "checkbox" ? checked : value;
-
-    setUsersState((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-
-    const fieldErrors = usersReqValidation(
-      { ...usersState, [name]: newValue },
-      usersValidationRules,
-    );
-
-    setErrors((prevError) => ({
-      ...prevError,
-      [name]: fieldErrors[name] || null,
-    }));
-  };
-
-  const handleUsersSubmit = (e) => {
-    e.preventDefault();
-
-    const validationErrors = usersReqValidation(
-      usersState,
-      usersValidationRules,
-    );
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      const usersData = {
-        username: usersState.username,
-        email: usersState.email,
-        phoneNumber: `${selectDialCode}${usersState.phoneNumber}`,
-        message: usersState.message,
-        usersPermission: usersState.usersPermission,
-      };
-
-      console.log("users request", usersData);
-
-      setUsersState(usersDefaultState);
-      setErrors({});
-      setSelectDialCode("+62");
-    } else {
-      console.error("Form has errors:", validationErrors);
-    }
-  };
+  const phoneDialRef = useRef();
+  const {
+    countries,
+    usersState,
+    showDialCode,
+    selectDialCode,
+    errors,
+    isSubmitted,
+    handleReqChange,
+    handleReqSubmit,
+    setSelectDialCode,
+    setShowDialCode,
+  } = useReqForm(phoneDialRef);
 
   const sortCountries = useMemo(() => {
     return [...countries].sort((a, b) =>
@@ -130,7 +49,7 @@ const UsersForm = () => {
       </label>
       <div
         className="w-auto h-auto flex border border-gray-300 rounded-md relative"
-        ref={phoneFieldRef}
+        ref={phoneDialRef}
       >
         <div className="w-auto h-auto">
           <div
@@ -148,7 +67,7 @@ const UsersForm = () => {
           id="phoneNumber"
           name="phoneNumber"
           value={usersState.phoneNumber}
-          onChange={handleUsersChange}
+          onChange={handleReqChange}
         />
       </div>
       {errors.phoneNumber && (
@@ -164,7 +83,7 @@ const UsersForm = () => {
       </h3>
       <form
         className="w-full h-auto flex flex-col gap-6 mt-8"
-        onSubmit={handleUsersSubmit}
+        onSubmit={handleReqSubmit}
       >
         <div className="w-full h-auto">
           <label
@@ -180,7 +99,7 @@ const UsersForm = () => {
             id="username"
             name="username"
             value={usersState.username}
-            onChange={handleUsersChange}
+            onChange={handleReqChange}
           />
           {errors.username && (
             <p className="text-red-500 text-[15px] mt-1">{errors.username}</p>
@@ -197,7 +116,7 @@ const UsersForm = () => {
             id="email"
             name="email"
             value={usersState.email}
-            onChange={handleUsersChange}
+            onChange={handleReqChange}
           />
           {errors.email && (
             <p className="text-red-500 text-[15px] mt-1">{errors.email}</p>
@@ -214,7 +133,7 @@ const UsersForm = () => {
             id="message"
             name="message"
             value={usersState.message}
-            onChange={handleUsersChange}
+            onChange={handleReqChange}
           />
         </div>
         <div className="w-full h-auto">{phoneNumberField}</div>
@@ -227,7 +146,7 @@ const UsersForm = () => {
                 id="usersPermission"
                 name="usersPermission"
                 checked={usersState.usersPermission}
-                onChange={handleUsersChange}
+                onChange={handleReqChange}
               />
               <label
                 className="text-sm text-stone-600"
@@ -253,7 +172,7 @@ const UsersForm = () => {
             type="submit"
             className="w-auto xs:w-fit h-auto py-2 px-4 rounded-md bg-primary text-stone-600 font-medium hover:cursor-pointer hover:bg-stone-800 hover:text-white transition-all duration-150 ease-in-out"
           >
-            Send Message
+            {isSubmitted ? "Send..." : "Send Message"}
           </button>
         </div>
       </form>

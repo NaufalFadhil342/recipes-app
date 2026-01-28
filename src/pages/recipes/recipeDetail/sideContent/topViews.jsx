@@ -42,7 +42,7 @@ const TopViews = ({ recipes, currentRecipeId }) => {
                 <Link
                   to={`/recipes/${recipe.slug}`}
                   className="text-lg font-semibold text-inherit leading-none mt-2"
-                  onClick={() => scrollTo({ top: true, behavior: "smooth" })}
+                  onClick={() => scrollTo({ top: true })}
                 >
                   {recipe.title}
                 </Link>

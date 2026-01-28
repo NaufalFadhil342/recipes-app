@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useLoaderData } from "react-router";
 
-export const useRecipeArticle = () => {
+export const useRecipeDetail = () => {
   const { recipe, allRecipes } = useLoaderData();
 
   const date = useMemo(() => {

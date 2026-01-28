@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { dummyArticle } from "../../../data/dummyArticle";
-import { useRecipeArticle } from "../../../hooks/useRecipeArticle";
+import { useRecipeDetail } from "../../../hooks/useRecipeDetail";
 import DefaultArticle from "./defaultArticle";
 import ShareIt from "./sideContent/shareIt";
 import TopViews from "./sideContent/topViews";
@@ -15,7 +15,7 @@ const shareArticle = [
 ];
 
 const RecipeDetail = () => {
-  const { recipe, date, allRecipes } = useRecipeArticle();
+  const { recipe, date, allRecipes } = useRecipeDetail();
 
   if (!recipe)
     return (
