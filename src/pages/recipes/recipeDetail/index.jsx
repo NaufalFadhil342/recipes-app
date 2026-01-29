@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react";
 import { dummyArticle } from "../../../data/dummyArticle";
 import { useRecipeDetail } from "../../../hooks/useRecipeDetail";
 import DefaultArticle from "./defaultArticle";
@@ -7,11 +6,13 @@ import TopViews from "./sideContent/topViews";
 import Categories from "./sideContent/category";
 import Tags from "./sideContent/tags";
 import Comments from "../../../components/comments";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const shareArticle = [
-  { icon: "devicon:facebook", name: "facebook" },
-  { icon: "logos:twitter", name: "twitter" },
-  { icon: "ic:round-share", name: "share" },
+  { icon: recipeIcons.feFacebook, name: "facebook" },
+  { icon: recipeIcons.codiTwitter, name: "twitter" },
+  { icon: recipeIcons.icShare, name: "share" },
 ];
 
 const RecipeDetail = () => {
@@ -61,8 +62,8 @@ const RecipeDetail = () => {
               </div>
             </div>
             <div className="w-auto h-auto flex items-center gap-2">
-              <Icon
-                icon="solar:calendar-bold"
+              <Icons
+                iconsName={recipeIcons.solarCalendar}
                 className="size-5 text-stone-500"
               />
               <p className="text-stone-500 font-medium">{date}</p>

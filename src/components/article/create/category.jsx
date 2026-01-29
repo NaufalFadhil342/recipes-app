@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const Category = ({
   categoryRef,
@@ -25,8 +26,8 @@ const Category = ({
           <span className="font-medium">
             {getSelectedCategoryName(categorySelection)}
           </span>
-          <Icon
-            icon="tabler:chevron-down"
+          <Icons
+            iconsName={recipeIcons.tablerChevDown}
             className={`size-5 text-stone-600 transition-transform duration-150 ease-in-out ${
               isCategoryOpen ? "rotate-180" : ""
             }`}
@@ -38,7 +39,7 @@ const Category = ({
               <li key={category.id} className="w-full h-auto">
                 <button
                   type="button"
-                  className={`w-full px-4 py-3 text-left hover:bg-primary/15 text-inherit font-medium transition-colors flex items-center justify-between
+                  className={`w-full p-2 text-left hover:bg-primary/15 text-inherit font-medium transition-colors flex items-center justify-between
                           ${
                             createArticle.category === category.value
                               ? "bg-primary/15"

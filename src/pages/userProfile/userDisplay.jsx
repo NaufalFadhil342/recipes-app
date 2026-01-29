@@ -1,5 +1,6 @@
 import { useEdit } from "../../hooks/useEdit";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const UserDisplay = () => {
   const {
@@ -31,7 +32,7 @@ const UserDisplay = () => {
             onClick={handleClose}
             className="size-10 rounded-full hover:bg-stone-100 flex items-center justify-center transition-colors"
           >
-            <Icon icon="ri:close-line" className="size-6" />
+            <Icons iconsName={recipeIcons.riClose} className="size-6" />
           </button>
         </div>
         {error && (
@@ -72,8 +73,8 @@ const UserDisplay = () => {
                 >
                   <div className="flex flex-col items-center gap-4">
                     <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-                      <Icon
-                        icon="material-symbols:upload-rounded"
+                      <Icons
+                        iconsName={recipeIcons.mysUpload}
                         className="size-10 text-stone-400"
                       />
                     </div>
@@ -99,8 +100,8 @@ const UserDisplay = () => {
                       onClick={handleRemoveImage}
                       className="absolute top-3 left-2/5 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg transition-colors"
                     >
-                      <Icon
-                        icon="material-symbols:close-rounded"
+                      <Icons
+                        iconsName={recipeIcons.riClose}
                         className="size-6"
                       />
                     </button>

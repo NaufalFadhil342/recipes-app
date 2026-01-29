@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const DefaultArticle = ({ article }) => {
   return (
@@ -6,8 +7,8 @@ const DefaultArticle = ({ article }) => {
       <p className="text-stone-600">{article.main}</p>
       <div className="w-full h-auto">
         <div className="flex items-center gap-2 -ml-1">
-          <Icon
-            icon="healthicons:vegetables"
+          <Icons
+            iconsName={recipeIcons.healthVege}
             className="size-10 text-primary"
           />
           <h4 className="text-xl font-semibold text-inherit">Ingredients:</h4>
@@ -22,7 +23,10 @@ const DefaultArticle = ({ article }) => {
       </div>
       <div className="w-full h-auto">
         <div className="flex items-center gap-2 -ml-1">
-          <Icon icon="icon-park-solid:cook" className="size-10 text-primary" />
+          <Icons
+            iconsName={recipeIcons.ipsCook}
+            className="size-10 text-primary"
+          />
           <h4 className="text-xl font-semibold text-inherit">How to Cook:</h4>
         </div>
         <ol className="mt-3">

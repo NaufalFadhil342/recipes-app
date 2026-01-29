@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
 import { NavLink } from "react-router";
 
 const MenuLinks = ({ display, navbar, setShowSidebarMenu }) => {
@@ -23,7 +23,10 @@ const MenuLinks = ({ display, navbar, setShowSidebarMenu }) => {
               <span className="block">
                 <div className="flex items-center gap-3">
                   <span className="block md:hidden">
-                    <Icon icon={nav.icon} className="size-6 text-inherit" />
+                    <Icons
+                      iconsName={nav.icon}
+                      className="size-6 text-inherit"
+                    />
                   </span>
                   <p className="text-inherit">{nav.name}</p>
                 </div>

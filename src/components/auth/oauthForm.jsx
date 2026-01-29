@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const OAuthForm = ({ handleSignInWithOAuth }) => {
   const oAuthHandling = (e) => {
@@ -13,7 +14,7 @@ const OAuthForm = ({ handleSignInWithOAuth }) => {
         className="w-full h-12 bg-stone-200 text-inherit font-medium flex items-center justify-center gap-2 rounded-md hover:bg-stone-300 hover:cursor-pointer duration-150 transition-colors ease-in-out"
         onClick={oAuthHandling}
       >
-        <Icon icon="material-icon-theme:google" className="size-6" />
+        <Icons iconsName={recipeIcons.miGoogle} className="size-6" />
         <>Google</>
       </button>
     </div>

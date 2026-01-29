@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import avatar1 from "../../assets/avatar1.webp";
 import avatar2 from "../../assets/avatar2.webp";
 import useEmblaCarousel from "embla-carousel-react";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const testimonies = [
   {
@@ -108,7 +109,7 @@ const Testimony = () => {
           onClick={prevSlide}
           disabled={prevBtnDisabled}
         >
-          <Icon icon="iconamoon:arrow-left-2-light" className="size-8" />
+          <Icons iconsName={recipeIcons.moonArrowLeft} className="size-8" />
         </button>
         <button
           type="button"
@@ -116,7 +117,7 @@ const Testimony = () => {
           onClick={nextSlide}
           disabled={nextBtnDisabled}
         >
-          <Icon icon="iconamoon:arrow-right-2-light" className="size-8" />
+          <Icons iconsName={recipeIcons.moonArrowRight} className="size-8" />
         </button>
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "motion/react";
 import Loading from "./loading";
 

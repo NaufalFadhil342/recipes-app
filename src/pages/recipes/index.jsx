@@ -1,5 +1,4 @@
 import recipesCover from "../../assets/recipes.webp";
-import { Icon } from "@iconify/react";
 import { useRecipes } from "../../hooks/useRecipes";
 import Recipe from "../../components/recipe";
 import Filters from "../../components/filters";
@@ -7,6 +6,8 @@ import { useLoaderData } from "react-router";
 import { useFilters } from "../../hooks/useFilters";
 import { useSearch } from "../../hooks/useSearch";
 import Loading from "../../UI/loading";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Recipes = () => {
   const { handleSaveItem, isRecipeSaved } = useRecipes();
@@ -77,8 +78,8 @@ const Recipes = () => {
             onClick={handleOpen}
             aria-label="Filter recipes"
           >
-            <Icon
-              icon="mynaui:filter-solid"
+            <Icons
+              iconsName={recipeIcons.myuiFilter}
               className="text-stone-600 size-6.5"
             />
             <p className="text-stone-600 font-medium hidden xs:block">

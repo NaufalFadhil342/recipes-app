@@ -1,5 +1,6 @@
-import { Icon } from "@iconify/react";
 import { Link } from "react-router";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
   return (
@@ -12,9 +13,11 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
           <span className="px-3 py-1.5 rounded-md bg-primary text-sm font-medium capitalize">
             {recipe.category}
           </span>
-          <Icon
-            icon={
-              savedItems ? "majesticons:bookmark" : "majesticons:bookmark-line"
+          <Icons
+            iconsName={
+              savedItems
+                ? recipeIcons.majestBookmark
+                : recipeIcons.majestOutlineBookmark
             }
             className="text-white size-7 hover:cursor-pointer"
             onClick={() => handleSaveItem(recipe.id, recipe.title)}
@@ -48,8 +51,8 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
               className="group size-11 bg-primary flex items-center justify-center rounded-full relative hover:bg-dark transtion-colors duration-150 ease-in-out"
               aria-label="Go to recipe"
             >
-              <Icon
-                icon="ri:arrow-right-fill"
+              <Icons
+                iconsName={recipeIcons.riArrowRight}
                 className="size-6 rotate-90 group-hover:rotate-0 transition-all duration-150 ease-in-out"
               />
             </Link>

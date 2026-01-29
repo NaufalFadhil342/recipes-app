@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "./useAuth";
-import { supabase } from "../api/supabase";
+import { supabase } from "../utils/supabase";
 
 export const useEdit = () => {
   const navigate = useNavigate();

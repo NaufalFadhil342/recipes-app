@@ -1,12 +1,13 @@
-import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { dummyComments } from "../../data/dummComment";
 import Comment from "./comment";
 import CommentsForm from "./commentsForm";
+import { recipeIcons } from "../../data/recipeIconsData";
+import { Icons } from "../../icons";
 
 const expressions = [
-  { name: "likes", icon: "iconamoon:like-bold", amount: 0 },
-  { name: "dislikes", icon: "iconamoon:dislike-bold", amount: 0 },
+  { name: "likes", icon: recipeIcons.moonLike, amount: 0 },
+  { name: "dislikes", icon: recipeIcons.moonDislike, amount: 0 },
 ];
 
 const Comments = () => {
@@ -68,7 +69,7 @@ const Comments = () => {
             }}
             aria-label="Show comment field"
           >
-            <Icon icon="material-symbols:comment" className="size-5" />
+            <Icons iconsName={recipeIcons.mysComment} className="size-5" />
             <p className="hidden xs:block">Add New</p>
           </button>
         </div>

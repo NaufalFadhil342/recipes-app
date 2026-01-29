@@ -1,5 +1,5 @@
-import React from "react";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const sortings = [
   { name: "Newest", label: "newest" },
@@ -25,8 +25,8 @@ const SortingBy = ({ sortBy, setSortBy }) => {
                 className="grid grid-cols-[0.5fr_1fr] gap-1"
                 onClick={() => handleSorting(sort.label)}
               >
-                <Icon
-                  icon="material-symbols:check-rounded"
+                <Icons
+                  iconsName={recipeIcons.mysCheck}
                   className={`text-stone-800 size-6 ${
                     sortBy === sort.label ? "opacity-100" : "opacity-0"
                   }`}

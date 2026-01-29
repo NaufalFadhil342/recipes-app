@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { supabase } from "../api/supabase";
+import { supabase } from "../utils/supabase";
 import toast from "react-hot-toast";
 
 const defaultUserAuth = {
@@ -65,7 +65,7 @@ const UserAuthProvider = (props) => {
         } else if (event === "TOKEN_REFRESHED") {
           setUser(session?.user || null);
         }
-      }
+      },
     );
 
     return () => authListener?.subscription?.unsubscribe();

@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Reply = ({
   reply,
@@ -18,8 +19,8 @@ const Reply = ({
             <p className="text-semibold text-inherit">{reply.user}</p>
             {reply.replyTo && (
               <span className="flex items-center gap-1">
-                <Icon
-                  icon="mage:l-arrow-down-right"
+                <Icons
+                  iconsName={recipeIcons.mageArrowDown}
                   className="text-stone-500"
                 />
                 <p className="text-stone-500">{reply.replyTo}</p>
@@ -38,7 +39,7 @@ const Reply = ({
         <ul className="flex items-center gap-4">
           {expressions.map((exp, index) => (
             <li key={index} className="flex items-center gap-1">
-              <Icon icon={exp.icon} className="text-stone-600" />
+              <Icons iconsName={exp.icon} className="text-stone-600" />
               <span className="block">{exp.amount}</span>
             </li>
           ))}

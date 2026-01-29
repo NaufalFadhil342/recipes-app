@@ -1,17 +1,17 @@
-/* eslint-disable no-unused-vars */
 import { useRef, useEffect, useState } from "react";
-import { Icon } from "@iconify/react";
 import Bookmark from "../../UI/bookmark";
 import GlobalSearch from "./globalSearch";
 import MenuLinks from "./menuLinks";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import { useRecipes } from "../../hooks/useRecipes";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const navbar = [
-  { name: "Home", path: "/", icon: "material-symbols:home-outline-rounded" },
-  { name: "Recipes", path: "/recipes", icon: "pajamas:recipe" },
-  { name: "About", path: "/about", icon: "mdi:company" },
-  { name: "Contact", path: "/contact", icon: "hugeicons:contact-02" },
+  { name: "Home", path: "/", icon: recipeIcons.mysHome },
+  { name: "Recipes", path: "/recipes", icon: recipeIcons.paRecipe },
+  { name: "About", path: "/about", icon: recipeIcons.mdiCompany },
+  { name: "Contact", path: "/contact", icon: recipeIcons.hugeContact },
 ];
 
 const Navbar = () => {
@@ -63,7 +63,10 @@ const Navbar = () => {
             onClick={() => setShowSidebarMenu(true)}
             aria-label="sidebar menu"
           >
-            <Icon icon="ic:round-menu" className="size-7 text-white" />
+            <Icons
+              iconsName={recipeIcons.icMenu}
+              className="size-7 text-white"
+            />
           </button>
           <div ref={sidebarRef}>
             <AnimatePresence>
@@ -95,7 +98,7 @@ const Navbar = () => {
               className="flex xs:hidden bg-white w-auto h-8 rounded-full px-1 items-center justify-center"
               onClick={() => setShowSearch(!showSearch)}
             >
-              <Icon icon="bitcoin-icons:search-filled" className="size-6" />
+              <Icons iconsName={recipeIcons.bitcoinSearch} className="size-6" />
             </button>
             <AnimatePresence>
               {showSearch && (
@@ -116,8 +119,8 @@ const Navbar = () => {
               className="relative hover:cursor-pointer"
               onClick={() => setBookmarkIsOpen((prev) => !prev)}
             >
-              <Icon
-                icon="majesticons:bookmark"
+              <Icons
+                iconsName={recipeIcons.majestBookmark}
                 className="size-7 text-stone-600"
               />
               <div className="absolute -top-2 -right-1.5 z-2 bg-stone-100 rounded-full size-5 flex items-center justify-center">

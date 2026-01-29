@@ -1,7 +1,8 @@
 import Create from "./create";
-import { Icon } from "@iconify/react";
 import { useCreateArticle } from "../../hooks/useCreateArticle";
 import RecipeBtn from "./create/recipeBtn";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Article = () => {
   const {
@@ -76,8 +77,8 @@ const Article = () => {
       <form className="w-full h-auto mt-10" onSubmit={handleSubmit}>
         <div className="w-full h-auto flex items-center justify-between gap-3">
           <h2 className="text-4xl font-semibold flex items-center gap-2">
-            <Icon
-              icon="ph:note"
+            <Icons
+              iconsName={recipeIcons.phNote}
               className="size-8 text-stone-600 hidden xs:block"
             />
             <>Create Article</>

@@ -1,5 +1,6 @@
-import { Icon } from "@iconify/react";
 import { Link } from "react-router";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const HeroItem = (props) => {
   return (
@@ -32,7 +33,7 @@ const HeroItem = (props) => {
         >
           <span className="w-auto h-auto bg-stone-300 p-4 font-semibold md:text-xl rounded-2xl flex items-center gap-2 hover:bg-[#c2bebb] duration-150 transition-colors ease-in-out">
             <>View Recipe</>
-            <Icon icon="uiw:d-arrow-right" className="size-5" />
+            <Icons iconsName={recipeIcons.uiwArrowRight} className="size-5" />
           </span>
           <div className="size-10 absolute bottom-2.5 -left-6.25 bg-radial-[at_0%_5%] from-transparent from-43% to-lime-50 to-46%" />
           <div className="size-10 absolute bottom-2.5 -right-6.25 bg-radial-[at_100%_5%] from-transparent from-43% to-lime-50 to-46%" />

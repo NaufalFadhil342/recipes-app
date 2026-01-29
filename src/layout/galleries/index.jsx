@@ -2,8 +2,9 @@ import { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import ClassNames from "embla-carousel-class-names";
 import { usePrevNextBtn, PrevButton, NextButton } from "./prevNextButton";
-import { Icon } from "@iconify/react";
 import Gallery from "./gallery";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Galleries = ({ galleries }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -47,8 +48,8 @@ const Galleries = ({ galleries }) => {
             className="size-10 rounded-full bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
             onClick={onPrevBtnClick}
           >
-            <Icon
-              icon="iconamoon:arrow-left-2-light"
+            <Icons
+              iconsName={recipeIcons.moonArrowLeft}
               className="size-10 text-inherit"
             />
           </PrevButton>
@@ -56,8 +57,8 @@ const Galleries = ({ galleries }) => {
             className="size-10 rounded-full bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
             onClick={onNextBtnClick}
           >
-            <Icon
-              icon="iconamoon:arrow-right-2-light"
+            <Icons
+              iconsName={recipeIcons.moonArrowRight}
               className="size-10 text-inherit"
             />
           </NextButton>

@@ -6,7 +6,8 @@ import { UserAuthProvider } from "../context/userAuthCtx";
 import { CategoryProvider } from "../context/categoryCtx";
 import { RecipesProvider } from "../context/recipesCtx";
 import Footer from "../components/footer";
-import { Icon } from "@iconify/react";
+import { Icons } from "../icons";
+import { recipeIcons } from "../data/recipeIconsData";
 
 const AppRoutes = () => {
   const [showToTopBtn, setShowToTopBtn] = useState(false);
@@ -37,7 +38,10 @@ const AppRoutes = () => {
       className="fixed bottom-12 right-12 size-10 rounded flex items-center justify-center bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
       onClick={scrollToTop}
     >
-      <Icon icon="iconoir:nav-arrow-up-solid" className="size-8 text-inherit" />
+      <Icons
+        iconsName={recipeIcons.oirArrowTop}
+        className="size-8 text-inherit"
+      />
     </button>
   );
 

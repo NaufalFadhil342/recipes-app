@@ -13,7 +13,7 @@ const Service = () => {
         <h2 className="text-4xl uppercase font-semibold -translate-y-0.5">
           What We Serves?
         </h2>
-        <div className="w-30 h-0.75 bg-primary" />
+        <div className="w-14 h-0.75 bg-primary" />
       </div>
       <ul className="w-full h-auto grid md:grid-cols-3 gap-10 mt-20">
         {servicesItem.map((item, index) => {

@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icons } from "../icons";
+import { recipeIcons } from "../data/recipeIconsData";
 
 const Search = (props) => {
   return (
@@ -12,8 +13,8 @@ const Search = (props) => {
         onKeyDown={props.onKeyDown}
       />
       <button type="submit" title="search recipes" onClick={props.onSubmit}>
-        <Icon
-          icon="bitcoin-icons:search-filled"
+        <Icons
+          iconsName={recipeIcons.bitcoinSearch}
           className="size-8 mr-2 hover:cursor-pointer"
         />
       </button>

@@ -1,5 +1,6 @@
 import { useEdit } from "../../hooks/useEdit";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const PersonalInformation = () => {
   const {
@@ -27,7 +28,7 @@ const PersonalInformation = () => {
             onClick={handleClose}
             className="size-10 rounded-full hover:bg-stone-100 flex items-center justify-center transition-colors"
           >
-            <Icon icon="ri:close-line" className="size-6" />
+            <Icons iconsName={recipeIcons.riClose} className="size-6" />
           </button>
         </div>
         {error && (

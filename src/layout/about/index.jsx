@@ -1,6 +1,7 @@
-import { Icon } from "@iconify/react";
 import aboutUsImg from "../../assets/about-us.jpg";
 import AboutContent from "./aboutContent";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const About = () => {
   return (
@@ -19,8 +20,8 @@ const About = () => {
         </div>
         <div className="absolute w-full h-full top-0 bg-stone-800/50 flex flex-col items-center justify-center">
           <div className="group size-20 rounded-full bg-white flex items-center justify-center hover:scale-110 hover:bg-stone-100 transition-all ease-in-out duration-150">
-            <Icon
-              icon="iconoir:play-solid"
+            <Icons
+              iconsName={recipeIcons.oirAlayBtn}
               className="size-10 text-inherit group-hover:scale-105 transition-all duration-150 ease-in-out"
             />
           </div>

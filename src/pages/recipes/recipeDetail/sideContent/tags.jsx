@@ -1,5 +1,3 @@
-import React from "react";
-
 const Tags = ({ recipe }) => {
   return (
     <div className="w-full h-auto">

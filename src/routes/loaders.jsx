@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import { supabase } from "../api/supabase";
+import { supabase } from "../utils/supabase";
 
 export const globalLoader = async () => {
   try {
@@ -13,7 +13,7 @@ export const globalLoader = async () => {
                 users (
                   author,
                   avatar_url
-                )`
+                )`,
         )
         .order("created_at", { ascending: false }),
     ]);
@@ -67,7 +67,7 @@ export const savedRecipesLoader = async () => {
                   avatar_url
                 )
               )   
-            `
+            `,
       )
       .eq("user_id", user.id)
       .order("saved_at", { ascending: false });

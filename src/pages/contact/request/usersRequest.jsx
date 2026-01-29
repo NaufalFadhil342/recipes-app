@@ -1,7 +1,8 @@
 import UsersForm from "./usersForm";
 import formBG from "../../../assets/request.webp";
 import { Link } from "react-router";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const UsersRequest = () => {
   return (
@@ -29,8 +30,8 @@ const UsersRequest = () => {
             className="group size-10 bg-primary text-stone-600 rounded-full flex items-center justify-center absolute right-6 top-1/2 -translate-y-1/2"
             onClick={() => scrollTo({ top: true })}
           >
-            <Icon
-              icon="ri:arrow-right-fill"
+            <Icons
+              iconsName={recipeIcons.riArrowRight}
               className="size-6 rotate-90 group-hover:rotate-0 transition-all duration-150 ease-in-out"
             />
           </Link>

@@ -1,5 +1,6 @@
 import aboutBG from "../../assets/about-us.jpg";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Story = () => {
   return (
@@ -29,8 +30,8 @@ const Story = () => {
             className="group size-20 rounded-full bg-white flex items-center justify-center hover:scale-110 hover:bg-stone-100 hover:cursor-pointer transition-all ease-in-out duration-150"
             title="Play button"
           >
-            <Icon
-              icon="iconoir:play-solid"
+            <Icons
+              iconsName={recipeIcons.oirAlayBtn}
               className="size-10 text-inherit group-hover:scale-110 transition-all duration-150 ease-in-out"
             />
           </button>

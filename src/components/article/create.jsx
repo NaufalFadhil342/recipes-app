@@ -5,11 +5,9 @@ import Editor from "./editor";
 import Category from "./create/category";
 
 const categorySelection = [
-  { id: 1, name: "Asean", value: "asean" },
-  { id: 2, name: "Asian", value: "asian" },
-  { id: 3, name: "European", value: "european" },
-  { id: 4, name: "American", value: "american" },
-  { id: 5, name: "Eastern", value: "eastern" },
+  { id: 1, name: "Asian", value: "asian" },
+  { id: 2, name: "European", value: "european" },
+  { id: 3, name: "American", value: "american" },
 ];
 
 const Create = ({
@@ -78,7 +76,7 @@ const Create = ({
           />
         </div>
         <div className="w-full bg-white p-6 px-8 pb-8 rounded-xl flex flex-col items-start gap-10">
-          <h3 className="text-xl font-semibold">Media</h3>
+          <h3 className="text-xl font-semibold">Media (Image & Video)</h3>
           <UploadImage
             imagePreview={imagePreview}
             handleDragOver={handleDragOver}

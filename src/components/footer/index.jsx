@@ -1,5 +1,6 @@
-import { Icon } from "@iconify/react";
 import { Link } from "react-router";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const addsLinks = [
   { name: "About", label: "about", path: "/about" },
@@ -33,26 +34,26 @@ const Footer = () => {
           </p>
           <ul className="w-auto h-auto flex gap-6 mt-10">
             <li>
-              <Icon
-                icon="lucide:instagram"
+              <Icons
+                iconsName={recipeIcons.lucideInstagram}
                 className="size-10 text-stone-600/30 hover:text-stone-600"
               />
             </li>
             <li>
-              <Icon
-                icon="codicon:twitter"
+              <Icons
+                iconsName={recipeIcons.codiTwitter}
                 className="size-10 text-stone-600/30 hover:text-stone-600"
               />
             </li>
             <li>
-              <Icon
-                icon="fe:facebook"
+              <Icons
+                iconsName={recipeIcons.feFacebook}
                 className="size-10 text-stone-600/30 hover:text-stone-600"
               />
             </li>
             <li>
-              <Icon
-                icon="proicons:tiktok"
+              <Icons
+                iconsName={recipeIcons.proTiktok}
                 className="size-10 text-stone-600/30 hover:text-stone-600"
               />
             </li>

@@ -1,5 +1,4 @@
-import { Icon } from "@iconify/react";
-import React from "react";
+import { Icons } from "../../../../icons";
 
 const ShareIt = ({ shareArticle }) => {
   return (
@@ -12,8 +11,8 @@ const ShareIt = ({ shareArticle }) => {
           return (
             <li key={index}>
               <a href="" className="underline-none" target="_blank">
-                <Icon
-                  icon={share.icon}
+                <Icons
+                  iconsName={share.icon}
                   className={`size-5 ${shareItem ? "text-stone-500" : ""}`}
                 />
               </a>

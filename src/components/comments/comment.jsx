@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { Icon } from "@iconify/react";
 import Reply from "./reply";
+import { Icons } from "../../icons";
 
 const Comment = ({
   comment,
@@ -17,10 +17,10 @@ const Comment = ({
 
     return {
       directReplies: comment.replies.filter(
-        (reply) => !reply.replyTo || reply.replyTo === comment.user
+        (reply) => !reply.replyTo || reply.replyTo === comment.user,
       ),
       nestedReplies: comment.replies.filter(
-        (reply) => reply.replyTo && reply.replyTo !== comment.user
+        (reply) => reply.replyTo && reply.replyTo !== comment.user,
       ),
     };
   }, [comment.replies, comment.user]);
@@ -46,7 +46,7 @@ const Comment = ({
           <ul className="flex items-center gap-4">
             {expressions.map((exp, index) => (
               <li key={index} className="flex items-center gap-1">
-                <Icon icon={exp.icon} className="text-stone-600" />
+                <Icons iconsName={exp.icon} className="text-stone-600" />
                 <span className="block">{exp.amount}</span>
               </li>
             ))}

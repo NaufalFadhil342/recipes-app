@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ToolbarPlugin from "./plugins/toolbarPlugin";
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";

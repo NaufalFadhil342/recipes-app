@@ -1,21 +1,17 @@
-import React from "react";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const ourFeatures = [
   {
-    icon: "material-symbols:check-rounded",
     text: "Lorem ipsum dolor sit amet consectetur",
   },
   {
-    icon: "material-symbols:check-rounded",
     text: "Lorem ipsum dolor sit amet consectetur",
   },
   {
-    icon: "material-symbols:check-rounded",
     text: "Lorem ipsum dolor sit amet consectetur",
   },
   {
-    icon: "material-symbols:check-rounded",
     text: "Lorem ipsum dolor sit amet consectetur",
   },
 ];
@@ -34,7 +30,10 @@ const AboutContent = () => {
       <ul className="w-full h-auto">
         {ourFeatures.map((feature, index) => (
           <li key={index} className="flex items-center gap-2">
-            <Icon icon={feature.icon} className="size-10 text-primary" />
+            <Icons
+              iconsName={recipeIcons.mysCheck}
+              className="size-8 text-primary"
+            />
             <p className="text-stone-600">{feature.text}</p>
           </li>
         ))}
@@ -45,8 +44,8 @@ const AboutContent = () => {
           className="group w-fit h-12 flex items-center gap-2 px-4 rounded-md text-inherit bg-primary border-[3px] border-primary font-medium hover:bg-transparent transition-all duration-150 ease-in-out"
         >
           <>View More</>
-          <Icon
-            icon="ri:arrow-right-fill"
+          <Icons
+            iconsName={recipeIcons.riArrowRight}
             className="size-6 text-inherit rotate-90 group-hover:rotate-0 transition-all duration-150 ease-in-out"
           />
         </button>

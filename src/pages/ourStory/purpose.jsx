@@ -1,5 +1,6 @@
-import { Icon } from "@iconify/react";
 import { useState } from "react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const Purpose = () => {
   const [vision, setVision] = useState("vision");
@@ -55,8 +56,8 @@ const Purpose = () => {
           <ul className="w-full h-auto space-y-2">
             {ourMissions.map((mission, index) => (
               <li key={index} className="flex items-center gap-2">
-                <Icon
-                  icon="material-symbols:check-rounded"
+                <Icons
+                  iconsName={recipeIcons.mysCheck}
                   className="size-7 text-primary"
                 />
                 <p className="text-stone-600">{mission}</p>

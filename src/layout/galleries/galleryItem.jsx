@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Icon } from "@iconify/react";
+import { Icons } from "../../icons";
+import { recipeIcons } from "../../data/recipeIconsData";
 
 const GalleryItem = ({
   className,
@@ -27,7 +28,10 @@ const GalleryItem = ({
             exit={{ opacity: 0, scale: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <Icon icon="lucide:instagram" className="size-20 text-white" />
+            <Icons
+              iconsName={recipeIcons.lucideInstagram}
+              className="size-20 text-white"
+            />
             <p className="text-xl font-semibold text-white text-center">
               {cleanName}
             </p>
