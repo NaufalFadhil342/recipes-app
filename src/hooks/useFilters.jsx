@@ -3,7 +3,7 @@ import { useSearch } from "./useSearch";
 
 const defaultFilters = {
   sortBy: "popular",
-  category: [],
+  category: "",
   countries: [],
 };
 
@@ -17,14 +17,14 @@ const useFilters = (recipes) => {
   const searchQuery = currentSearchQuery;
   const getFiltersFromURL = () => {
     const sortBy = searchParams.get("sortBy") || "popular";
-    const category = searchParams.get("category") || [];
+    const category = searchParams.get("category") || "";
     const countries = searchParams.get("country") || [];
 
     return { sortBy, category, countries };
   };
 
   const [appliedFilters, setAppliedFilters] = useState(getFiltersFromURL);
-  const [tempFilters, setTempFilters] = useState(defaultFilters);
+  const [tempFilters, setTempFilters] = useState(appliedFilters);
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const useFilters = (recipes) => {
       params.delete("sortBy");
     }
 
-    if (appliedFilters.category && appliedFilters.category.length > 0) {
-      params.set("category", appliedFilters.category.join(","));
+    if (appliedFilters.category) {
+      params.set("category", appliedFilters.category);
     } else {
       params.delete("category");
     }
@@ -77,9 +77,9 @@ const useFilters = (recipes) => {
       updatedRecipes.sort((a, b) => b.views - a.views);
     }
 
-    if (appliedFilters.category && appliedFilters.category.length > 0) {
-      updatedRecipes = updatedRecipes.filter((recipe) =>
-        appliedFilters.category.includes(recipe.category),
+    if (appliedFilters.category) {
+      updatedRecipes = updatedRecipes.filter(
+        (recipe) => recipe.category === appliedFilters.category,
       );
     }
 
@@ -104,8 +104,8 @@ const useFilters = (recipes) => {
       return `No recipes found for ${searchQuery}`;
     }
 
-    if (appliedFilters.category && appliedFilters.category.length > 0) {
-      parts.push(appliedFilters.category.join(", "));
+    if (appliedFilters.category) {
+      parts.push(appliedFilters.category);
     }
 
     if (appliedFilters.countries && appliedFilters.countries.length > 0) {
@@ -123,7 +123,7 @@ const useFilters = (recipes) => {
       return `No ${parts[0]} recipes available.`;
     }
 
-    return `No ${parts.join(" recipes from ")} avaiable.`;
+    return `No ${parts.join(" recipes from ")} available.`;
   };
 
   const handleOpen = () => {

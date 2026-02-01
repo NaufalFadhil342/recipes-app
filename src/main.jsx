@@ -1,46 +1,38 @@
-import { lazy, StrictMode, Suspense } from "react";
+import { StrictMode, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
-import App from "./App";
-import UserProfile from "./pages/userProfile";
-import PersonalInformation from "./pages/userProfile/personalInformation";
-import UserDisplay from "./pages/userProfile/userDisplay";
-import Recipes from "./pages/recipes";
-import RecipeDetail from "./pages/recipes/recipeDetail";
-import Saved from "./pages/saved";
-import Stories from "./pages/ourStory";
-import ContactUs from "./pages/contact";
-import Article from "./components/article";
 import Error from "./UI/error";
 import {
   globalLoader,
   recipeDetailLoader,
   savedRecipesLoader,
 } from "./routes/loaders";
-import Loading from "./UI/loading";
+import AppRoutes from "./routes/AppRoutes";
 
-const AppRoutes = lazy(() => import("./routes/AppRoutes"));
+const App = lazy(() => import("./App"));
+const UserProfile = lazy(() => import("./pages/userProfile"));
+const PersonalInformation = lazy(
+  () => import("./pages/userProfile/personalInformation"),
+);
+const UserDisplay = lazy(() => import("./pages/userProfile/userDisplay"));
+const Recipes = lazy(() => import("./pages/recipes"));
+const RecipeDetail = lazy(() => import("./pages/recipes/recipeDetail"));
+const Saved = lazy(() => import("./pages/saved"));
+const Stories = lazy(() => import("./pages/ourStory"));
+const ContactUs = lazy(() => import("./pages/contact"));
+const Article = lazy(() => import("./pages/article"));
 
 const router = createBrowserRouter([
   {
+    id: "root",
     path: "/",
-    element: (
-      <Suspense
-        fallback={
-          <div className="w-full h-auto my-28 flex items-center justify-center">
-            <Loading />
-          </div>
-        }
-      >
-        <AppRoutes />
-      </Suspense>
-    ),
+    element: <AppRoutes />,
+    loader: globalLoader,
     children: [
       {
         index: true,
         element: <App />,
-        loader: globalLoader,
       },
       {
         path: "/profile",
@@ -59,7 +51,6 @@ const router = createBrowserRouter([
       {
         path: "/recipes",
         element: <Recipes />,
-        loader: globalLoader,
       },
       {
         path: "/recipes/:slug",

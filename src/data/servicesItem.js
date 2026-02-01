@@ -1,6 +1,6 @@
-import register from "../assets/register.jpg";
-import createRecipe from "../assets/create-recipes.jpg";
-import views from "../assets/see-viewers.jpg";
+import register from "../assets/register.webp";
+import createRecipe from "../assets/create-recipes.webp";
+import views from "../assets/see-viewers.webp";
 
 export const servicesItem = [
   {

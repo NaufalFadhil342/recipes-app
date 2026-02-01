@@ -2,7 +2,7 @@ import recipesCover from "../../assets/recipes.webp";
 import { useRecipes } from "../../hooks/useRecipes";
 import Recipe from "../../components/recipe";
 import Filters from "../../components/filters";
-import { useLoaderData } from "react-router";
+import { useRouteLoaderData } from "react-router";
 import { useFilters } from "../../hooks/useFilters";
 import { useSearch } from "../../hooks/useSearch";
 import Loading from "../../UI/loading";
@@ -11,7 +11,7 @@ import { recipeIcons } from "../../data/recipeIconsData";
 
 const Recipes = () => {
   const { handleSaveItem, isRecipeSaved } = useRecipes();
-  const { recipes } = useLoaderData();
+  const { recipes } = useRouteLoaderData("root");
   const { isSearching } = useSearch({
     path: "/recipes",
     preserveOtherParams: true,

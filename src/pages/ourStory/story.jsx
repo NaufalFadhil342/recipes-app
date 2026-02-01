@@ -1,4 +1,4 @@
-import aboutBG from "../../assets/about-us.jpg";
+import aboutBG from "../../assets/about-us.webp";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
 

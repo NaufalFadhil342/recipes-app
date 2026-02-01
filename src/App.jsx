@@ -5,10 +5,10 @@ import About from "./layout/about";
 import Service from "./layout/service";
 import Galleries from "./layout/galleries";
 import { Toaster } from "react-hot-toast";
-import { useLoaderData } from "react-router";
+import { useRouteLoaderData } from "react-router";
 
 function App() {
-  const { recipes, images } = useLoaderData();
+  const { recipes, images } = useRouteLoaderData("root");
 
   return (
     <div className="w-full h-auto">

@@ -1,31 +1,31 @@
 import { useMemo } from "react";
-import { getCategoryData } from "../../data/categoryFilter";
+import { getRegionData } from "../../data/regionFilter";
 import ImgCategory from "./imgCategory";
 import { useCategory } from "../../hooks/useCategory";
 
 const Categories = ({ images }) => {
-  const categoryData = useMemo(() => getCategoryData(images), [images]);
-  const { selectCategory, handleCategoryActive } = useCategory();
+  const regionData = useMemo(() => getRegionData(images), [images]);
+  const { selectRegion, handleRegionActive } = useCategory();
 
   const imgsPosition = {
     Rendang: "top-6 z-5",
-    Rawon: "top-0 -left-2",
-    "Nasi Liwet": "top-0 -right-2",
+    Barbeque: "top-0 -left-2",
+    Pasta: "top-0 -right-2",
   };
 
   return (
     <section className="w-full h-auto px-12 md:px-20 mb-28 overflow-x-hidden">
       <ul className="w-full h-auto flex justify-between gap-8 overflow-x-scroll scrollbar-none">
-        {categoryData.map((item) => {
+        {regionData.map((item) => {
           return (
             <li
               key={item.id}
               className={`flex-[0_0_68%] xs:flex-[0_0_46.5%] sm:flex-[0_0_40%] md:flex-[0_0_32%] lg:flex-[0_0_22%] w-full h-auto p-6 rounded-xl border ${
-                selectCategory === item.category
+                selectRegion === item.region
                   ? "border-primary bg-white"
                   : "border-stone-600/20 bg-transparent"
               } flex flex-col items-center justify-between gap-4`}
-              onClick={() => handleCategoryActive(item.category)}
+              onClick={() => handleRegionActive(item.region)}
             >
               <div className="w-full h-auto flex items-center justify-center">
                 {item.images.length > 1 ? (

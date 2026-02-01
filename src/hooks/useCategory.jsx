@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { CategoryCtx } from "../context/categoryCtx";
+import { RegionCtx } from "../context/regionCtx";
 
 export const useCategory = () => {
-  const context = useContext(CategoryCtx);
+  const context = useContext(RegionCtx);
 
   if (!context) {
     throw new Error("useCategory must be used within a CategoryProvider");

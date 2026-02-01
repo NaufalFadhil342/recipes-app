@@ -1,25 +1,17 @@
-const Category = ({ recipes, tempFilters, setTempFilters }) => {
-  const categories = [...new Set(recipes.map((recipe) => recipe.category))];
+const categories = [
+  { name: "foods", value: "food" },
+  { name: "beverages", value: "beverage" },
+];
 
-  const changeCategory = (category) => {
-    setTempFilters((prev) => {
-      const crrCategories = prev.category || [];
-
-      if (crrCategories.includes(category)) {
-        return {
-          ...prev,
-          category: crrCategories.filter((cat) => cat !== category),
-        };
-      } else {
-        return {
-          ...prev,
-          category: [...crrCategories, category],
-        };
-      }
-    });
+const Category = ({ tempFilters, setTempFilters }) => {
+  const changeCategory = (categoryValue) => {
+    setTempFilters((prev) => ({
+      ...prev,
+      category: categoryValue === "all" ? "" : categoryValue,
+    }));
   };
 
-  const selectedCategories = tempFilters.category || [];
+  const selectedCategory = tempFilters.category || "";
 
   return (
     <div className="w-full h-auto px-4">
@@ -27,15 +19,27 @@ const Category = ({ recipes, tempFilters, setTempFilters }) => {
         Category
       </div>
       <ul className="mt-2 flex flex-col gap-1.5">
-        {categories.map((category) => (
-          <li key={category} className="flex items-center gap-2">
+        <li className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="category"
+            className="size-3.5 accent-primary hover:cursor-pointer outline-none"
+            checked={selectedCategory === ""}
+            onChange={() => changeCategory("all")}
+          />
+          <p className="capitalize">All</p>
+        </li>
+
+        {categories.map((category, index) => (
+          <li key={index} className="flex items-center gap-2">
             <input
-              type="checkbox"
-              className="size-3.5 accent-primary hover:cursor-pointer"
-              checked={selectedCategories.includes(category)}
-              onChange={() => changeCategory(category)}
+              type="radio"
+              name="category"
+              className="size-3.5 accent-primary hover:cursor-pointer outline-none"
+              checked={selectedCategory === category.value}
+              onChange={() => changeCategory(category.value)}
             />
-            <p className="capitalize">{category}</p>
+            <p className="capitalize">{category.name}</p>
           </li>
         ))}
       </ul>

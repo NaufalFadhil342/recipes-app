@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Outlet } from "react-router";
 import Navbar from "../components/header/navbar";
 import Info from "../components/header/info";
 import { UserAuthProvider } from "../context/userAuthCtx";
-import { CategoryProvider } from "../context/categoryCtx";
+import { RegionProvider } from "../context/regionCtx";
 import { RecipesProvider } from "../context/recipesCtx";
 import Footer from "../components/footer";
 import { Icons } from "../icons";
 import { recipeIcons } from "../data/recipeIconsData";
+import Loading from "../UI/loading";
 
 const AppRoutes = () => {
   const [showToTopBtn, setShowToTopBtn] = useState(false);
@@ -47,17 +48,25 @@ const AppRoutes = () => {
 
   return (
     <UserAuthProvider>
-      <CategoryProvider>
+      <RegionProvider>
         <RecipesProvider>
           <Info />
           <Navbar />
           <main>
-            <Outlet />
+            <Suspense
+              fallback={
+                <div className="w-full h-auto my-28 flex items-center justify-center">
+                  <Loading />
+                </div>
+              }
+            >
+              <Outlet />
+            </Suspense>
             <>{scrollBtnToTop}</>
           </main>
           <Footer />
         </RecipesProvider>
-      </CategoryProvider>
+      </RegionProvider>
     </UserAuthProvider>
   );
 };

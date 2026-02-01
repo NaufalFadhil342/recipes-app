@@ -5,17 +5,17 @@ import { useItemsPerViewport } from "../../hooks/useItemsPerViewport";
 import { useRecipes } from "../../hooks/useRecipes";
 
 const Cooking = ({ recipes }) => {
-  const { selectCategory } = useCategory();
+  const { selectRegion } = useCategory();
   const { isRecipeSaved, handleSaveItem } = useRecipes();
   const itemsToShow = useItemsPerViewport();
 
   const filterRecipes = useMemo(() => {
-    if (selectCategory === "") {
+    if (selectRegion === "") {
       return recipes;
     }
 
-    return recipes.filter((recipe) => recipe.category === selectCategory);
-  }, [selectCategory, recipes]);
+    return recipes.filter((recipe) => recipe.country?.region === selectRegion);
+  }, [selectRegion, recipes]);
 
   const sliceRecipes = filterRecipes.slice(0, itemsToShow);
 

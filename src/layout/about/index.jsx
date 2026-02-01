@@ -1,4 +1,4 @@
-import aboutUsImg from "../../assets/about-us.jpg";
+import aboutUsImg from "../../assets/about-us.webp";
 import AboutContent from "./aboutContent";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
