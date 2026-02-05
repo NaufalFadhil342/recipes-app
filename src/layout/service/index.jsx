@@ -1,5 +1,5 @@
 import { useAuth } from "../../hooks/useAuth";
-import Auth from "../../components/auth";
+import Auth from "../../pages/auth";
 import { servicesItem } from "../../data/servicesItem";
 
 const Service = () => {

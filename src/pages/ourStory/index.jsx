@@ -3,6 +3,7 @@ import Experiences from "./experiences";
 import Purpose from "./purpose";
 import Testimony from "../../components/testimony";
 import ReachOutToUs from "../../layout/reachOutToUs";
+import WhatPeopleSays from "./whatPeopleSays";
 
 const Stories = () => {
   return (
@@ -20,7 +21,7 @@ const Stories = () => {
         <ReachOutToUs />
       </div>
       <div className="w-full h-auto mt-20">
-        <Testimony />
+        <WhatPeopleSays />
       </div>
     </section>
   );

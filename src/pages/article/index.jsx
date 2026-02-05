@@ -4,6 +4,11 @@ import RecipeBtn from "./create/recipeBtn";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
 
+const publishOptions = [
+  { name: "Save Draft", action: "draft" },
+  { name: "Publish Now", action: "publish" },
+];
+
 const Article = () => {
   const {
     createArticle,
@@ -14,11 +19,18 @@ const Article = () => {
     fileInputRef,
     videoInputRef,
     isCategoryOpen,
+    isCountryOpen,
     inputTag,
+    defaultCreateState,
+    validateArticle,
     setInputTag,
     setIsCategoryOpen,
+    setIsCountryOpen,
+    setCreateArticle,
     getSelectedCategoryName,
+    getSelectedCountryName,
     handleCategorySelect,
+    handleCountrySelect,
     handleClickUploadFile,
     handleClickUploadVideo,
     handleDragLeave,
@@ -31,50 +43,92 @@ const Article = () => {
     handleVideoChange,
   } = useCreateArticle();
 
-  const handleSubmit = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
-    console.group("📋 Article Data Check");
-    console.log("Title:", createArticle.title);
-    console.log("Slug:", createArticle.slug);
-    console.log("Category:", createArticle.category);
-    console.log("Tags:", createArticle.tags);
-    console.log("Content length:", createArticle.content?.length);
-    console.log("Image file:", createArticle.img_url);
-    console.log("Video file:", createArticle.video_url);
-    console.groupEnd();
+    try {
+      const now = new Date().toISOString();
 
-    const mockArticleData = {
-      title: createArticle.title,
-      slug: createArticle.slug,
-      category: createArticle.category,
-      tags: createArticle.tags,
-      created_at: createArticle.createdAt || new Date().toISOString(),
-      img_url: createArticle.img_url ? createArticle.img_url.name : null,
-      video_url: createArticle.video_url ? createArticle.video_url.name : null,
-      content: createArticle.content,
-    };
+      const savedArticle = {
+        ...createArticle,
+        savedAt: now,
+        updatedAt: now,
+        status: "draft",
+      };
 
-    console.log("📤 Mock data to be inserted:", mockArticleData);
-    console.log("📊 JSON Preview:", JSON.stringify(mockArticleData, null, 2));
+      const savedArticlesStr = localStorage.getItem("savedArticles");
 
-    // try {
-    //   // const response = await supabase.from("articles").insert([]);
-    //   const response = await Object.fromEntries(formData);
+      const savedArticles = savedArticlesStr
+        ? JSON.parse(savedArticlesStr)
+        : [];
+      const existingIndex = savedArticles.findIndex(
+        (article) => article.slug === savedArticle.slug,
+      );
 
-    //   if (response.error) {
-    //     console.error("Error creating article:", response.error);
-    //   }
+      if (existingIndex >= 0) {
+        savedArticles[existingIndex] = savedArticle;
+      } else {
+        savedArticles.push(savedArticle);
+      }
 
-    //   console.log("Article created successfully:", response);
-    // } catch (error) {
-    //   console.error("Unexpected error:", error);
-    // }
+      localStorage.setItem("savedArticles", JSON.stringify(savedArticles));
+
+      setCreateArticle(defaultCreateState);
+      alert("Draft saved successfully! ✅");
+
+      return savedArticle;
+    } catch (error) {
+      console.error("Error saving draft:", error);
+      alert("Failed to save draft. Please try again.");
+    }
+  };
+
+  const handlePublish = async (e) => {
+    e.preventDefault();
+
+    try {
+      const errors = validateArticle(createArticle);
+      if (errors.length > 0) {
+        alert(`Please fix the following errors:\n${errors.join("\n")}`);
+        return;
+      }
+
+      const now = new Date().toISOString();
+
+      const publishedArticle = {
+        ...createArticle,
+        publishedAt: now,
+        updatedAt: now,
+        createdAt: createArticle.createdAt || now,
+        status: "published",
+      };
+
+      console.log("📤 Mock data to be inserted:", publishedArticle);
+      console.log(
+        "📊 JSON Preview:",
+        JSON.stringify(publishedArticle, null, 2),
+      );
+
+      const savedArticlesStr = localStorage.getItem("savedArticles");
+      if (savedArticlesStr) {
+        const savedArticles = JSON.parse(savedArticlesStr);
+        const filtered = savedArticles.filter(
+          (article) => article.slug !== publishedArticle.slug,
+        );
+        localStorage.setItem("savedArticles", JSON.stringify(filtered));
+      }
+
+      alert("Article published successfully! 🎉");
+      setCreateArticle(defaultCreateState);
+    } catch (error) {
+      console.error("Error publishing article:", error);
+      alert("Failed to publish article. Please try again.");
+    }
   };
 
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20">
-      <form className="w-full h-auto mt-10" onSubmit={handleSubmit}>
+      <form className="w-full h-auto mt-10">
         <div className="w-full h-auto flex items-center justify-between gap-3">
           <h2 className="text-4xl font-semibold flex items-center gap-2">
             <Icons
@@ -83,8 +137,12 @@ const Article = () => {
             />
             <>Create Article</>
           </h2>
-          <div className="w-auto h-auto hidden sm:flex items-center gap-4">
-            <RecipeBtn />
+          <div className="w-auto h-auto hidden sm:block">
+            <RecipeBtn
+              publishOptions={publishOptions}
+              handleSave={handleSave}
+              handlePublish={handlePublish}
+            />
           </div>
         </div>
         <div className="w-full h-auto mt-10">
@@ -97,11 +155,15 @@ const Article = () => {
             fileInputRef={fileInputRef}
             videoInputRef={videoInputRef}
             isCategoryOpen={isCategoryOpen}
+            isCountryOpen={isCountryOpen}
             inputTag={inputTag}
             setInputTag={setInputTag}
             setIsCategoryOpen={setIsCategoryOpen}
+            setIsCountryOpen={setIsCountryOpen}
             getSelectedCategoryName={getSelectedCategoryName}
+            getSelectedCountryName={getSelectedCountryName}
             handleCategorySelect={handleCategorySelect}
+            handleCountrySelect={handleCountrySelect}
             handleClickUploadFile={handleClickUploadFile}
             handleClickUploadVideo={handleClickUploadVideo}
             handleDragLeave={handleDragLeave}
@@ -114,8 +176,12 @@ const Article = () => {
             handleVideoChange={handleVideoChange}
           />
         </div>
-        <div className="w-auto h-auto flex sm:hidden items-center gap-4 mt-8">
-          <RecipeBtn />
+        <div className="w-auto h-auto mt-8 block sm:hidden">
+          <RecipeBtn
+            publishOptions={publishOptions}
+            handleSave={handleSave}
+            handlePublish={handlePublish}
+          />
         </div>
       </form>
     </section>

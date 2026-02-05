@@ -1,8 +1,12 @@
 import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
-import { $createParagraphNode } from "lexical";
+import {
+  $createParagraphNode,
+  $getSelection,
+  $isRangeSelection,
+} from "lexical";
 
-const formatHeading = (headingSize) => {
+const formatHeading = (headingSize, editor) => {
   editor.update(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
@@ -11,7 +15,7 @@ const formatHeading = (headingSize) => {
   });
 };
 
-const formatParagraph = () => {
+const formatParagraph = (editor) => {
   editor.update(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
@@ -20,7 +24,7 @@ const formatParagraph = () => {
   });
 };
 
-const formatQuote = () => {
+const formatQuote = (editor) => {
   editor.update(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {

@@ -53,7 +53,7 @@ const theme = {
 function Placeholder() {
   return (
     <div className="absolute top-[15px] left-[15px] text-[#999] pointer-events-none select-none">
-      Enter some rich text...
+      Start writing your recipe instructions...
     </div>
   );
 }

@@ -2,13 +2,13 @@ import { StrictMode, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
-import Error from "./UI/error";
 import {
   globalLoader,
   recipeDetailLoader,
   savedRecipesLoader,
 } from "./routes/loaders";
 import AppRoutes from "./routes/AppRoutes";
+import { ErrorBoundary } from "./components/errorBoundary";
 
 const App = lazy(() => import("./App"));
 const UserProfile = lazy(() => import("./pages/userProfile"));
@@ -22,12 +22,15 @@ const Saved = lazy(() => import("./pages/saved"));
 const Stories = lazy(() => import("./pages/ourStory"));
 const ContactUs = lazy(() => import("./pages/contact"));
 const Article = lazy(() => import("./pages/article"));
+const Auth = lazy(() => import("./pages/auth"));
+const Error = lazy(() => import("./pages/error"));
 
 const router = createBrowserRouter([
   {
     id: "root",
     path: "/",
     element: <AppRoutes />,
+    errorElement: <ErrorBoundary />,
     loader: globalLoader,
     children: [
       {
@@ -73,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactUs />,
+      },
+      {
+        path: "/auth",
+        element: <Auth />,
       },
       {
         path: "/*",

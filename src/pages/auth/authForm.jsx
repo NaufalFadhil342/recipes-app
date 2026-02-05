@@ -69,8 +69,8 @@ const AuthForm = () => {
           {loading
             ? "loading..."
             : authMode === "signin"
-            ? "Sign In"
-            : "Sign Up"}
+              ? "Sign In"
+              : "Sign Up"}
         </button>
       </form>
       <div className="w-full h-auto flex items-center justify-between gap-2 my-4">

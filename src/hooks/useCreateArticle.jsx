@@ -1,29 +1,49 @@
 import { useState, useRef, useEffect } from "react";
 
+const defaultCreateState = {
+  title: "",
+  content: "",
+  slug: "",
+  alt_text: "",
+  img_url: null,
+  video_url: null,
+  category: "",
+  country: "",
+  tags: [],
+  createdAt: "",
+  status: "draft",
+};
+
 export const useCreateArticle = () => {
-  const [createArticle, setCreateArticle] = useState({
-    title: "",
-    content: "",
-    slug: "",
-    img_url: null,
-    video_url: null,
-    category: "",
-    tags: [],
-    createdAt: "",
-  });
+  const [createArticle, setCreateArticle] = useState(defaultCreateState);
   const [imagePreview, setImagePreview] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
   const [inputTag, setInputTag] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
+  const validateArticle = (article) => {
+    const errors = [];
+
+    if (!article.title?.trim()) errors.push("Title is required");
+    if (!article.content?.trim()) errors.push("Content is required");
+    if (!article.slug?.trim()) errors.push("Slug is required");
+    if (!article.category) errors.push("Category is required");
+    if (!article.country) errors.push("Country is required");
+
+    return errors;
+  };
+
   const onCreateChange = (e) => {
-    setCreateArticle((prev) => ({
-      ...prev,
+    const updatedArticle = {
+      ...createArticle,
       [e.target.name]: e.target.value,
-    }));
+    };
+
+    setCreateArticle(updatedArticle);
   };
 
   const handleAddTag = () => {
@@ -48,12 +68,20 @@ export const useCreateArticle = () => {
     }));
   };
 
-  const handleCategorySelect = (categoryValue) => {
+  const handleCategorySelect = (selectCategory) => {
     setCreateArticle((prev) => ({
       ...prev,
-      category: categoryValue,
+      category: selectCategory,
     }));
     setIsCategoryOpen(false);
+  };
+
+  const handleCountrySelect = (selectCountry) => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      country: selectCountry,
+    }));
+    setIsCountryOpen(false);
   };
 
   const getSelectedCategoryName = (categorySelection) => {
@@ -61,6 +89,14 @@ export const useCreateArticle = () => {
       (cat) => cat.value === createArticle.category,
     );
     return selected ? selected.name : "Select category";
+  };
+
+  const getSelectedCountryName = (selectedCountry) => {
+    const selected = selectedCountry.find(
+      (cat) => cat.name === createArticle.country,
+    );
+
+    return selected ? selected.name : "Select your country";
   };
 
   const handleImageChange = (e) => {
@@ -71,17 +107,6 @@ export const useCreateArticle = () => {
   };
 
   const processFile = (file) => {
-    // if (!file.type.startsWith("image/")) {
-    //   alert("Please upload an image file");
-    //   return;
-    // }
-
-    // if (file.size > 5 * 1024 * 1024) {
-    //   alert("File size must be less than 5MB");
-    //   return;
-    // }
-
-    // Set file ke state
     setCreateArticle((prev) => ({
       ...prev,
       img_url: file,
@@ -195,6 +220,9 @@ export const useCreateArticle = () => {
     isDragging,
     inputTag,
     isCategoryOpen,
+    isCountryOpen,
+    defaultCreateState,
+    validateArticle,
     handleAddTag,
     handleRemoveTag,
     handleDragOver,
@@ -203,12 +231,15 @@ export const useCreateArticle = () => {
     handleClickUploadFile,
     handleClickUploadVideo,
     handleCategorySelect,
+    handleCountrySelect,
     setCreateArticle,
     setInputTag,
     setIsCategoryOpen,
+    setIsCountryOpen,
     fileInputRef,
     videoInputRef,
     getSelectedCategoryName,
+    getSelectedCountryName,
     handleImageChange,
     handleRemoveImage,
     handleRemoveVideo,

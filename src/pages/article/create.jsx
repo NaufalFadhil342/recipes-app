@@ -2,13 +2,7 @@ import { useRef, useEffect } from "react";
 import UploadImage from "./uploadImage";
 import UploadVideo from "./uploadVideo";
 import Editor from "./editor";
-import Category from "./create/category";
-
-const categorySelection = [
-  { id: 1, name: "Asian", value: "asian" },
-  { id: 2, name: "European", value: "european" },
-  { id: 3, name: "American", value: "american" },
-];
+import ArticleDetail from "./articleDetail";
 
 const Create = ({
   createArticle,
@@ -20,11 +14,15 @@ const Create = ({
   videoInputRef,
   isCategoryOpen,
   isDragging,
+  isCountryOpen,
   inputTag,
   setInputTag,
   setIsCategoryOpen,
+  setIsCountryOpen,
   getSelectedCategoryName,
+  getSelectedCountryName,
   handleCategorySelect,
+  handleCountrySelect,
   handleClickUploadFile,
   handleClickUploadVideo,
   handleDragLeave,
@@ -37,11 +35,15 @@ const Create = ({
   handleVideoChange,
 }) => {
   const categoryRef = useRef(null);
+  const countryRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (categoryRef.current && !categoryRef.current.contains(event.target)) {
         setIsCategoryOpen(false);
+      }
+      if (countryRef.current && !countryRef.current.contains(event.target)) {
+        setIsCountryOpen(false);
       }
     };
 
@@ -66,6 +68,14 @@ const Create = ({
             placeholder="Recipe title"
             name="title"
             value={createArticle.title}
+            onChange={onCreateChange}
+          />
+          <input
+            type="text"
+            className="w-full h-auto outline-none"
+            placeholder="Alternative text (ex. rendang)"
+            name="alt_text"
+            value={createArticle.alt_text}
             onChange={onCreateChange}
           />
         </div>
@@ -102,81 +112,25 @@ const Create = ({
         </div>
       </div>
       <div className="w-full h-fit lg:sticky top-8 self-start">
-        <div className="w-full h-auto bg-white p-6 px-8 rounded-xl lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto">
-          <h2 className="text-xl font-semibold">Article Details</h2>
-          <div className="mt-6 flex flex-col w-full h-auto gap-6">
-            <div className="w-full h-auto">
-              <Category
-                categoryRef={categoryRef}
-                categorySelection={categorySelection}
-                createArticle={createArticle}
-                getSelectedCategoryName={getSelectedCategoryName}
-                handleCategorySelect={handleCategorySelect}
-                isCategoryOpen={isCategoryOpen}
-                setIsCategoryOpen={setIsCategoryOpen}
-              />
-            </div>
-            <div className="w-full h-auto">
-              <label className="font-medium">Slug</label>
-              <input
-                type="text"
-                placeholder="Enter-recipe-slug"
-                className="border-b-2 border-stone-600/15 w-full py-3 mt-2 placeholder:text-stone-300 outline-none hover:border-primary focus:border-primary"
-                name="slug"
-                value={createArticle.slug}
-                onChange={onCreateChange}
-              />
-            </div>
-            <div className="w-full h-auto">
-              <label className="font-medium">Tags</label>
-              <div className="w-full flex items-end justify-between gap-4 mt-2">
-                <input
-                  type="text"
-                  placeholder="pasta, barbeque, rendang"
-                  className="w-full py-3 border-b-2 border-stone-600/15 outline-none hover:border-primary focus:border-primary"
-                  value={inputTag}
-                  onChange={(e) => setInputTag(e.target.value)}
-                  onKeyDown={canEnterTag}
-                />
-                <button
-                  type="button"
-                  onClick={handleAddTag}
-                  className="w-auto h-10 px-4 rounded-md bg-stone-300 hover:bg-[#c2bebb] transition-all duration-150"
-                >
-                  Generate
-                </button>
-              </div>
-              <div className="w-full h-auto flex gap-2 mt-4 flex-wrap">
-                {createArticle.tags.length > 0 &&
-                  createArticle.tags.map((tag, index) => (
-                    <div
-                      key={index}
-                      className="w-auto h-6 rounded-full px-3 py-4 bg-primary/20 flex items-center gap-2"
-                    >
-                      <span className="text-sm capitalize">{tag}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveTag(index)}
-                        className="text-xs hover:text-red-600"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-              </div>
-            </div>
-            <div className="w-full h-auto">
-              <label className="font-medium">Created At</label>
-              <input
-                type="date"
-                className="w-full h-auto mt-2 py-3 border-b-2 border-stone-600/15 placeholder:text-stone-300 outline-none hover:border-primary focus:border-primary"
-                name="createdAt"
-                value={createArticle.createdAt}
-                onChange={onCreateChange}
-              />
-            </div>
-          </div>
-        </div>
+        <ArticleDetail
+          categoryRef={categoryRef}
+          countryRef={countryRef}
+          canEnterTag={canEnterTag}
+          createArticle={createArticle}
+          inputTag={inputTag}
+          isCategoryOpen={isCategoryOpen}
+          getSelectedCategoryName={getSelectedCategoryName}
+          handleAddTag={handleAddTag}
+          handleCategorySelect={handleCategorySelect}
+          handleCountrySelect={handleCountrySelect}
+          handleRemoveTag={handleRemoveTag}
+          onCreateChange={onCreateChange}
+          setInputTag={setInputTag}
+          setIsCategoryOpen={setIsCategoryOpen}
+          setIsCountryOpen={setIsCountryOpen}
+          getSelectedCountryName={getSelectedCountryName}
+          isCountryOpen={isCountryOpen}
+        />
       </div>
     </div>
   );

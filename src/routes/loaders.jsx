@@ -1,10 +1,10 @@
 import { redirect } from "react-router";
-import { supabase } from "../utils/supabase";
+import { requireAuth, supabase } from "../utils/supabase";
 
 export const globalLoader = async () => {
   try {
     const [storageFiles, recipesRes] = await Promise.all([
-      supabase.storage.from("assets").list("", { limit: 100 }),
+      supabase.storage.from("assets").list(""),
       supabase
         .from("recipes")
         .select(
@@ -46,13 +46,10 @@ export const globalLoader = async () => {
 
 export const savedRecipesLoader = async () => {
   try {
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    const session = await requireAuth();
 
-    if (!user || authError) {
-      return redirect("/");
+    if (!session) {
+      return redirect("/login?redirectTo=/saved-recipes");
     }
 
     const { data, error } = await supabase
@@ -69,10 +66,19 @@ export const savedRecipesLoader = async () => {
               )   
             `,
       )
-      .eq("user_id", user.id)
+      .eq("user_id", session.user.id)
       .order("saved_at", { ascending: false });
 
     if (error) {
+      console.error("Saved recipes error:", error);
+
+      if (error.code === "PGRST301" || error.message?.includes("JWT")) {
+        await supabase.auth.signOut();
+        return redirect(
+          "/login?redirectTo=/saved-recipes&error=session-expired",
+        );
+      }
+
       throw new Response("Failed to load saved recipes", { status: 500 });
     }
 

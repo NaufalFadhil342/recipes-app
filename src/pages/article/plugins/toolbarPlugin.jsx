@@ -47,7 +47,7 @@ function ToolbarPlugin() {
           setCanUndo(payload);
           return false;
         },
-        COMMAND_PRIORITY_LOW
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         CAN_REDO_COMMAND,
@@ -55,8 +55,8 @@ function ToolbarPlugin() {
           setCanRedo(payload);
           return false;
         },
-        COMMAND_PRIORITY_LOW
-      )
+        COMMAND_PRIORITY_LOW,
+      ),
     );
   }, [editor]);
 
@@ -134,25 +134,29 @@ function ToolbarPlugin() {
         }}
       />
 
-      <button onClick={formatParagraph} style={buttonStyle} type="button">
+      <button
+        onClick={() => formatParagraph(editor)}
+        style={buttonStyle}
+        type="button"
+      >
         Paragraph
       </button>
       <button
-        onClick={() => formatHeading("h1")}
+        onClick={() => formatHeading("h1", editor)}
         style={buttonStyle}
         type="button"
       >
         H1
       </button>
       <button
-        onClick={() => formatHeading("h2")}
+        onClick={() => formatHeading("h2", editor)}
         style={buttonStyle}
         type="button"
       >
         H2
       </button>
       <button
-        onClick={() => formatHeading("h3")}
+        onClick={() => formatHeading("h3", editor)}
         style={buttonStyle}
         type="button"
       >
@@ -185,7 +189,7 @@ function ToolbarPlugin() {
         1. List
       </button>
       <button
-        onClick={formatQuote}
+        onClick={() => formatQuote(editor)}
         style={buttonStyle}
         title="Quote"
         type="button"
