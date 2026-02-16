@@ -1,7 +1,7 @@
 import Category from "./create/category";
 import Country from "./create/country";
 
-const ArticleDetail = ({
+const Metadata = ({
   categoryRef,
   createArticle,
   getSelectedCategoryName,
@@ -22,7 +22,7 @@ const ArticleDetail = ({
 }) => {
   return (
     <div className="w-full h-auto bg-white p-6 px-8 rounded-xl lg:max-h-[90vh] lg:overflow-y-auto lg:scrollbar-thin">
-      <h2 className="text-xl font-semibold">Article Details</h2>
+      <h2 className="text-xl font-semibold">Metadata</h2>
       <div className="mt-6 flex flex-col w-full h-auto gap-6">
         <div className="w-full h-auto">
           <Category
@@ -98,4 +98,4 @@ const ArticleDetail = ({
   );
 };
 
-export default ArticleDetail;
+export default Metadata;

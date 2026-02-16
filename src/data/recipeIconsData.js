@@ -21,6 +21,7 @@ export const recipeIcons = {
   oirArrowTop: "iconoir:nav-arrow-up-solid",
   oirAlayBtn: "iconoir:play-solid",
   myuiFilter: "mynaui:filter-solid",
+  myuiTrash: "mynaui:trash",
   mysCheck: "material-symbols:check-rounded",
   mysUpload: "material-symbols:upload-rounded",
   mysHome: "material-symbols:home-outline-rounded",
@@ -38,4 +39,6 @@ export const recipeIcons = {
   hugeContact: "hugeicons:contact-02",
   mageArrowDown: "mage:l-arrow-down-right",
   phNote: "ph:note",
+  iwwaOptionHorizontal: "iwwa:option-horizontal",
+  pePopExpand: "pepicons-pop:expand",
 };

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { recipeIcons } from "../../../data/recipeIconsData";
 import { Icons } from "../../../icons";
-import countriesData from "../../../../countries.json";
+import { supabase } from "../../../utils/supabase";
 
 const Country = ({
   isCountryOpen,
@@ -11,9 +11,23 @@ const Country = ({
   handleCountrySelect,
   countryRef,
 }) => {
-  const [getCountries] = useState(countriesData.countries);
+  const [countries, setCountries] = useState([]);
 
-  const sortCountries = [...getCountries].sort((a, b) =>
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const { data, error } = await supabase.from("countries").select("*");
+
+      if (error) {
+        console.error("fetch countries error:", error);
+      }
+
+      setCountries(data);
+    };
+
+    fetchCountries();
+  }, []);
+
+  const sortCountries = [...countries].sort((a, b) =>
     a.name.localeCompare(b.name),
   );
 
@@ -27,11 +41,11 @@ const Country = ({
             isCountryOpen
               ? "border-primary"
               : "border-stone-600/15 hover:border-primary"
-          } ${!createArticle.country ? "text-stone-300" : "text-stone-600"}`}
+          } ${!createArticle.country_code ? "text-stone-300" : "text-stone-600"}`}
           onClick={() => setIsCountryOpen(!isCountryOpen)}
         >
           <span className="font-medium">
-            {getSelectedCountryName(getCountries)}
+            {getSelectedCountryName(countries)}
           </span>
           <Icons
             iconsName={recipeIcons.tablerChevDown}
@@ -46,14 +60,14 @@ const Country = ({
               <li key={country.code} className="w-full h-auto">
                 <button
                   type="button"
-                  className={`w-full py-2 px-4 text-left hover:bg-primary/15 text-inherit font-medium transition-colors flex items-center justify-between
+                  className={`w-full py-2 px-4 text-left hover:bg-primary/15 font-medium transition-colors flex items-center justify-between
                           ${
-                            createArticle.country === country.name
+                            createArticle.country_code === country.code
                               ? "bg-primary/20"
                               : "bg-transparent"
                           }
                         `}
-                  onClick={() => handleCountrySelect(country.name)}
+                  onClick={() => handleCountrySelect(country.code)}
                 >
                   {country.name}
                 </button>

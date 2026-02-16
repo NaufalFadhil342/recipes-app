@@ -18,7 +18,12 @@ const Users = ({ handleSignOut, user }) => {
     {
       name: "Create Recipe",
       label: "Create your recipe",
-      path: "/recipes/create",
+      path: "/create",
+    },
+    {
+      name: "My Recipes",
+      label: "See your recipe",
+      path: `/my-recipes/draft`,
     },
     {
       name: "Saved",
@@ -70,7 +75,7 @@ const Users = ({ handleSignOut, user }) => {
             >
               <div className="w-full h-auto">
                 <p className="text-inherit font-medium capitalize">
-                  {username || email}
+                  Hi, {username || email}
                 </p>
               </div>
               <ul className="my-2 w-full h-auto border-y border-stone-300">

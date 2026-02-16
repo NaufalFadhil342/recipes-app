@@ -29,7 +29,7 @@ const Cooking = ({ recipes }) => {
             <Recipe
               key={recipe.id}
               recipe={recipe}
-              savedItems={isSaved}
+              savedItem={isSaved}
               handleSaveItem={handleSaveItem}
             />
           );

@@ -1,20 +1,26 @@
 import { useState, useRef, useEffect } from "react";
+import { supabase } from "../utils/supabase";
+import toast from "react-hot-toast";
 
 const defaultCreateState = {
   title: "",
-  content: "",
+  introduction: "",
+  additional_info: "",
   slug: "",
   alt_text: "",
-  img_url: null,
+  ingredients: [""],
+  instructions: [""],
+  img_cover: null,
   video_url: null,
   category: "",
-  country: "",
+  author_id: null,
+  country_code: "",
   tags: [],
   createdAt: "",
   status: "draft",
 };
 
-export const useCreateArticle = () => {
+export const useCreateArticle = (editMode = false, existingArticle = null) => {
   const [createArticle, setCreateArticle] = useState(defaultCreateState);
   const [imagePreview, setImagePreview] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
@@ -26,15 +32,21 @@ export const useCreateArticle = () => {
   const videoInputRef = useRef(null);
 
   const validateArticle = (article) => {
-    const errors = [];
+    const validateErrors = [];
 
-    if (!article.title?.trim()) errors.push("Title is required");
-    if (!article.content?.trim()) errors.push("Content is required");
-    if (!article.slug?.trim()) errors.push("Slug is required");
-    if (!article.category) errors.push("Category is required");
-    if (!article.country) errors.push("Country is required");
+    if (!article.title?.trim()) validateErrors.push("Title is required");
+    if (!article.introduction?.trim())
+      validateErrors.push("Introduction is required");
+    if (!article.slug?.trim()) validateErrors.push("Slug is required");
+    if (!article.category) validateErrors.push("Category is required");
+    if (!article.country_code) validateErrors.push("Country is required");
+    if (!article.ingredients?.some((ing) => ing.trim()))
+      validateErrors.push("At least one ingredient is required");
+    if (!article.instructions?.some((inst) => inst.trim()))
+      validateErrors.push("At least one instruction is required");
+    if (!article.img_cover) validateErrors.push("Image is required");
 
-    return errors;
+    return validateErrors;
   };
 
   const onCreateChange = (e) => {
@@ -44,6 +56,34 @@ export const useCreateArticle = () => {
     };
 
     setCreateArticle(updatedArticle);
+  };
+
+  const onDescriptionChange = (htmlString) => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      introduction: htmlString,
+    }));
+  };
+
+  const onAdditionalInfoChange = (htmlString) => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      additional_info: htmlString,
+    }));
+  };
+
+  const handleIngredient = () => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      ingredients: [...prev.ingredients, ""],
+    }));
+  };
+
+  const handleInstruction = () => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      instructions: [...prev.instructions, ""],
+    }));
   };
 
   const handleAddTag = () => {
@@ -76,10 +116,10 @@ export const useCreateArticle = () => {
     setIsCategoryOpen(false);
   };
 
-  const handleCountrySelect = (selectCountry) => {
+  const handleCountrySelect = (countryCode) => {
     setCreateArticle((prev) => ({
       ...prev,
-      country: selectCountry,
+      country_code: countryCode,
     }));
     setIsCountryOpen(false);
   };
@@ -93,7 +133,7 @@ export const useCreateArticle = () => {
 
   const getSelectedCountryName = (selectedCountry) => {
     const selected = selectedCountry.find(
-      (cat) => cat.name === createArticle.country,
+      (cat) => cat.code === createArticle.country_code,
     );
 
     return selected ? selected.name : "Select your country";
@@ -102,21 +142,65 @@ export const useCreateArticle = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      processFile(file);
+      processImageFile(file);
     }
   };
 
-  const processFile = (file) => {
-    setCreateArticle((prev) => ({
-      ...prev,
-      img_url: file,
-    }));
+  const processImageFile = async (file) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+      const fileExt = file.name.split(".").pop();
+      const fileNameWithoutExt =
+        file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+      let fileName;
+
+      if (editMode && existingArticle?.id) {
+        const sanitizedName = fileNameWithoutExt
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-");
+        fileName = `${sanitizedName}.${fileExt}`;
+
+        if (existingArticle.img_cover) {
+          const oldFileName = existingArticle.img_cover.split("/").pop();
+          if (oldFileName !== fileName) {
+            await supabase.storage.from("assets").remove([oldFileName]);
+          }
+        }
+      } else {
+        const sanitizedName = fileNameWithoutExt
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-");
+
+        fileName = `${Date.now()}-${sanitizedName}.${fileExt}`;
+      }
+
+      const { error } = await supabase.storage
+        .from("assets")
+        .upload(fileName, file, {
+          upsert: editMode && existingArticle?.id,
+        });
+
+      if (error) throw error;
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("assets").getPublicUrl(fileName);
+
+      setCreateArticle((prev) => ({
+        ...prev,
+        img_cover: publicUrl,
+      }));
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    }
   };
 
   const handleDragOver = (e) => {
@@ -135,7 +219,7 @@ export const useCreateArticle = () => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
-      processFile(file);
+      processImageFile(file);
     }
   };
 
@@ -143,7 +227,7 @@ export const useCreateArticle = () => {
     setImagePreview(null);
     setCreateArticle((prev) => ({
       ...prev,
-      img_url: null,
+      img_cover: null,
     }));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -160,29 +244,47 @@ export const useCreateArticle = () => {
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
-
-    if (!file) return;
-    setCreateArticle((prev) => ({
-      ...prev,
-      video_url: file,
-    }));
-
-    if (!file.type.startsWith("video/")) {
-      alert("Please upload a valid video file");
-      return;
+    if (file) {
+      processVideoFile(file);
     }
+  };
 
-    if (videoPreview) {
-      URL.revokeObjectURL(videoPreview);
+  const processVideoFile = async (file) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVideoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      const fileNameWithoutExt =
+        file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+      const fileExt = file.name.split(".").pop();
+
+      const sanitizedName = fileNameWithoutExt
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")
+        .replace(/-+/g, "-");
+      const fileName = `${Date.now()}-${sanitizedName}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("videos")
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      const {
+        data: { publicVideo },
+      } = supabase.storage.from("videos").getPublicUrl(fileName);
+
+      setCreateArticle((prev) => ({
+        ...prev,
+        video_url: publicVideo,
+      }));
+    } catch (error) {
+      console.error("Error uploading video:", error);
+      toast.error("Failed to upload video");
     }
-
-    setCreateArticle((prev) => ({
-      ...prev,
-      video_url: file,
-    }));
-
-    setVideoPreview(URL.createObjectURL(file));
-    e.target.value = "";
   };
 
   const handleRemoveVideo = () => {
@@ -215,6 +317,8 @@ export const useCreateArticle = () => {
   return {
     createArticle,
     onCreateChange,
+    onDescriptionChange,
+    onAdditionalInfoChange,
     imagePreview,
     videoPreview,
     isDragging,
@@ -223,6 +327,8 @@ export const useCreateArticle = () => {
     isCountryOpen,
     defaultCreateState,
     validateArticle,
+    handleIngredient,
+    handleInstruction,
     handleAddTag,
     handleRemoveTag,
     handleDragOver,

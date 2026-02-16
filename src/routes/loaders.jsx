@@ -15,6 +15,7 @@ export const globalLoader = async () => {
                   avatar_url
                 )`,
         )
+        .eq("is_draft", false)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -49,7 +50,7 @@ export const savedRecipesLoader = async () => {
     const session = await requireAuth();
 
     if (!session) {
-      return redirect("/login?redirectTo=/saved-recipes");
+      return redirect("/auth");
     }
 
     const { data, error } = await supabase
@@ -74,9 +75,7 @@ export const savedRecipesLoader = async () => {
 
       if (error.code === "PGRST301" || error.message?.includes("JWT")) {
         await supabase.auth.signOut();
-        return redirect(
-          "/login?redirectTo=/saved-recipes&error=session-expired",
-        );
+        return redirect("/auth");
       }
 
       throw new Response("Failed to load saved recipes", { status: 500 });
