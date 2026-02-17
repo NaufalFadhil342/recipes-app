@@ -1,23 +1,21 @@
 import { useMemo } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useRouteLoaderData } from "react-router";
+import { formatDistanceToNow } from "date-fns";
 
 export const useRecipeDetail = () => {
-  const { recipe, allRecipes } = useLoaderData();
+  const { recipe } = useLoaderData();
+  const { recipes } = useRouteLoaderData("root");
 
   const date = useMemo(() => {
     if (!recipe?.updated_at) return null;
 
     const timestamp = new Date(recipe?.updated_at);
-    return timestamp.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    return formatDistanceToNow(timestamp, { addSuffix: true });
   }, [recipe?.updated_at]);
 
   return {
     recipe,
-    allRecipes,
+    allRecipes: recipes,
     date,
   };
 };

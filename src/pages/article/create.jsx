@@ -25,7 +25,7 @@ const Create = () => {
     defaultCreateState,
     onCreateChange,
     onAdditionalInfoChange,
-    onDescriptionChange,
+    onIntroductionChange,
     isCategoryOpen,
     isCountryOpen,
     isDragging,
@@ -106,7 +106,7 @@ const Create = () => {
         navigate("/my-recipes/draft");
       } else {
         toast.success("Recipe published successfully");
-        navigate("/my-recipes/published");
+        navigate("/my-recipes/publish");
       }
     } catch (error) {
       console.error("Error saving recipe:", error);
@@ -145,7 +145,7 @@ const Create = () => {
           handleAddTag={handleAddTag}
           createArticle={createArticle}
           onCreateChange={onCreateChange}
-          onDescriptionChange={onDescriptionChange}
+          onIntroductionChange={onIntroductionChange}
           onAdditionalInfoChange={onAdditionalInfoChange}
           imagePreview={imagePreview}
           videoPreview={videoPreview}

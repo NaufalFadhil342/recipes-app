@@ -33,7 +33,7 @@ const Edit = () => {
     setCreateArticle,
     onCreateChange,
     onAdditionalInfoChange,
-    onDescriptionChange,
+    onIntroductionChange,
     isCategoryOpen,
     isCountryOpen,
     isDragging,
@@ -211,7 +211,7 @@ const Edit = () => {
           handleAddTag={handleAddTag}
           createArticle={createArticle}
           onCreateChange={onCreateChange}
-          onDescriptionChange={onDescriptionChange}
+          onIntroductionChange={onIntroductionChange}
           onAdditionalInfoChange={onAdditionalInfoChange}
           imagePreview={imagePreview}
           videoPreview={videoPreview}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabase";
-import { Link } from "react-router";
+import { Link, useRevalidator } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
@@ -12,6 +12,33 @@ const Draft = () => {
   const [drafts, setDrafts] = useState([]);
   const [showDraftsAction, setShowDraftsActiion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { revalidate } = useRevalidator();
+
+  useEffect(() => {
+    const fetchDrafts = async () => {
+      setIsLoading(true);
+
+      try {
+        const { data, error } = await supabase
+          .from("recipes")
+          .select(`*, countries (name)`)
+          .eq("is_draft", true);
+
+        if (error) {
+          console.error("Error fetching drafts:", error);
+          throw error;
+        }
+
+        setDrafts(data);
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDrafts();
+  }, []);
 
   const handleShowDraftsAction = (draftId) => {
     setShowDraftsActiion(showDraftsAction === draftId ? null : draftId);
@@ -40,31 +67,22 @@ const Draft = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchDrafts = async () => {
-      setIsLoading(true);
+  const handlePublish = async (draftId) => {
+    try {
+      const { error } = await supabase
+        .from("recipes")
+        .update({ is_draft: false })
+        .eq("id", draftId);
 
-      try {
-        const { data, error } = await supabase
-          .from("recipes")
-          .select(`*, countries (name)`)
-          .eq("is_draft", true);
+      if (error) throw error;
 
-        if (error) {
-          console.error("Error fetching drafts:", error);
-          throw error;
-        }
-
-        setDrafts(data);
-      } catch (error) {
-        console.error("Unexpected error:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDrafts();
-  }, []);
+      setDrafts((prev) => prev.filter((recipe) => recipe.id !== draftId));
+      revalidate();
+      toast.success("Draft successfully published");
+    } catch (error) {
+      console.error("Failed to publish draft:", error);
+    }
+  };
 
   if (isLoading)
     return (
@@ -83,7 +101,7 @@ const Draft = () => {
         <ul className="w-full h-auto grid grid-cols-3 gap-8 mt-14">
           {drafts.map((draft) => {
             const formattedDate = formatDistanceToNow(
-              new Date(draft.created_at),
+              new Date(draft.updated_at),
               { addSuffix: true },
             );
 
@@ -168,6 +186,7 @@ const Draft = () => {
                     <div className="w-auto h-auto">
                       <button
                         type="button"
+                        onClick={() => handlePublish(draft.id)}
                         className="w-fit h-auto px-2 py-1.5 rounded-md bg-primary text-inherit font-medium text-sm hover:cursor-pointer"
                       >
                         Publish

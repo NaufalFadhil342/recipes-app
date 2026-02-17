@@ -1,6 +1,7 @@
 import { dummyArticle } from "../../../data/dummyArticle";
 import { useRecipeDetail } from "../../../hooks/useRecipeDetail";
 import DefaultArticle from "./defaultArticle";
+import RecipeContent from "./recipeContent";
 import ShareIt from "./sideContent/shareIt";
 import TopViews from "./sideContent/topViews";
 import Categories from "./sideContent/category";
@@ -45,6 +46,12 @@ const RecipeDetail = () => {
         Selected Recipe is not Found!
       </div>
     );
+
+  const ifRecipeHaveThese =
+    recipe.introduction &&
+    recipe.ingredients &&
+    recipe.instructions &&
+    recipe.additional_info;
 
   return (
     <section className="w-full h-auto py-28 px-12 md:px-20">
@@ -92,9 +99,13 @@ const RecipeDetail = () => {
             </div>
           </div>
           <div className="mt-8 w-full h-auto">
-            {dummyArticle.map((article) => (
-              <DefaultArticle key={article.id} article={article} />
-            ))}
+            {!ifRecipeHaveThese ? (
+              dummyArticle.map((article) => (
+                <DefaultArticle key={article.id} article={article} />
+              ))
+            ) : (
+              <RecipeContent recipe={recipe} />
+            )}
           </div>
         </div>
         <div className="w-full h-auto flex flex-col gap-8">

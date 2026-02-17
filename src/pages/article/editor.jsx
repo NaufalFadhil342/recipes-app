@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ToolbarPlugin from "./plugins/toolbarPlugin";
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -80,6 +80,7 @@ const editorConfig = {
 
 function EditorContent({ value, onChangeEvent, placeholder }) {
   const [editor] = useLexicalComposerContext();
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const handleEditorChange = (editorState) => {
     editorState.read(() => {
@@ -89,7 +90,7 @@ function EditorContent({ value, onChangeEvent, placeholder }) {
   };
 
   useEffect(() => {
-    if (value && editor) {
+    if (value && editor && isFirstRender) {
       editor.update(() => {
         const parser = new DOMParser();
         const dom = parser.parseFromString(value, "text/html");
@@ -99,8 +100,9 @@ function EditorContent({ value, onChangeEvent, placeholder }) {
         $getRoot().select();
         $insertNodes(nodes);
       });
+      setIsFirstRender(false);
     }
-  }, [value, editor]);
+  }, [value, editor, isFirstRender]);
 
   return (
     <>

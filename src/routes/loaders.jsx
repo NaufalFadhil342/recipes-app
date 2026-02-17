@@ -101,30 +101,25 @@ export const recipeDetailLoader = async ({ params }) => {
   }
 
   try {
-    const [recipeRes, allRecipesRes] = await Promise.all([
-      supabase
-        .from("recipes")
-        .select(`*, users (author, avatar_url, profession)`)
-        .eq("slug", slug)
-        .single(),
-      supabase.from("recipes").select("*"),
-    ]);
+    const { data, error } = await supabase
+      .from("recipes")
+      .select(`*, users (author, avatar_url, profession)`)
+      .eq("slug", slug)
+      .single();
 
-    if (recipeRes.error || !recipeRes.data) {
-      throw new Response("Recipe not found", { status: 404 });
-    }
+    if (error) {
+      if (error.code === "PGRST116") {
+        throw new Response("Recipe not found", { status: 404 });
+      }
 
-    if (allRecipesRes.error) {
-      throw new Response("Failed to load all recipes", allRecipesRes.error);
+      throw new Response("Failed to load recipe details", { status: 500 });
     }
 
     return {
-      recipe: recipeRes.data,
-      allRecipes: allRecipesRes.data || [],
+      recipe: data,
     };
   } catch (error) {
-    console.error("Recipe detail loader error:", error);
     if (error instanceof Response) throw error;
-    throw new Response("Recipe not found", { status: 404 });
+    throw new Response("Internal server error", { status: 500 });
   }
 };

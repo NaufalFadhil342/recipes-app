@@ -58,7 +58,7 @@ export const useCreateArticle = (editMode = false, existingArticle = null) => {
     setCreateArticle(updatedArticle);
   };
 
-  const onDescriptionChange = (htmlString) => {
+  const onIntroductionChange = (htmlString) => {
     setCreateArticle((prev) => ({
       ...prev,
       introduction: htmlString,
@@ -317,7 +317,7 @@ export const useCreateArticle = (editMode = false, existingArticle = null) => {
   return {
     createArticle,
     onCreateChange,
-    onDescriptionChange,
+    onIntroductionChange,
     onAdditionalInfoChange,
     imagePreview,
     videoPreview,

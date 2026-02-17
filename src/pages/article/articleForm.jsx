@@ -15,7 +15,7 @@ const ArticleForm = ({
   errors,
   createArticle,
   onCreateChange,
-  onDescriptionChange,
+  onIntroductionChange,
   handleIngredient,
   handleInstruction,
   setCreateArticle,
@@ -102,7 +102,7 @@ const ArticleForm = ({
             <div className="w-full h-auto mt-10">
               <Editor
                 value={createArticle.introduction}
-                onChangeEvent={onDescriptionChange}
+                onChangeEvent={onIntroductionChange}
                 placeholder="Write introduction for the recipe..."
               />
             </div>
