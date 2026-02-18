@@ -45,7 +45,7 @@ const Service = () => {
         <div className="w-full h-auto mt-10 flex justify-center">
           <Link
             to="/auth"
-            className="w-fit h-12 px-4 rounded-md font-medium text-inherit bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
+            className="w-fit h-12 px-4 rounded-md font-medium text-inherit flex items-center bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
             onClick={() => handleAuthOpen("signin")}
           >
             Create Account
