@@ -1,5 +1,6 @@
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
+import { Link } from "react-router";
 
 const ourFeatures = [
   {
@@ -39,16 +40,17 @@ const AboutContent = () => {
         ))}
       </ul>
       <div className="w-auto h-auto mt-6">
-        <button
-          type="button"
+        <Link
+          to="/about"
           className="group w-fit h-12 flex items-center gap-2 px-4 rounded-md text-inherit bg-primary border-[3px] border-primary font-medium hover:bg-transparent transition-all duration-150 ease-in-out"
+          onClick={() => window.scrollTo({ top: true })}
         >
           <>View More</>
           <Icons
             iconsName={recipeIcons.riArrowRight}
             className="size-6 text-inherit rotate-90 group-hover:rotate-0 transition-all duration-150 ease-in-out"
           />
-        </button>
+        </Link>
       </div>
     </>
   );

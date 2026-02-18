@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { usersReqValidation } from "../validation/usersReqValidation";
+import { supabase } from "../utils/supabase";
+import toast from "react-hot-toast";
 
 const usersDefaultState = {
   username: "",
@@ -34,16 +36,19 @@ export const useReqForm = (dialRef) => {
   );
 
   useEffect(() => {
-    const countriesDialCodes = () => {
-      fetch("countries.json")
-        .then((res) => res.json())
-        .then((data) => {
-          setCountries(data.countries);
-        })
-        .catch((error) => console.error("Error fetching data:", error));
+    const fetchCountries = async () => {
+      try {
+        const { data, error } = await supabase.from("countries").select("*");
+
+        if (error) throw error;
+
+        setCountries(data);
+      } catch (error) {
+        console.error("Failed while fetching data:", error);
+      }
     };
 
-    countriesDialCodes();
+    fetchCountries();
 
     document.addEventListener("mousedown", handlePhoneOutsideClick);
     return () =>
@@ -97,6 +102,7 @@ export const useReqForm = (dialRef) => {
         setErrors({});
         setSelectDialCode("+62");
         setIsSubmitted(false);
+        toast.success("Request successfully sent");
       }, 1000);
     } else {
       console.error("Form has errors:", validationErrors);

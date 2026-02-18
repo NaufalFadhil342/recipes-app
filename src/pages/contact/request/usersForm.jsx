@@ -17,9 +17,7 @@ const UsersForm = () => {
   } = useReqForm(phoneDialRef);
 
   const sortCountries = useMemo(() => {
-    return [...countries].sort((a, b) =>
-      a.dial_code.localeCompare(b.dial_code),
-    );
+    return [...countries].sort((a, b) => a.name.localeCompare(b.name));
   }, [countries]);
 
   const dialCodes = (
