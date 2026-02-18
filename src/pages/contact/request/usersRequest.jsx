@@ -4,11 +4,11 @@ import { Link } from "react-router";
 import { Icons } from "../../../icons";
 import { recipeIcons } from "../../../data/recipeIconsData";
 
-const UsersRequest = () => {
+const UsersRequest = ({ countries }) => {
   return (
     <section className="w-full h-auto flex flex-col lg:flex-row items-stretch gap-8">
       <div className="w-full h-auto flex-[0_0_50%]">
-        <UsersForm />
+        <UsersForm countries={countries} />
       </div>
       <div className="w-full h-auto flex-[0_0_50%] flex flex-col gap-8">
         <div className="w-full flex-1 overflow-hidden rounded-3xl">

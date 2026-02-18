@@ -65,7 +65,11 @@ const Footer = () => {
             <ul className="w-full h-auto flex flex-col gap-2 mt-4">
               {addsLinks.map((link, index) => (
                 <li key={index} className="w-auto h-auto">
-                  <Link to={link.path} className="text-stone-600">
+                  <Link
+                    to={link.path}
+                    className="text-stone-600"
+                    onClick={() => window.scrollTo({ top: true })}
+                  >
                     {link.name}
                   </Link>
                 </li>

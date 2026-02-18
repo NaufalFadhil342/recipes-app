@@ -12,6 +12,7 @@ const Error = () => {
       <Link
         to="/"
         className="w-auto h-12 px-6 rounded-lg bg-stone-300 text-inherit font-medium flex items-center hover:bg-[#c2bebb]"
+        onClick={() => window.scrollTo({ top: true })}
       >
         Back to Home
       </Link>
