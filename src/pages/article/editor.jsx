@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ToolbarPlugin from "./plugins/toolbarPlugin";
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -35,8 +35,8 @@ const theme = {
     nested: {
       listitem: "editor-nested-listitem",
     },
-    ol: "editor-list-ol",
-    ul: "editor-list-ul",
+    ol: "editor-list-ol ml-4 list-decimal",
+    ul: "editor-list-ul ml-4 list-disc",
     listitem: "editor-listitem",
   },
   text: {
@@ -50,10 +50,10 @@ const theme = {
   link: "editor-link",
 };
 
-function Placeholder() {
+function Placeholder({ placeholder }) {
   return (
     <div className="absolute top-[15px] left-[15px] text-[#999] pointer-events-none select-none">
-      Enter some rich text...
+      {placeholder}
     </div>
   );
 }
@@ -78,24 +78,19 @@ const editorConfig = {
   ],
 };
 
-function EditorContent({ value, onChangeEvent }) {
+function EditorContent({ value, onChangeEvent, placeholder }) {
   const [editor] = useLexicalComposerContext();
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const handleEditorChange = (editorState) => {
     editorState.read(() => {
       const htmlString = $generateHtmlFromNodes(editor);
-
-      onChangeEvent({
-        target: {
-          name: "content",
-          value: htmlString,
-        },
-      });
+      onChangeEvent(htmlString);
     });
   };
 
   useEffect(() => {
-    if (value && editor) {
+    if (value && editor && isFirstRender) {
       editor.update(() => {
         const parser = new DOMParser();
         const dom = parser.parseFromString(value, "text/html");
@@ -105,8 +100,9 @@ function EditorContent({ value, onChangeEvent }) {
         $getRoot().select();
         $insertNodes(nodes);
       });
+      setIsFirstRender(false);
     }
-  }, [value, editor]);
+  }, [value, editor, isFirstRender]);
 
   return (
     <>
@@ -114,9 +110,9 @@ function EditorContent({ value, onChangeEvent }) {
       <div className="relative bg-white">
         <RichTextPlugin
           contentEditable={
-            <ContentEditable className="min-h-[450px] p-[15px] outline-none text-[15px]" />
+            <ContentEditable className="min-h-32 p-[15px] outline-none" />
           }
-          placeholder={<Placeholder />}
+          placeholder={<Placeholder placeholder={placeholder} />}
           ErrorBoundary={LexicalErrorBoundary}
         />
         <OnChangePlugin onChange={handleEditorChange} />
@@ -129,11 +125,15 @@ function EditorContent({ value, onChangeEvent }) {
   );
 }
 
-function Editor({ value, onChangeEvent }) {
+function Editor({ value, onChangeEvent, placeholder }) {
   return (
     <LexicalComposer initialConfig={editorConfig}>
-      <div className="rounded-xl overflow-hidden bg-white">
-        <EditorContent value={value} onChangeEvent={onChangeEvent} />
+      <div className="rounded-xl overflow-hidden">
+        <EditorContent
+          value={value}
+          onChangeEvent={onChangeEvent}
+          placeholder={placeholder}
+        />
       </div>
     </LexicalComposer>
   );

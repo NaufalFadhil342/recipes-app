@@ -1,4 +1,3 @@
-import Auth from "../auth";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router";
 import Users from "../users";
@@ -27,16 +26,15 @@ const Info = () => {
             <Users handleSignOut={handleSignOut} user={user} />
           </>
         ) : (
-          <button
-            type="button"
+          <Link
+            to="/auth"
             className="w-auto h-10 flex items-center px-4 bg-primary text-inherit font-medium rounded-md hover:bg-dark hover:cursor-pointer duration-150 transition-colors ease-in-out"
             onClick={() => handleAuthOpen("signin")}
           >
             Get Started
-          </button>
+          </Link>
         )}
       </div>
-      <Auth />
     </section>
   );
 };

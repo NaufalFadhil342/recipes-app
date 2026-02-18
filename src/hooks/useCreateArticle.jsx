@@ -1,28 +1,88 @@
 import { useState, useRef, useEffect } from "react";
+import { supabase } from "../utils/supabase";
+import toast from "react-hot-toast";
 
-export const useCreateArticle = () => {
-  const [createArticle, setCreateArticle] = useState({
-    title: "",
-    content: "",
-    slug: "",
-    img_url: null,
-    video_url: null,
-    category: "",
-    tags: [],
-    createdAt: "",
-  });
+const defaultCreateState = {
+  title: "",
+  introduction: "",
+  additional_info: "",
+  slug: "",
+  alt_text: "",
+  ingredients: [""],
+  instructions: [""],
+  img_cover: null,
+  video_url: null,
+  category: "",
+  author_id: null,
+  country_code: "",
+  tags: [],
+  createdAt: "",
+  status: "draft",
+};
+
+export const useCreateArticle = (editMode = false, existingArticle = null) => {
+  const [createArticle, setCreateArticle] = useState(defaultCreateState);
   const [imagePreview, setImagePreview] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
   const [inputTag, setInputTag] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
+  const validateArticle = (article) => {
+    const validateErrors = [];
+
+    if (!article.title?.trim()) validateErrors.push("Title is required");
+    if (!article.introduction?.trim())
+      validateErrors.push("Introduction is required");
+    if (!article.slug?.trim()) validateErrors.push("Slug is required");
+    if (!article.category) validateErrors.push("Category is required");
+    if (!article.country_code) validateErrors.push("Country is required");
+    if (!article.ingredients?.some((ing) => ing.trim()))
+      validateErrors.push("At least one ingredient is required");
+    if (!article.instructions?.some((inst) => inst.trim()))
+      validateErrors.push("At least one instruction is required");
+    if (!article.img_cover) validateErrors.push("Image is required");
+
+    return validateErrors;
+  };
+
   const onCreateChange = (e) => {
+    const updatedArticle = {
+      ...createArticle,
+      [e.target.name]: e.target.value,
+    };
+
+    setCreateArticle(updatedArticle);
+  };
+
+  const onIntroductionChange = (htmlString) => {
     setCreateArticle((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      introduction: htmlString,
+    }));
+  };
+
+  const onAdditionalInfoChange = (htmlString) => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      additional_info: htmlString,
+    }));
+  };
+
+  const handleIngredient = () => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      ingredients: [...prev.ingredients, ""],
+    }));
+  };
+
+  const handleInstruction = () => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      instructions: [...prev.instructions, ""],
     }));
   };
 
@@ -48,12 +108,20 @@ export const useCreateArticle = () => {
     }));
   };
 
-  const handleCategorySelect = (categoryValue) => {
+  const handleCategorySelect = (selectCategory) => {
     setCreateArticle((prev) => ({
       ...prev,
-      category: categoryValue,
+      category: selectCategory,
     }));
     setIsCategoryOpen(false);
+  };
+
+  const handleCountrySelect = (countryCode) => {
+    setCreateArticle((prev) => ({
+      ...prev,
+      country_code: countryCode,
+    }));
+    setIsCountryOpen(false);
   };
 
   const getSelectedCategoryName = (categorySelection) => {
@@ -63,35 +131,76 @@ export const useCreateArticle = () => {
     return selected ? selected.name : "Select category";
   };
 
+  const getSelectedCountryName = (selectedCountry) => {
+    const selected = selectedCountry.find(
+      (cat) => cat.code === createArticle.country_code,
+    );
+
+    return selected ? selected.name : "Select your country";
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      processFile(file);
+      processImageFile(file);
     }
   };
 
-  const processFile = (file) => {
-    // if (!file.type.startsWith("image/")) {
-    //   alert("Please upload an image file");
-    //   return;
-    // }
+  const processImageFile = async (file) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
 
-    // if (file.size > 5 * 1024 * 1024) {
-    //   alert("File size must be less than 5MB");
-    //   return;
-    // }
+      const fileExt = file.name.split(".").pop();
+      const fileNameWithoutExt =
+        file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+      let fileName;
 
-    // Set file ke state
-    setCreateArticle((prev) => ({
-      ...prev,
-      img_url: file,
-    }));
+      if (editMode && existingArticle?.id) {
+        const sanitizedName = fileNameWithoutExt
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-");
+        fileName = `${sanitizedName}.${fileExt}`;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+        if (existingArticle.img_cover) {
+          const oldFileName = existingArticle.img_cover.split("/").pop();
+          if (oldFileName !== fileName) {
+            await supabase.storage.from("assets").remove([oldFileName]);
+          }
+        }
+      } else {
+        const sanitizedName = fileNameWithoutExt
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-");
+
+        fileName = `${Date.now()}-${sanitizedName}.${fileExt}`;
+      }
+
+      const { error } = await supabase.storage
+        .from("assets")
+        .upload(fileName, file, {
+          upsert: editMode && existingArticle?.id,
+        });
+
+      if (error) throw error;
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("assets").getPublicUrl(fileName);
+
+      setCreateArticle((prev) => ({
+        ...prev,
+        img_cover: publicUrl,
+      }));
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    }
   };
 
   const handleDragOver = (e) => {
@@ -110,7 +219,7 @@ export const useCreateArticle = () => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
-      processFile(file);
+      processImageFile(file);
     }
   };
 
@@ -118,7 +227,7 @@ export const useCreateArticle = () => {
     setImagePreview(null);
     setCreateArticle((prev) => ({
       ...prev,
-      img_url: null,
+      img_cover: null,
     }));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -135,29 +244,47 @@ export const useCreateArticle = () => {
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
-
-    if (!file) return;
-    setCreateArticle((prev) => ({
-      ...prev,
-      video_url: file,
-    }));
-
-    if (!file.type.startsWith("video/")) {
-      alert("Please upload a valid video file");
-      return;
+    if (file) {
+      processVideoFile(file);
     }
+  };
 
-    if (videoPreview) {
-      URL.revokeObjectURL(videoPreview);
+  const processVideoFile = async (file) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVideoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      const fileNameWithoutExt =
+        file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+      const fileExt = file.name.split(".").pop();
+
+      const sanitizedName = fileNameWithoutExt
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")
+        .replace(/-+/g, "-");
+      const fileName = `${Date.now()}-${sanitizedName}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("videos")
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      const {
+        data: { publicVideo },
+      } = supabase.storage.from("videos").getPublicUrl(fileName);
+
+      setCreateArticle((prev) => ({
+        ...prev,
+        video_url: publicVideo,
+      }));
+    } catch (error) {
+      console.error("Error uploading video:", error);
+      toast.error("Failed to upload video");
     }
-
-    setCreateArticle((prev) => ({
-      ...prev,
-      video_url: file,
-    }));
-
-    setVideoPreview(URL.createObjectURL(file));
-    e.target.value = "";
   };
 
   const handleRemoveVideo = () => {
@@ -190,11 +317,18 @@ export const useCreateArticle = () => {
   return {
     createArticle,
     onCreateChange,
+    onIntroductionChange,
+    onAdditionalInfoChange,
     imagePreview,
     videoPreview,
     isDragging,
     inputTag,
     isCategoryOpen,
+    isCountryOpen,
+    defaultCreateState,
+    validateArticle,
+    handleIngredient,
+    handleInstruction,
     handleAddTag,
     handleRemoveTag,
     handleDragOver,
@@ -203,12 +337,15 @@ export const useCreateArticle = () => {
     handleClickUploadFile,
     handleClickUploadVideo,
     handleCategorySelect,
+    handleCountrySelect,
     setCreateArticle,
     setInputTag,
     setIsCategoryOpen,
+    setIsCountryOpen,
     fileInputRef,
     videoInputRef,
     getSelectedCategoryName,
+    getSelectedCountryName,
     handleImageChange,
     handleRemoveImage,
     handleRemoveVideo,

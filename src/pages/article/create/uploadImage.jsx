@@ -1,5 +1,5 @@
-import { Icons } from "../../icons";
-import { recipeIcons } from "../../data/recipeIconsData";
+import { Icons } from "../../../icons";
+import { recipeIcons } from "../../../data/recipeIconsData";
 
 const UploadImage = ({
   fileInputRef,

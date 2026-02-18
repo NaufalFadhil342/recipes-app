@@ -1,6 +1,7 @@
 import { dummyArticle } from "../../../data/dummyArticle";
 import { useRecipeDetail } from "../../../hooks/useRecipeDetail";
 import DefaultArticle from "./defaultArticle";
+import RecipeContent from "./recipeContent";
 import ShareIt from "./sideContent/shareIt";
 import TopViews from "./sideContent/topViews";
 import Categories from "./sideContent/category";
@@ -8,6 +9,8 @@ import Tags from "./sideContent/tags";
 import Comments from "../../../components/comments";
 import { Icons } from "../../../icons";
 import { recipeIcons } from "../../../data/recipeIconsData";
+import { useEffect } from "react";
+import { supabase } from "../../../utils/supabase";
 
 const shareArticle = [
   { icon: recipeIcons.feFacebook, name: "facebook" },
@@ -18,12 +21,37 @@ const shareArticle = [
 const RecipeDetail = () => {
   const { recipe, date, allRecipes } = useRecipeDetail();
 
+  useEffect(() => {
+    const recordView = async () => {
+      const viewedKey = `viewed_recipe_${recipe?.slug}`;
+
+      if (!sessionStorage.getItem(viewedKey)) {
+        if (import.meta.env.PROD)
+          await supabase.rpc("increment_recipe_views", {
+            recipe_id_param: recipe.id,
+          });
+
+        sessionStorage.setItem(viewedKey, "true");
+      }
+    };
+
+    if (recipe?.slug) {
+      recordView();
+    }
+  }, [recipe.id, recipe.slug]);
+
   if (!recipe)
     return (
       <div className="text-center text-4xl font-bold text-inherit my-28 px-12 md:px-20">
         Selected Recipe is not Found!
       </div>
     );
+
+  const ifRecipeHaveThese =
+    recipe.introduction &&
+    recipe.ingredients &&
+    recipe.instructions &&
+    recipe.additional_info;
 
   return (
     <section className="w-full h-auto py-28 px-12 md:px-20">
@@ -50,8 +78,9 @@ const RecipeDetail = () => {
               <div className="size-12 rounded-full overflow-hidden">
                 <img
                   className="w-full h-full object-center object-cover"
-                  src={recipe?.users.avatar_url}
-                  alt={recipe?.users.author}
+                  src={recipe?.users?.avatar_url}
+                  alt={recipe?.users?.author}
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="w-auto h-auto">
@@ -70,13 +99,13 @@ const RecipeDetail = () => {
             </div>
           </div>
           <div className="mt-8 w-full h-auto">
-            {!recipe.content ? (
-              <ul className="w-full h-auto">
-                {dummyArticle.map((article) => (
-                  <DefaultArticle key={article.id} article={article} />
-                ))}
-              </ul>
-            ) : null}
+            {!ifRecipeHaveThese ? (
+              dummyArticle.map((article) => (
+                <DefaultArticle key={article.id} article={article} />
+              ))
+            ) : (
+              <RecipeContent recipe={recipe} />
+            )}
           </div>
         </div>
         <div className="w-full h-auto flex flex-col gap-8">

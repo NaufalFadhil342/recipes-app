@@ -26,7 +26,7 @@ const TopViews = ({ recipes, currentRecipeId }) => {
               key={recipe.id}
               className="w-full h-auto flex items-stretch justify-start gap-3"
             >
-              <div className="w-30 h-22 rounded-lg overflow-hidden">
+              <div className="flex-[0_0_35%] w-auto h-22 rounded-lg overflow-hidden">
                 <img
                   className="w-full h-full object-cover object-center"
                   src={recipe.img_cover}
@@ -35,7 +35,7 @@ const TopViews = ({ recipes, currentRecipeId }) => {
                   width={800}
                 />
               </div>
-              <div className="w-auto h-auto flex flex-col justify-center">
+              <div className="flex-[0_0_65%] w-auto h-auto flex flex-col justify-center">
                 <div className="text-sm text-stone-500 leading-none">
                   {date}
                 </div>

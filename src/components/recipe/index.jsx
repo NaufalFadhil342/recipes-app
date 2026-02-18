@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
 
-const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
+const Recipe = ({ recipe, savedItem, handleSaveItem }) => {
   return (
     <li
       className="w-full h-72 rounded-3xl overflow-hidden bg-cover bg-center bg-no-repeat"
@@ -11,11 +11,11 @@ const Recipe = ({ recipe, savedItems, handleSaveItem }) => {
       <div className="w-full h-full bg-stone-800/50 p-6 flex flex-col justify-between gap-4">
         <div className="w-full h-auto flex justify-between items-center gap-3">
           <span className="px-3 py-1.5 rounded-md bg-primary text-sm font-medium capitalize">
-            {recipe.country?.region}
+            {recipe.category}
           </span>
           <Icons
             iconsName={
-              savedItems
+              savedItem
                 ? recipeIcons.majestBookmark
                 : recipeIcons.majestOutlineBookmark
             }

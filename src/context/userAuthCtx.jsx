@@ -26,16 +26,32 @@ const UserAuthProvider = (props) => {
       try {
         const {
           data: { session },
+          error,
         } = await supabase.auth.getSession();
+
+        if (error) {
+          await supabase.auth.signOut();
+          setIsAuthenticated(false);
+          setUser(null);
+          return;
+        }
 
         if (session) {
           setIsAuthenticated(true);
           setUser(session.user);
+          const params = new URLSearchParams(window.location.search);
+          if (
+            params.get("type") === "recovery" ||
+            window.location.hash.includes("access_token")
+          ) {
+            toast.success("Successfully signed in");
+          }
         } else {
           setIsAuthenticated(false);
           setUser(null);
         }
       } catch (error) {
+        await supabase.auth.signOut();
         setError(error.message);
         setIsAuthenticated(false);
         setUser(null);
@@ -51,6 +67,9 @@ const UserAuthProvider = (props) => {
         if (event === "SIGNED_IN") {
           setIsAuthenticated(true);
           setUser(session?.user || null);
+          setIsAuthOpen(false);
+          setUserAuth(defaultUserAuth);
+          setError("");
         } else if (event === "INITIAL_SESSION") {
           if (session && session.user) {
             setIsAuthenticated(true);
@@ -62,8 +81,20 @@ const UserAuthProvider = (props) => {
         } else if (event === "SIGNED_OUT") {
           setIsAuthenticated(false);
           setUser(null);
+          setError("");
         } else if (event === "TOKEN_REFRESHED") {
           setUser(session?.user || null);
+          setIsAuthenticated(true);
+        } else if (event === "USER_UPDATED") {
+          setUser(session?.user || null);
+        }
+
+        if (event === "TOKEN_REFRESHED_FAILED") {
+          toast.error("Your session has expired. Please sign in again.");
+          await supabase.auth.signOut();
+          setIsAuthenticated(false);
+          setUser(null);
+          setIsAuthOpen(true);
         }
       },
     );
@@ -155,6 +186,9 @@ const UserAuthProvider = (props) => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
+        options: {
+          redirectTo: `/`,
+        },
       });
 
       if (error) {
@@ -165,12 +199,10 @@ const UserAuthProvider = (props) => {
       if (data.provider) {
         setIsAuthOpen(false);
         setUserAuth(defaultUserAuth);
-        toast.success("Successfully signed in!");
       }
     } catch (error) {
       console.error("Unexpected sign-in error:", error);
       setError(error.message || "Failed to sign in with OAuth");
-    } finally {
       setLoading(false);
     }
   };

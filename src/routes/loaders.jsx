@@ -1,10 +1,10 @@
 import { redirect } from "react-router";
-import { supabase } from "../utils/supabase";
+import { requireAuth, supabase } from "../utils/supabase";
 
 export const globalLoader = async () => {
   try {
     const [storageFiles, recipesRes] = await Promise.all([
-      supabase.storage.from("assets").list("", { limit: 100 }),
+      supabase.storage.from("assets").list(""),
       supabase
         .from("recipes")
         .select(
@@ -15,6 +15,7 @@ export const globalLoader = async () => {
                   avatar_url
                 )`,
         )
+        .eq("is_draft", false)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -46,13 +47,10 @@ export const globalLoader = async () => {
 
 export const savedRecipesLoader = async () => {
   try {
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    const session = await requireAuth();
 
-    if (!user || authError) {
-      return redirect("/");
+    if (!session) {
+      return redirect("/auth");
     }
 
     const { data, error } = await supabase
@@ -69,10 +67,17 @@ export const savedRecipesLoader = async () => {
               )   
             `,
       )
-      .eq("user_id", user.id)
+      .eq("user_id", session.user.id)
       .order("saved_at", { ascending: false });
 
     if (error) {
+      console.error("Saved recipes error:", error);
+
+      if (error.code === "PGRST301" || error.message?.includes("JWT")) {
+        await supabase.auth.signOut();
+        return redirect("/auth");
+      }
+
       throw new Response("Failed to load saved recipes", { status: 500 });
     }
 
@@ -96,30 +101,25 @@ export const recipeDetailLoader = async ({ params }) => {
   }
 
   try {
-    const [recipeRes, allRecipesRes] = await Promise.all([
-      supabase
-        .from("recipes")
-        .select(`*, users (author, avatar_url, profession)`)
-        .eq("slug", slug)
-        .single(),
-      supabase.from("recipes").select("*"),
-    ]);
+    const { data, error } = await supabase
+      .from("recipes")
+      .select(`*, users (author, avatar_url, profession)`)
+      .eq("slug", slug)
+      .single();
 
-    if (recipeRes.error || !recipeRes.data) {
-      throw new Response("Recipe not found", { status: 404 });
-    }
+    if (error) {
+      if (error.code === "PGRST116") {
+        throw new Response("Recipe not found", { status: 404 });
+      }
 
-    if (allRecipesRes.error) {
-      throw new Response("Failed to load all recipes", allRecipesRes.error);
+      throw new Response("Failed to load recipe details", { status: 500 });
     }
 
     return {
-      recipe: recipeRes.data,
-      allRecipes: allRecipesRes.data || [],
+      recipe: data,
     };
   } catch (error) {
-    console.error("Recipe detail loader error:", error);
     if (error instanceof Response) throw error;
-    throw new Response("Recipe not found", { status: 404 });
+    throw new Response("Internal server error", { status: 500 });
   }
 };

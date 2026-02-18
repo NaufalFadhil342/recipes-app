@@ -1,11 +1,15 @@
 import { Icons } from "../../../icons";
 import { recipeIcons } from "../../../data/recipeIconsData";
 
+const categorySelection = [
+  { name: "Foods", value: "food" },
+  { name: "Beverages", value: "beverage" },
+];
+
 const Category = ({
   categoryRef,
   isCategoryOpen,
   createArticle,
-  categorySelection,
   setIsCategoryOpen,
   getSelectedCategoryName,
   handleCategorySelect,
@@ -34,9 +38,9 @@ const Category = ({
           />
         </button>
         {isCategoryOpen && (
-          <ul className="w-full h-auto absolute right-0 top-full mt-2 bg-white shadow-md rounded-md overflow-x-hidden">
-            {categorySelection.map((category) => (
-              <li key={category.id} className="w-full h-auto">
+          <ul className="w-full h-auto absolute right-0 top-full z-10 mt-2 bg-white shadow-md rounded-md">
+            {categorySelection.map((category, index) => (
+              <li key={index} className="w-full h-auto">
                 <button
                   type="button"
                   className={`w-full p-2 text-left hover:bg-primary/15 text-inherit font-medium transition-colors flex items-center justify-between
