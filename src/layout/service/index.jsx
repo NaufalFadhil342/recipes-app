@@ -1,10 +1,9 @@
 import { useAuth } from "../../hooks/useAuth";
-import Auth from "../../pages/auth";
 import { servicesItem } from "../../data/servicesItem";
+import { Link } from "react-router";
 
 const Service = () => {
-  const { handleAuthOpen, setIsAuthOpen, isAuthOpen, isAuthenticated } =
-    useAuth();
+  const { handleAuthOpen, isAuthenticated } = useAuth();
 
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 relative">
@@ -44,14 +43,13 @@ const Service = () => {
       </ul>
       {isAuthenticated ? null : (
         <div className="w-full h-auto mt-10 flex justify-center">
-          <button
-            type="button"
+          <Link
+            to="/auth"
             className="w-fit h-12 px-4 rounded-md font-medium text-inherit bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
-            onClick={handleAuthOpen}
+            onClick={() => handleAuthOpen("signin")}
           >
             Create Account
-          </button>
-          <Auth isAuthOpen={isAuthOpen} setIsAuthOpen={setIsAuthOpen} />
+          </Link>
         </div>
       )}
     </section>
