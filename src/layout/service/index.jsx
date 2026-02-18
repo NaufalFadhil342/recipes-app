@@ -5,6 +5,11 @@ import { Link } from "react-router";
 const Service = () => {
   const { handleAuthOpen, isAuthenticated } = useAuth();
 
+  const onAuthLinked = (isSignIn) => {
+    handleAuthOpen(isSignIn)
+    window.scrollTo({ top: true })
+  }
+  
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 relative">
       <div className="w-full h-auto flex flex-col justify-center items-center text-center gap-2">
@@ -46,7 +51,7 @@ const Service = () => {
           <Link
             to="/auth"
             className="w-fit h-12 px-4 rounded-md font-medium text-inherit flex items-center bg-primary hover:bg-dark hover:cursor-pointer transition-all duration-150 ease-in-out"
-            onClick={() => handleAuthOpen("signin")}
+            onClick={() => onAuthLinked("signin")}
           >
             Create Account
           </Link>
