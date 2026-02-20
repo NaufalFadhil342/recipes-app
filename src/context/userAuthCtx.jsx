@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabase";
 import toast from "react-hot-toast";
+import { redirect } from "react-router";
 
 const defaultUserAuth = {
   email: "",
@@ -187,7 +188,7 @@ const UserAuthProvider = (props) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `/`,
+          redirectTo: `${window.location.origin}/`,
         },
       });
 
@@ -233,6 +234,7 @@ const UserAuthProvider = (props) => {
       }
 
       setIsAuthOpen(false);
+      redirect("/");
       toast.success("Successfully signed out");
     } catch (error) {
       console.error("Unexpected error during sign out:", error);

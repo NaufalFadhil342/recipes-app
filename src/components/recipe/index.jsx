@@ -42,7 +42,9 @@ const Recipe = ({ recipe, savedItem, handleSaveItem }) => {
                 <p className="text-white font-medium">
                   {recipe?.users?.author}
                 </p>
-                <span className="text-sm text-stone-200 italic">Chef</span>
+                <span className="text-sm text-stone-200 italic">
+                  {recipe?.users?.profession}
+                </span>
               </div>
             </span>
             <Link
