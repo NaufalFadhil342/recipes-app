@@ -1,5 +1,5 @@
 import { useAuth } from "../../hooks/useAuth";
-import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../utils/supabase";
 
 const CommentsForm = ({
   setShowCommentField,
@@ -12,50 +12,77 @@ const CommentsForm = ({
   commentType,
   comments,
   setComments,
+  submitting,
+  setSubmitting,
 }) => {
   const { user } = useAuth();
-  const handleCommentsSubmit = (e) => {
+  const handleCommentsSubmit = async (e) => {
     e.preventDefault();
 
     if (!addComment.trim()) return;
-    if (commentType === "reply" && replyTo) {
-      const newReply = {
-        id: uuidv4(),
-        user: user?.user_metadata?.display_name,
-        text: addComment,
-        createdAt: new Date().toISOString(),
-        replyTo: replyTo.name,
-      };
+    setSubmitting(true);
 
-      setComments(
-        comments.map((comment) => {
-          if (comment.id === replyTo.id) {
-            return {
-              ...comment,
-              replies: [newReply, ...(comment.replies || [])],
-            };
-          }
-          return comment;
-        })
-      );
+    try {
+      if (commentType === "reply" && replyTo) {
+        const postReply = {
+          user_id: user.id,
+          text: addComment,
+          comment_id: replyTo.id,
+        };
 
-      console.log("reply", newReply);
-      setReplyTo(null);
-    } else {
-      const postComment = {
-        id: uuidv4(),
-        user: user?.user_metadata?.display_name,
-        text: addComment,
-        createdAt: new Date().toISOString(),
-        replies: [],
-      };
+        const { data: newReply, error: replyError } = await supabase
+          .from("replies")
+          .insert(postReply)
+          .select(`*, users (author, avatar_url)`)
+          .single();
 
-      console.log(commentType, postComment);
-      setComments([postComment, ...comments]);
+        if (replyError) {
+          console.error("Error input reply data:", replyError.message);
+          return;
+        }
+
+        setComments(
+          comments.map((comment) => {
+            if (comment.id === replyTo.id) {
+              return {
+                ...comment,
+                replies: [newReply, ...(comment.replies || [])],
+              };
+            }
+            return comment;
+          }),
+        );
+
+        setReplyTo(null);
+      } else {
+        const postComment = {
+          user_id: user.id,
+          text: addComment,
+        };
+
+        const { data: newComment, error: commentError } = await supabase
+          .from("comments")
+          .insert(postComment)
+          .select(
+            `*, users (author, avatar_url), replies (*, users (author, avatar_url))`,
+          )
+          .single();
+
+        if (commentError) {
+          console.error("Error input comment:", commentError.message);
+          return;
+        }
+
+        setComments([newComment, ...comments]);
+      }
+
+      setAddComment("");
+      setShowCommentField(false);
+    } catch (error) {
+      console.error("Failed to submit:", error.message);
+    } finally {
+      setSubmitting(false);
     }
-
-    setAddComment("");
-    setShowCommentField(false);
   };
 
   const canEnterComment = (e) => {
@@ -90,7 +117,7 @@ const CommentsForm = ({
           className="w-full xs:w-auto h-10 px-4 rounded-md bg-primary text-inherit font-medium hover:bg-dark hover:cursor-pointer transition-colors duration-150 ease-in-out"
           aria-label="Submit comment"
         >
-          Submit
+          {submitting ? "Submitting..." : "Submit"}
         </button>
         <button
           type="button"

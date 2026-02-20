@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { dummyComments } from "../../data/dummComment";
+import { useEffect, useState } from "react";
 import Comment from "./comment";
 import CommentsForm from "./commentsForm";
 import { recipeIcons } from "../../data/recipeIconsData";
 import { Icons } from "../../icons";
+import { supabase } from "../../utils/supabase";
 
 const expressions = [
   { name: "likes", icon: recipeIcons.moonLike, amount: 0 },
@@ -15,28 +15,30 @@ const Comments = () => {
   const [commentType, setCommentType] = useState("comment");
   const [replyTo, setReplyTo] = useState(null);
   const [showReplies, setShowReplies] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [addComment, setAddComment] = useState("");
-  const [comments, setComments] = useState(dummyComments);
+  const [comments, setComments] = useState([]);
 
-  const getRelativeTime = (commentDate) => {
-    const now = new Date();
-    const past = new Date(commentDate);
-    const diffMs = now - past;
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("comments")
+          .select(
+            `*, users (author, avatar_url), replies (*, users (author, avatar_url))`,
+          )
+          .order("created_at", { ascending: false });
 
-    const seconds = Math.floor(diffMs / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
+        if (error) throw error;
 
-    if (seconds < 10) return "Just now";
-    if (seconds < 60) return "few seconds ago";
-    if (minutes === 1) return "1 min ago";
-    if (minutes < 60) return `${minutes} mins ago`;
-    if (hours === 1) return "1 hour ago";
-    if (hours < 24) return `${hours} hours ago`;
-    if (days === 1) return "1 day ago";
-    return `${days} days ago`;
-  };
+        setComments(data);
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, []);
 
   const handleShowReplies = (active) => {
     setShowReplies((prev) => (prev === active ? null : active));
@@ -92,6 +94,8 @@ const Comments = () => {
           commentType={commentType}
           comments={comments}
           setComments={setComments}
+          submitting={submitting}
+          setSubmitting={setSubmitting}
         />
       )}
       <ul className="w-full h-auto mt-6 flex flex-col gap-6">
@@ -101,7 +105,6 @@ const Comments = () => {
               comment={comment}
               expressions={expressions}
               key={comment.id}
-              getRelativeTime={getRelativeTime}
               setShowCommentField={setShowCommentField}
               setCommentType={setCommentType}
               setReplyTo={setReplyTo}

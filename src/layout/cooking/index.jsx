@@ -10,11 +10,15 @@ const Cooking = ({ recipes }) => {
   const itemsToShow = useItemsPerViewport();
 
   const filterRecipes = useMemo(() => {
-    if (selectRegion === "") {
+    const lowerRegion = selectRegion.toLowerCase();
+
+    if (lowerRegion === "") {
       return recipes;
     }
 
-    return recipes.filter((recipe) => recipe.country?.region === selectRegion);
+    return recipes.filter(
+      (recipe) => recipe.countries?.region?.toLowerCase() === lowerRegion,
+    );
   }, [selectRegion, recipes]);
 
   const sliceRecipes = filterRecipes.slice(0, itemsToShow);

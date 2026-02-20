@@ -1,40 +1,44 @@
-import { useMemo } from "react";
 import Reply from "./reply";
 import { Icons } from "../../icons";
+import { formatDistanceToNow } from "date-fns";
 
 const Comment = ({
   comment,
   expressions,
-  getRelativeTime,
   setShowCommentField,
   setCommentType,
   setReplyTo,
   showReplies,
   handleShowReplies,
 }) => {
-  const { directReplies, nestedReplies } = useMemo(() => {
-    if (!comment.replies) return { directReplies: [], nestedReplies: [] };
-
-    return {
-      directReplies: comment.replies.filter(
-        (reply) => !reply.replyTo || reply.replyTo === comment.user,
-      ),
-      nestedReplies: comment.replies.filter(
-        (reply) => reply.replyTo && reply.replyTo !== comment.user,
-      ),
-    };
-  }, [comment.replies, comment.user]);
-
   return (
     <li className="w-full h-auto">
       <div className="w-full h-auto flex flex-col gap-2">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-10 rounded-full border-2 border-stone-300 bg-linear-to-br from-primary to-yellow-400" />
+          {comment.users?.avatar_url ? (
+            <div className="w-11 h-10 rounded-full border-2 border-dark overflow-hidden">
+              <img
+                className="w-full h-auto object-cover object-center"
+                src={comment.users?.avatar_url}
+                alt={comment.users?.author}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                width={500}
+                height={500}
+              />
+            </div>
+          ) : (
+            <div className="w-11 h-10 rounded-full border-2 border-stone-300 bg-linear-to-br from-primary to-yellow-400" />
+          )}
           <div className="w-full h-auto">
             <div className="flex items-center gap-2">
-              <p className="text-semibold text-inherit">{comment.user}</p>
+              <p className="text-semibold text-inherit">
+                {comment.users?.author}
+              </p>
               <span className="block text-stone-500 text-sm">
-                {getRelativeTime(comment.createdAt)}
+                {formatDistanceToNow(new Date(comment.created_at), {
+                  addSuffix: true,
+                })}
               </span>
             </div>
           </div>
@@ -57,7 +61,7 @@ const Comment = ({
             aria-label="Reply comment"
             onClick={() => {
               setCommentType("reply");
-              setReplyTo({ id: comment.id, name: comment.user });
+              setReplyTo({ id: comment.id, name: comment.users?.author });
               setShowCommentField(true);
             }}
           >
@@ -75,47 +79,26 @@ const Comment = ({
           >
             Replies
           </button>
-          <span className="text-stone-500">({comment.replies.length})</span>
+          <span className="text-stone-500">
+            ({comment.replies.length || 0})
+          </span>
         </div>
         {showReplies === comment.id && (
-          <div className="w-full h-auto pl-10">
-            {directReplies.length > 0 && (
-              <ul className="w-full h-auto flex flex-col gap-4">
-                {directReplies.map((reply) => {
-                  return (
-                    <Reply
-                      expressions={expressions}
-                      reply={reply}
-                      key={reply.id}
-                      getRelativeTime={getRelativeTime}
-                      setShowCommentField={setShowCommentField}
-                      setCommentType={setCommentType}
-                      setReplyTo={setReplyTo}
-                      commentId={comment.id}
-                    />
-                  );
-                })}
-              </ul>
-            )}
-            {nestedReplies.length > 0 && (
-              <ul className="w-full h-auto flex flex-col gap-4 border-t border-stone-200 pt-4 mt-4">
-                {nestedReplies.map((reply) => {
-                  return (
-                    <Reply
-                      expressions={expressions}
-                      reply={reply}
-                      key={reply.id}
-                      getRelativeTime={getRelativeTime}
-                      setShowCommentField={setShowCommentField}
-                      setCommentType={setCommentType}
-                      setReplyTo={setReplyTo}
-                      commentId={comment.id}
-                    />
-                  );
-                })}
-              </ul>
-            )}
-          </div>
+          <ul className="w-full h-auto flex flex-col gap-4">
+            {comment.replies?.map((reply) => {
+              return (
+                <Reply
+                  expressions={expressions}
+                  reply={reply}
+                  key={reply.id}
+                  setShowCommentField={setShowCommentField}
+                  setCommentType={setCommentType}
+                  setReplyTo={setReplyTo}
+                  commentId={comment.id}
+                />
+              );
+            })}
+          </ul>
         )}
       </div>
     </li>

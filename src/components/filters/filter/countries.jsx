@@ -1,17 +1,23 @@
 import { useEffect, useState, useMemo } from "react";
+import { supabase } from "../../../utils/supabase";
 
 const Countries = ({ tempFilters, setTempFilters }) => {
   const [countries, setCountries] = useState([]);
   const [limitCountries, setLimitCountries] = useState(5);
 
   useEffect(() => {
-    const fetchCountries = () => {
-      fetch("countries.json")
-        .then((res) => res.json())
-        .then((data) => {
-          setCountries(data.countries);
-        })
-        .catch((error) => console.error("Error fetching data:", error));
+    const fetchCountries = async () => {
+      const { data, error } = await supabase
+        .from("countries")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching countries data", error.message);
+        return;
+      }
+
+      setCountries(data);
     };
 
     fetchCountries();
@@ -29,7 +35,9 @@ const Countries = ({ tempFilters, setTempFilters }) => {
       if (crrCountries.includes(lowerCountry)) {
         return {
           ...prev,
-          countries: crrCountries.filter((cot) => cot !== lowerCountry),
+          countries: crrCountries.filter(
+            (cot) => cot.name.toLowerCase() !== lowerCountry,
+          ),
         };
       } else {
         return {

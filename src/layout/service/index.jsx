@@ -6,10 +6,10 @@ const Service = () => {
   const { handleAuthOpen, isAuthenticated } = useAuth();
 
   const onAuthLinked = (isSignIn) => {
-    handleAuthOpen(isSignIn)
-    window.scrollTo({ top: true })
-  }
-  
+    handleAuthOpen(isSignIn);
+    window.scrollTo({ top: true });
+  };
+
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 relative">
       <div className="w-full h-auto flex flex-col justify-center items-center text-center gap-2">

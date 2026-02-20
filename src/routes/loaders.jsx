@@ -13,6 +13,9 @@ export const globalLoader = async () => {
                 users (
                   author,
                   avatar_url
+                ),
+                countries (
+                  region
                 )`,
         )
         .eq("is_draft", false)

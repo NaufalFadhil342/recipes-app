@@ -1,22 +1,36 @@
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
+import { formatDistanceToNow } from "date-fns";
 
 const Reply = ({
   reply,
   expressions,
-  getRelativeTime,
   setShowCommentField,
   setCommentType,
   setReplyTo,
   commentId,
 }) => {
   return (
-    <li className="w-full h-auto flex flex-col gap-2">
+    <li className="w-full h-auto flex flex-col gap-2 ml-6">
       <div className="flex items-center gap-3">
-        <div className="w-11 h-10 rounded-full border-2 border-stone-300 bg-linear-to-br from-primary to-yellow-400" />
+        {reply.users?.avatar_url ? (
+          <div className="w-11 h-10 rounded-full border-2 border-dark overflow-hidden">
+            <img
+              className="w-full h-auto object-center object-cover"
+              src={reply.users?.avatar_url}
+              alt={reply.user?.author}
+              loading="lazy"
+              width={500}
+              height={500}
+              referrerPolicy="no-referrer"
+            />
+          </div>
+        ) : (
+          <div className="w-11 h-10 rounded-full border-2 border-stone-300 bg-linear-to-br from-primary to-yellow-400" />
+        )}
         <div className="w-full h-auto">
           <div className="flex items-center gap-2">
-            <p className="text-semibold text-inherit">{reply.user}</p>
+            <p className="text-semibold text-inherit">{reply.users?.author}</p>
             {reply.replyTo && (
               <span className="flex items-center gap-1">
                 <Icons
@@ -27,7 +41,10 @@ const Reply = ({
               </span>
             )}
             <span className="block text-stone-500 text-sm">
-              {getRelativeTime(reply.createdAt)}
+              {reply.created_at &&
+                formatDistanceToNow(new Date(reply.created_at), {
+                  addSuffix: true,
+                })}
             </span>
           </div>
         </div>
@@ -50,7 +67,7 @@ const Reply = ({
           aria-label="Reply comment"
           onClick={() => {
             setCommentType("reply");
-            setReplyTo({ id: commentId, name: reply.user });
+            setReplyTo({ id: commentId, name: reply.users?.author });
             setShowCommentField(true);
           }}
         >

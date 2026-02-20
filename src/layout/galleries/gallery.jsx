@@ -6,6 +6,7 @@ const Gallery = ({ galleries, hoverIndex, setHoverIndex }) => {
       {galleries.map((item, index) => {
         const cleanName = item.name
           .replace(/\.(webp|jpg|jpeg|png)$/i, "")
+          .replace(/\d+/g, "")
           .replace(/-/g, " ")
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
