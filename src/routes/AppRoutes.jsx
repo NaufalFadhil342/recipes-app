@@ -9,6 +9,7 @@ import Footer from "../components/footer";
 import { Icons } from "../icons";
 import { recipeIcons } from "../data/recipeIconsData";
 import Loading from "../UI/loading";
+import { Toaster } from "react-hot-toast";
 
 const AppRoutes = () => {
   const [showToTopBtn, setShowToTopBtn] = useState(false);
@@ -53,6 +54,7 @@ const AppRoutes = () => {
           <Info />
           <Navbar />
           <main>
+            <Toaster position="top-right" />
             <Suspense
               fallback={
                 <div className="w-full h-auto my-28 flex items-center justify-center">
