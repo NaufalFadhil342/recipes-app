@@ -124,6 +124,7 @@ const RecipesProvider = (props) => {
         const { error } = await supabase.from("saved_recipes").insert({
           user_id: user.id,
           recipe_id: recipeId,
+          saved_at: new Date().toISOString(),
         });
 
         if (error) throw error;
