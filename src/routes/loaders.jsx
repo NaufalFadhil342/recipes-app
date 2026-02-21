@@ -12,7 +12,8 @@ export const globalLoader = async () => {
                 *,
                 users (
                   author,
-                  avatar_url
+                  avatar_url,
+                  profession
                 ),
                 countries (
                   region
