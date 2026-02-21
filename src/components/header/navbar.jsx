@@ -19,6 +19,7 @@ const Navbar = () => {
     bookmarkIsOpen,
     setBookmarkIsOpen,
     handleSaveItem,
+    deleteSaveItem,
     user,
     savedRecipesPreview,
     savedCount,
@@ -133,6 +134,7 @@ const Navbar = () => {
               bookmarkIsOpen={bookmarkIsOpen}
               setBookmarkIsOpen={setBookmarkIsOpen}
               handleSaveItem={handleSaveItem}
+              deleteSaveItem={deleteSaveItem}
               currentUser={user}
               savedRecipes={savedRecipesPreview}
               loading={loading}

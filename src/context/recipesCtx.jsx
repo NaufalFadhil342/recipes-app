@@ -152,12 +152,47 @@ const RecipesProvider = (props) => {
     }
   };
 
+  const deleteSaveItem = async (recipeId, recipeTitle) => {
+    if (!user || !isAuthenticated) {
+      toast.error("Please sign in to save recipes");
+      return;
+    }
+
+    setSavedRecipesCache((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(recipeId);
+      return newSet;
+    });
+    setSavedCount((prev) => Math.max(0, prev - 1));
+
+    try {
+      const { error } = await supabase
+        .from("saved_recipes")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("recipe_id", recipeId);
+
+      if (error) throw error;
+
+      toast.success(`Successfully deleted ${recipeTitle}`);
+      revalidator.revalidate();
+      loadSavedRecipesPreview();
+    } catch (error) {
+      console.error("Error deleting saved item:", error);
+
+      setSavedRecipesCache((prev) => new Set([recipeId, ...prev]));
+      setSavedCount((prev) => prev + 1);
+      toast.error(`Failed to delete ${recipeTitle}`);
+    }
+  };
+
   const isRecipeSaved = (recipeId) => {
     return savedRecipesCache.has(recipeId);
   };
 
   const value = {
     handleSaveItem,
+    deleteSaveItem,
     isRecipeSaved,
     bookmarkIsOpen,
     setBookmarkIsOpen,

@@ -5,7 +5,7 @@ import Loading from "./loading";
 const Bookmark = ({
   bookmarkIsOpen,
   setBookmarkIsOpen,
-  handleSaveItem,
+  deleteSaveItem,
   currentUser,
   savedRecipes,
   loading,
@@ -66,7 +66,7 @@ const Bookmark = ({
                       className="w-8 h-6 rounded-full flex items-center justify-center bg-stone-600/10 text-stone-800 font-medium hover:bg-stone-600 hover:text-white hover:cursor-pointer transition-all duration-150 ease-in-out"
                       title="Unsave recipe"
                       onClick={() =>
-                        handleSaveItem(item.recipe.id, recipe.title)
+                        deleteSaveItem(item.recipe_id, recipe.title)
                       }
                     >
                       <span className="block -mt-0.5">x</span>
