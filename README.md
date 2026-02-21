@@ -4,7 +4,7 @@ A modern web application designed to help users explore recipes from around the 
 ## Table of Contents
 - [Introduction](#introduction)
 - [Main Features](#main-features)
-- [Folder Structure](#folders-structure)
+- [Folder Structure](#folder-structure)
 - [Tech Stacks](#tech-stacks)
 - [Usage](#usage)
 - [Licenses](#licenses)
