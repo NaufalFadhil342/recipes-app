@@ -24,7 +24,7 @@ Recipes App is a web application that allow users to make, discover, browse, and
 - ✅ Carousel/sliding effect
 - ✅ Responsive style
 
-## Folders Structure
+## 📁 Folder Structure
 ```
 src/
 ├── assets/        # Static files like images and media
@@ -55,3 +55,36 @@ main.jsx           # Application entry point
 
 **Backend**
 - Supabase (Database + Authentication + Storage)
+
+## 🚀 Usage
+
+**Install Dependencies**
+```bash
+npm install
+// or
+yarn add
+```
+
+**Development**
+```
+npm run dev
+// or
+yarn dev
+```
+
+**Production**
+```
+npm run build
+// or
+yarn build
+```
+
+## Licenses
+- Iconify (MIT License/Apache 2.0/GPL 2.0)
+- Google Fonts - Open Sans (Open Font License)
+
+## Contact Information
+- Email: code.naudhil@gmail.com
+- Website: https://naufalfadhil.vercel.app
+- Github: https://github.com/NaufalFadhil342
+- Gitlab: https://gitlab.com/NaufalFadhil342
