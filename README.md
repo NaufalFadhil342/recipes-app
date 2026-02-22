@@ -2,18 +2,18 @@
 A modern web application designed to help users explore recipes from around the world.
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Main Features](#main-features)
-- [Folder Structure](#folder-structure)
-- [Tech Stacks](#tech-stacks)
-- [Usage](#usage)
-- [Licenses](#license)
-- [Contact Information](#contact)
+- <a href="#introduction">Introduction</a>
+- <a href="#main-features">Main Features</a>
+- <a href="#folder-structure">Folder Structure</a>
+- <a href="#tech-stacks">Tech Stacks</a>
+- <a href="#usage">Usage</a>
+- <a href="#license">Licenses</a>
+- <a href="#contact">Contact Information</a>
 
-## 📖 Introduction 
+## <div id="introduction">📖 Introduction</div> 
 Recipes App is a web application that allow users to make, discover, browse, and explore recipes from various regions worldwide. This platform aims to help users easly discover and trying new dishes fast, simple and enjoyable. Unlike traditional recipe blogs that rely on text and images, this application enhances the user experience by integrating video content to provide a more interactive, engaging, and easy-to-follow cooking experience.
 
-## ✨ Main Features
+## <div id="main-features">✨ Main Features</div>
 - ✅ Explore recipes by regions
 - ✅ Search recipes instantly
 - ✅ Create recipe from scratch
@@ -24,7 +24,7 @@ Recipes App is a web application that allow users to make, discover, browse, and
 - ✅ Carousel/sliding effect
 - ✅ Responsive style
 
-## 📁 Folder Structure
+## <div id="folder-structure">📁 Folder Structure</div>
 ```
 src/
 ├── assets/        # Static files like images and media
@@ -44,7 +44,7 @@ index.css          # Global styles
 main.jsx           # Application entry point
 ```
 
-## 🛠 Tech Stacks
+## <div id="tech-stacks">🛠 Tech Stacks</div>
 **Frontend**
 - React + Vite
 - Tailwind CSS
@@ -56,8 +56,7 @@ main.jsx           # Application entry point
 **Backend**
 - Supabase (Database + Authentication + Storage)
 
-## 🚀 Usage
-
+## <div id="usage">🚀 Usage</div>
 **Install Dependencies**
 ```bash
 npm install
@@ -79,11 +78,11 @@ npm run build
 yarn build
 ```
 
-## 🌟 Licenses
+## <div id="license">🌟 Licenses</div>
 - Iconify (MIT License/Apache 2.0/GPL 2.0)
 - Google Fonts - Open Sans (Open Font License)
 
-## 📩 Contact Information
+## <div id="contact">📩 Contact Information</div>
 - Email: code.naudhil@gmail.com
 - Website: <a href="https://naufalfadhil.vercel.app" target="_blank">naufalfadhil.vercel.app</a> 
 - Github: <a href="https://github.com/NaufalFadhil342" target="_blank">NaufalFadhil342</a>
