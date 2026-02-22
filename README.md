@@ -10,10 +10,10 @@ A modern web application designed to help users explore recipes from around the 
 - [Licenses](#license)
 - [Contact Information](#contact)
 
-## <div id="#introduction">📖  Introduction</div> 
+## 📖 Introduction 
 Recipes App is a web application that allow users to make, discover, browse, and explore recipes from various regions worldwide. This platform aims to help users easly discover and trying new dishes fast, simple and enjoyable. Unlike traditional recipe blogs that rely on text and images, this application enhances the user experience by integrating video content to provide a more interactive, engaging, and easy-to-follow cooking experience.
 
-## <div id="#main-features">✨ Main Features</div>
+## ✨ Main Features
 - ✅ Explore recipes by regions
 - ✅ Search recipes instantly
 - ✅ Create recipe from scratch
@@ -24,7 +24,7 @@ Recipes App is a web application that allow users to make, discover, browse, and
 - ✅ Carousel/sliding effect
 - ✅ Responsive style
 
-## <div id="#folder-structure">📁 Folder Structure</div>
+## 📁 Folder Structure
 ```
 src/
 ├── assets/        # Static files like images and media
@@ -44,7 +44,7 @@ index.css          # Global styles
 main.jsx           # Application entry point
 ```
 
-## <div id="#tech-stacks">🛠 Tech Stacks</div>
+## 🛠 Tech Stacks
 **Frontend**
 - React + Vite
 - Tailwind CSS
@@ -56,7 +56,7 @@ main.jsx           # Application entry point
 **Backend**
 - Supabase (Database + Authentication + Storage)
 
-## <div id="#usage">🚀 Usage</div>
+## 🚀 Usage
 
 **Install Dependencies**
 ```bash
@@ -79,11 +79,11 @@ npm run build
 yarn build
 ```
 
-## <div id="#license">🌟 Licenses</div>
+## 🌟 Licenses
 - Iconify (MIT License/Apache 2.0/GPL 2.0)
 - Google Fonts - Open Sans (Open Font License)
 
-## <div id="#contact">📩 Contact Information</div>
+## 📩 Contact Information
 - Email: code.naudhil@gmail.com
 - Website: <a href="https://naufalfadhil.vercel.app" target="_blank">naufalfadhil.vercel.app</a> 
 - Github: <a href="https://github.com/NaufalFadhil342" target="_blank">NaufalFadhil342</a>
