@@ -1,16 +1,89 @@
-# React + Vite
+# Recipes App
+A modern web application designed to help users explore recipes from around the world.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Table of Contents
+- <a href="#introduction">Introduction</a>
+- <a href="#main-features">Main Features</a>
+- <a href="#folder-structure">Folder Structure</a>
+- <a href="#tech-stacks">Tech Stacks</a>
+- <a href="#usage">Usage</a>
+- <a href="#license">Licenses</a>
+- <a href="#contact">Contact Information</a>
 
-Currently, two official plugins are available:
+## <div id="introduction">📖 Introduction</div> 
+Recipes App is a web application that allow users to make, discover, browse, and explore recipes from various regions worldwide. This platform aims to help users easly discover and trying new dishes fast, simple and enjoyable. Unlike traditional recipe blogs that rely on text and images, this application enhances the user experience by integrating video content to provide a more interactive, engaging, and easy-to-follow cooking experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## <div id="main-features">✨ Main Features</div>
+- ✅ Explore recipes by regions
+- ✅ Search recipes instantly
+- ✅ Create recipe from scratch
+- ✅ Upload recipe image and video
+- ✅ Favorite recipes
+- ✅ Fast loading with supabase backend
+- ✅ Smooth animation
+- ✅ Carousel/sliding effect
+- ✅ Responsive style
 
-## React Compiler
+## <div id="folder-structure">📁 Folder Structure</div>
+```
+src/
+├── assets/        # Static files like images and media
+├── components/    # Reusable UI components
+├── context/       # React context provider (global state)
+├── data/          # Static data
+├── hooks/         # Custom react hooks
+├── icons/         # SVG icons & icon component
+├── layout/        # Layout components (navbar, footer, etc.)
+├── pages/         # Page-level components
+├── routes/        # Routing
+├── UI/            # Base UI element (Loading, notification, bookmark, etc.)
+├── utils/         # Utilities & helper functions (Supabase, etc,)
+└── validation/    # Form validation logic & schema
+App.jsx            # Root application component
+index.css          # Global styles
+main.jsx           # Application entry point
+```
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## <div id="tech-stacks">🛠 Tech Stacks</div>
+**Frontend**
+- React + Vite
+- Tailwind CSS
+- Motion
+- Embla Carousel
+- Lexical
+- Iconify
 
-## Expanding the ESLint configuration
+**Backend**
+- Supabase (Database + Authentication + Storage)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## <div id="usage">🚀 Usage</div>
+**Install Dependencies**
+```bash
+npm install
+// or
+yarn add
+```
+
+**Development**
+```
+npm run dev
+// or
+yarn dev
+```
+
+**Production**
+```
+npm run build
+// or
+yarn build
+```
+
+## <div id="license">🌟 Licenses</div>
+- Iconify (MIT License/Apache 2.0/GPL 2.0)
+- Google Fonts - Open Sans (Open Font License)
+
+## <div id="contact">📩 Contact Information</div>
+- Email: code.naudhil@gmail.com
+- Website: <a href="https://naufalfadhil.vercel.app" target="_blank">naufalfadhil.vercel.app</a> 
+- Github: <a href="https://github.com/NaufalFadhil342" target="_blank">NaufalFadhil342</a>
+- Gitlab: <a href="https://gitlab.com/NaufalFadhil342" target="_blank">NaufalFadhil342</a>
