@@ -66,7 +66,8 @@ export const savedRecipesLoader = async () => {
                 *,
                 users (
                   author,
-                  avatar_url
+                  avatar_url,
+                  profession
                 )
               )   
             `,

@@ -18,6 +18,7 @@ const UserAuthProvider = (props) => {
   const [error, setError] = useState("");
   const [authMode, setAuthMode] = useState("signin");
   const [loading, setLoading] = useState(true);
+  const [loadingType, setLoadingType] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -115,6 +116,7 @@ const UserAuthProvider = (props) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    setLoadingType("credentials");
 
     if (userAuth.password !== userAuth.confirmPassword) {
       setError("Passwords do not match");
@@ -150,6 +152,7 @@ const UserAuthProvider = (props) => {
       setError(error.message || "Failed to sign up");
     } finally {
       setLoading(false);
+      setLoadingType(null);
     }
   };
 
@@ -157,6 +160,7 @@ const UserAuthProvider = (props) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    setLoadingType("credentials");
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -176,6 +180,7 @@ const UserAuthProvider = (props) => {
       setError(error.message || "Failed to sign in");
     } finally {
       setLoading(false);
+      setLoadingType(null);
     }
   };
 
@@ -183,6 +188,7 @@ const UserAuthProvider = (props) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    setLoadingType("google");
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -204,7 +210,9 @@ const UserAuthProvider = (props) => {
     } catch (error) {
       console.error("Unexpected sign-in error:", error);
       setError(error.message || "Failed to sign in with OAuth");
+    } finally {
       setLoading(false);
+      setLoadingType(null);
     }
   };
 
@@ -234,8 +242,8 @@ const UserAuthProvider = (props) => {
       }
 
       setIsAuthOpen(false);
-      redirect("/");
       toast.success("Successfully signed out");
+      return redirect("/");
     } catch (error) {
       console.error("Unexpected error during sign out:", error);
     }
@@ -262,6 +270,7 @@ const UserAuthProvider = (props) => {
     authMode,
     toggleAuthMode,
     loading,
+    loadingType,
     user,
   };
 

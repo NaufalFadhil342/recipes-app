@@ -4,6 +4,7 @@ import CommentsForm from "./commentsForm";
 import { recipeIcons } from "../../data/recipeIconsData";
 import { Icons } from "../../icons";
 import { supabase } from "../../utils/supabase";
+import { useAuth } from "../../hooks/useAuth";
 
 const expressions = [
   { name: "likes", icon: recipeIcons.moonLike, amount: 0 },
@@ -18,6 +19,7 @@ const Comments = () => {
   const [submitting, setSubmitting] = useState(false);
   const [addComment, setAddComment] = useState("");
   const [comments, setComments] = useState([]);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -61,19 +63,21 @@ const Comments = () => {
           </span>
         </div>
         <div className="w-full h-auto flex justify-end">
-          <button
-            type="button"
-            className="w-auto h-10 px-4 flex items-center gap-2 rounded-md bg-transparent border border-stone-600 text-stone-600 hover:border-primary hover:text-primary transition-all duration-150 ease-in-out hover:cursor-pointer"
-            onClick={() => {
-              setCommentType("comment");
-              setReplyTo(null);
-              setShowCommentField(true);
-            }}
-            aria-label="Show comment field"
-          >
-            <Icons iconsName={recipeIcons.mysComment} className="size-5" />
-            <p className="hidden xs:block">Add New</p>
-          </button>
+          {isAuthenticated && (
+            <button
+              type="button"
+              className="w-auto h-10 px-4 flex items-center gap-2 rounded-md bg-transparent border border-stone-600 text-stone-600 hover:border-primary hover:text-primary transition-all duration-150 ease-in-out hover:cursor-pointer"
+              onClick={() => {
+                setCommentType("comment");
+                setReplyTo(null);
+                setShowCommentField(true);
+              }}
+              aria-label="Show comment field"
+            >
+              <Icons iconsName={recipeIcons.mysComment} className="size-5" />
+              <p className="hidden xs:block">Add New</p>
+            </button>
+          )}
         </div>
       </div>
       {showCommentField && (

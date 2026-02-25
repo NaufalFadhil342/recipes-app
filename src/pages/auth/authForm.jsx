@@ -10,7 +10,7 @@ const AuthForm = () => {
     handleAuthChange,
     handleSignInWithOAuth,
     authMode,
-    loading,
+    loadingType,
   } = useAuth();
 
   return (
@@ -65,8 +65,9 @@ const AuthForm = () => {
         <button
           type="submit"
           className="w-auto h-12 px-4 font-medium text-inherit bg-primary rounded-md hover:cursor-pointer hover:bg-dark duration-150 transition-colors ease-in-out"
+          disabled={loadingType !== null}
         >
-          {loading
+          {loadingType
             ? "loading..."
             : authMode === "signin"
               ? "Sign In"
@@ -78,7 +79,10 @@ const AuthForm = () => {
         <p className="text-stone-600 text-sm">Or</p>
         <div className="w-full h-px bg-stone-600/20" />
       </div>
-      <OAuthForm handleSignInWithOAuth={handleSignInWithOAuth} />
+      <OAuthForm
+        handleSignInWithOAuth={handleSignInWithOAuth}
+        loadingType={loadingType}
+      />
     </div>
   );
 };

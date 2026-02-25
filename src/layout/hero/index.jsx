@@ -21,7 +21,7 @@ const Hero = ({ heroes }) => {
   const displayByViews = heroes.sort((a, b) => b.views - a.views).slice(0, 3);
 
   return (
-    <section className="w-full h-auto px-10 md:px-20 my-28">
+    <section className="w-full h-auto px-0 xm:px-10 md:px-20 my-28">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="w-full h-[85vh] flex">
           {displayByViews.map((hero) => {

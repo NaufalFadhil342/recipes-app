@@ -54,9 +54,9 @@ const RecipeDetail = () => {
     recipe.additional_info;
 
   return (
-    <section className="w-full h-auto py-28 px-12 md:px-20">
-      <div className="w-full h-full flex flex-col items-center gap-6">
-        <h1 className="text-4xl font-bold text-inherit leading-none">
+    <section className="w-full h-auto my-28">
+      <div className="w-full h-full flex flex-col items-center gap-6 xm:px-12 md:px-20">
+        <h1 className="text-4xl font-bold text-inherit text-center">
           {recipe.title}
         </h1>
         <span className="w-auto h-auto px-3 rounded-full border-2 border-primary text-primary font-semibold block capitalize">
@@ -71,7 +71,7 @@ const RecipeDetail = () => {
           />
         </div>
       </div>
-      <div className="w-full h-auto grid lg:grid-cols-[2fr_0.8fr] mt-10 gap-10">
+      <div className="w-full h-auto grid lg:grid-cols-[2fr_0.8fr] mt-10 gap-10 px-12 md:px-20">
         <div className="w-full h-auto">
           <div className="w-full h-auto flex items-start justify-between gap-4">
             <div className="w-auto h-auto flex items-center gap-4">
@@ -115,7 +115,7 @@ const RecipeDetail = () => {
           <Tags recipe={recipe} />
         </div>
       </div>
-      <div className="w-full h-auto mt-8 grid lg:grid-cols-[2fr_0.75fr] gap-10">
+      <div className="w-full h-auto mt-8 grid lg:grid-cols-[2fr_0.75fr] gap-10 px-12 md:px-20">
         <Comments />
       </div>
     </section>

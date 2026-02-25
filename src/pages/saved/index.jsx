@@ -6,6 +6,8 @@ const Saved = () => {
   const { isRecipeSaved, handleSaveItem } = useRecipes();
   const { savedRecipes } = useLoaderData();
 
+  console.log("fetch saved recipes", savedRecipes);
+
   return (
     <section className="w-full h-auto my-28 px-12 md:px-20 flex flex-col gap-14">
       <div className="w-full h-auto">
@@ -19,20 +21,26 @@ const Saved = () => {
         </div>
         <div className="mt-4 w-full sm:max-w-sm h-0.5 bg-stone-500/25" />
       </div>
-      <ul className="w-full h-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {savedRecipes.map((savedItem) => {
-          const isSaved = isRecipeSaved(savedItem.recipes.id);
+      {savedRecipes.length > 0 ? (
+        <ul className="w-full h-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {savedRecipes.map((savedItem) => {
+            const isSaved = isRecipeSaved(savedItem.recipes.id);
 
-          return (
-            <Recipe
-              key={savedItem.id}
-              recipe={savedItem.recipes}
-              savedItems={isSaved}
-              handleSaveItem={handleSaveItem}
-            />
-          );
-        })}
-      </ul>
+            return (
+              <Recipe
+                key={savedItem.id}
+                recipe={savedItem.recipes}
+                savedItem={isSaved}
+                handleSaveItem={handleSaveItem}
+              />
+            );
+          })}
+        </ul>
+      ) : (
+        <div className="text-center text-2xl font-semibold text-stone-400">
+          Saved Recipes Not Found. Try Add One
+        </div>
+      )}
     </section>
   );
 };
