@@ -17,8 +17,8 @@ const HeroItem = (props) => {
       </div>
       <div className="w-full h-full flex flex-col items-center justify-between bg-stone-800/30 absolute left-0 top-0">
         <div className="w-auto h-auto absolute -top-6">
-          <div className="p-6 rounded-3xl bg-lime-50 relative">
-            <h1 className="text-2xl md:text-4xl font-bold p-4 bg-primary rounded-2xl capitalize">
+          <div className="p-6 rounded-3xl bg-lime-50 relative w-60 sm:w-full">
+            <h1 className="text-2xl md:text-4xl text-center font-bold p-4 bg-primary rounded-2xl capitalize">
               {props.alt_text}
             </h1>
             <div className="size-12 absolute top-0 -left-6.75 z-10 bg-radial-[at_0%_120%] from-transparent from-40% to-lime-50 to-43%" />

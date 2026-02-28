@@ -5,7 +5,7 @@ import { recipeIcons } from "../../data/recipeIconsData";
 const addsLinks = [
   { name: "About", label: "about", path: "/about" },
   { name: "Recipes", label: "recipes", path: "/recipes" },
-  { name: "Gallery", label: "gallery", path: "/gallery" },
+  { name: "Galleries", label: "galleries", path: "/galleries" },
   { name: "FAQ", label: "FAQ", path: "/faq" },
 ];
 

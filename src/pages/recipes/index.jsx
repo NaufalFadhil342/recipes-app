@@ -8,6 +8,7 @@ import { useSearch } from "../../hooks/useSearch";
 import Loading from "../../UI/loading";
 import { Icons } from "../../icons";
 import { recipeIcons } from "../../data/recipeIconsData";
+import { BreadCrumb } from "../../layout/breadcrumb";
 
 const Recipes = () => {
   const { handleSaveItem, isRecipeSaved } = useRecipes();
@@ -61,6 +62,7 @@ const Recipes = () => {
             <p className="text-stone-200 text-medium text-center">
               The recipes all you need can be found right here.
             </p>
+            <BreadCrumb />
           </div>
         </div>
       )}

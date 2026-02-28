@@ -28,6 +28,8 @@ const CreateArticle = lazy(() => import("./pages/article/create"));
 const EditArticle = lazy(() => import("./pages/article/edit"));
 const Preview = lazy(() => import("./pages/article/preview"));
 const Auth = lazy(() => import("./pages/auth"));
+const Activities = lazy(() => import("./pages/activities"));
+const FAQ = lazy(() => import("./pages/faq"));
 const Error = lazy(() => import("./pages/error"));
 
 const router = createBrowserRouter([
@@ -107,6 +109,14 @@ const router = createBrowserRouter([
       {
         path: "/auth",
         element: <Auth />,
+      },
+      {
+        path: "/galleries",
+        element: <Activities />,
+      },
+      {
+        path: "/faq",
+        element: <FAQ />,
       },
       {
         path: "/*",
